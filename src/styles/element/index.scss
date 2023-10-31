@@ -78,6 +78,15 @@ $--pagination: (
   'button-bg-color': transparent
 );
 
+$--input: (
+  'text-color': $color-titletext
+);
+$--input-padding-horizontal: (
+  'large': 12px,
+  'default': 12px,
+  'small': 12px
+);
+
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
   $colors: $--colors,
   $text-color: $--text-color,
@@ -87,7 +96,9 @@ $--pagination: (
   $button-padding-vertical: $--button-padding-vertical,
   $button-padding-horizontal: $--button-padding-horizontal,
   $tree: $--tree,
-  $pagination: $--pagination
+  $pagination: $--pagination,
+  $input: $--input,
+  $input-padding-horizontal: $--input-padding-horizontal
 );
 
 @use 'element-plus/theme-chalk/src/index.scss' as *;
