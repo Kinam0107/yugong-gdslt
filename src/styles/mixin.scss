@@ -1,0 +1,91 @@
+/* 全局的混合 mixin 样式文件：组件中经常会服用的多个属性整合到一起的，类似原子类 */
+
+// 字体样式
+@mixin fontCategory($category: 4, $adaptiveAging: false) {
+  color: $color-titletext;
+  @if $adaptiveAging == true {
+    @if $category == 1 {
+      font-size: 32px;
+      line-height: 40px;
+    } @else if $category == 2 {
+      font-size: 28px;
+      line-height: 36px;
+    } @else if $category == 3 {
+      font-size: 24px;
+      line-height: 32px;
+    } @else if $category == 4 {
+      font-size: 20px;
+      line-height: 28px;
+    } @else if $category == 5 {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  } @else {
+    @if $category == 1 {
+      font-size: 24px;
+      line-height: 32px;
+    } @else if $category == 2 {
+      font-size: 20px;
+      line-height: 28px;
+    } @else if $category == 3 {
+      font-size: 16px;
+      line-height: 24px;
+    } @else if $category == 4 {
+      font-size: 14px;
+      line-height: 22px;
+    } @else if $category == 5 {
+      font-size: 12px;
+      line-height: 20px;
+    }
+  }
+}
+
+// 文本溢出显示...
+@mixin ellipsis($row: 1) {
+  overflow: hidden;
+  @if $row == 1 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $row;
+  }
+}
+
+// 主体内容盒子基础布局
+@mixin mainContentContainer($height: auto) {
+  overflow: auto;
+  margin: 3 * $baseDistance;
+  padding: 3 * $baseDistance 3 * $baseDistance 2 * $baseDistance;
+  background-color: #fff;
+  border-radius: $baseDistance;
+  @if $height == 'auto' {
+    height: $height;
+  } @else {
+    height: calc($height - 6 * $baseDistance);
+  }
+}
+
+// 设计规范的主体内容盒子基础布局
+@mixin designMainContentContainer($height: auto) {
+  @include mainContentContainer($height);
+  .design_title {
+    color: $color-titletext;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 3 * $baseDistance;
+  }
+  .design_description {
+    color: $color-titletext;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 3 * $baseDistance;
+    > p {
+      color: $color-titletext;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+  }
+}

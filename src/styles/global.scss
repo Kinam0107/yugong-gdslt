@@ -1,0 +1,27 @@
+/* 全局样式文件：引入 reset.scss 文件，并根据项目情况添加一些全局可使用的原子类 */
+@import url('./reset.scss');
+@import url('./font.scss');
+
+// 清除浮动
+.clearfix {
+  *zoom: 1;
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+// 幽灵按钮
+.ghost_button {
+  &.el-button--primary {
+    background-color: transparent !important;
+    border-color: #fff !important;
+  }
+  &.is-disabled {
+    opacity: 0.5 !important;
+  }
+  &.is-loading {
+    opacity: 0.5 !important;
+  }
+}
