@@ -28,7 +28,7 @@ export default [
           {
             path: 'typeface',
             name: 'typeface',
-            component: () => import('@/views/design/TypefaceView.vue'),
+            component: () => import('@/views/design/typeface/IndexView.vue'),
             meta: { title: '字体', mark: 'specification' }
           },
           {
