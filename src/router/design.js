@@ -40,7 +40,7 @@ export default [
           {
             path: 'icon',
             name: 'icon',
-            component: () => import('@/views/design/IconView.vue'),
+            component: () => import('@/views/design/icon/IndexView.vue'),
             meta: { title: '图标', mark: 'specification' }
           }
         ]
