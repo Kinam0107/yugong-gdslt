@@ -34,7 +34,7 @@ export default [
           {
             path: 'button',
             name: 'button',
-            component: () => import('@/views/design/ButtonView.vue'),
+            component: () => import('@/views/design/button/IndexView.vue'),
             meta: { title: '按钮', mark: 'specification' }
           },
           {
