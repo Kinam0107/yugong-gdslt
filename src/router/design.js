@@ -16,13 +16,13 @@ export default [
           {
             path: 'layout',
             name: 'layout',
-            component: () => import('@/views/design/LayoutView.vue'),
+            component: () => import('@/views/design/layout/IndexView.vue'),
             meta: { title: '布局', mark: 'specification' }
           },
           {
             path: 'color',
             name: 'color',
-            component: () => import('@/views/design/ColorView.vue'),
+            component: () => import('@/views/design/color/IndexView.vue'),
             meta: { title: '颜色', mark: 'specification' }
           },
           {
