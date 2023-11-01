@@ -10,7 +10,7 @@ export default [
         path: 'overallSituation',
         name: 'overallSituation',
         redirect: { name: 'icon' },
-        component: () => import('@/App.vue'),
+        component: () => import('@/components/layout/EmptyLayout.vue'),
         meta: { title: '全局', mark: 'specification', icon: 'app-store' },
         children: [
           {
@@ -49,7 +49,7 @@ export default [
         path: 'navigation',
         name: 'navigation',
         redirect: { name: 'menu' },
-        component: () => import('@/App.vue'),
+        component: () => import('@/components/layout/EmptyLayout.vue'),
         meta: { title: '导航', mark: 'specification', icon: 'component' },
         children: [
           {
@@ -88,7 +88,7 @@ export default [
         path: 'dataEntry',
         name: 'dataEntry',
         redirect: { name: 'inputBox' },
-        component: () => import('@/App.vue'),
+        component: () => import('@/components/layout/EmptyLayout.vue'),
         meta: { title: '数据录入', mark: 'specification', icon: 'data-materials' },
         children: [
           {
@@ -127,7 +127,7 @@ export default [
         path: 'dataDisplay',
         name: 'dataDisplay',
         redirect: { name: 'list' },
-        component: () => import('@/App.vue'),
+        component: () => import('@/components/layout/EmptyLayout.vue'),
         meta: { title: '数据展示', mark: 'specification', icon: 'data-search' },
         children: [
           {
@@ -154,7 +154,7 @@ export default [
         path: 'feedback',
         name: 'feedback',
         redirect: { name: 'progress' },
-        component: () => import('@/App.vue'),
+        component: () => import('@/components/layout/EmptyLayout.vue'),
         meta: { title: '反馈', mark: 'specification', icon: 'trumpet' },
         children: [
           {
@@ -187,7 +187,7 @@ export default [
         path: 'other',
         name: 'other',
         redirect: { name: 'other_' },
-        component: () => import('@/App.vue'),
+        component: () => import('@/components/layout/EmptyLayout.vue'),
         meta: { title: '其他', mark: 'specification', icon: 'bookshelf' },
         children: [
           {
