@@ -1,7 +1,6 @@
 <template>
   <div class="anchor_item" :id="props.label" :level="props.level">
-    <h4 v-if="level == 1">{{ props.label }}</h4>
-    <h5 v-else>{{ props.label }}</h5>
+    <div :class="['anchor_item_label', 'level_' + props.level]">{{ props.label }}</div>
     <slot></slot>
   </div>
 </template>
@@ -21,40 +20,26 @@ const props = defineProps({
 
 <style scoped lang="scss">
 .anchor_item {
-  overflow: visible;
   padding: 0;
-  margin-bottom: 32px;
-  &:last-child {
-    margin-bottom: 0;
-  }
+  margin: 0;
 }
-.anchor_item--title1 {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 22px;
-  color: #000;
-  margin-bottom: 16px;
+.anchor_item_label {
+  padding: $baseDistance 0;
+  margin-bottom: $baseDistance;
 }
-.anchor_item--title2 {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  color: #000;
-  margin-bottom: 16px;
+.level_1 {
+  @include fontCategory(1);
 }
-.anchor_item {
-  &:first-child {
-    h4 {
-      margin-top: 0;
-    }
-  }
-  h4 {
-    margin-top: 32px;
-    margin-right: 16px;
-  }
-  h5 {
-    margin-top: 24px;
-    margin-right: 16px;
-  }
+.level_2 {
+  @include fontCategory(2);
+}
+.level_3 {
+  @include fontCategory(3);
+}
+.level_4 {
+  @include fontCategory(4);
+}
+.level_5 {
+  @include fontCategory(5);
 }
 </style>

@@ -80,7 +80,6 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 .anchor {
   overflow: auto;
-  position: relative;
   width: 100%;
   height: 100%;
 }
@@ -92,7 +91,7 @@ onBeforeUnmount(() => {
 ul.nav {
   float: left;
   position: sticky;
-  top: 0;
+  top: $baseDistance;
   width: 20 * $baseDistance;
   border-left: 1px solid $color-border;
   li {
@@ -109,7 +108,16 @@ ul.nav {
       padding-left: 2 * $baseDistance;
     }
     &.level2 {
+      padding-left: 3 * $baseDistance;
+    }
+    &.level3 {
       padding-left: 4 * $baseDistance;
+    }
+    &.level5 {
+      padding-left: 5 * $baseDistance;
+    }
+    &.level5 {
+      padding-left: 6 * $baseDistance;
     }
     &.active {
       color: $color-primary;
