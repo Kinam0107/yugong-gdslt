@@ -30,6 +30,7 @@ $headHight: 7 * $baseDistance;
   height: $headHight;
 }
 .body--container {
+  position: relative;
   overflow: auto;
   height: calc(100% - $headHight);
   background-color: $color-garybg;

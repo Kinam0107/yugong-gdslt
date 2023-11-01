@@ -27,6 +27,7 @@ import { RouterView } from 'vue-router'
   border-right: 1px solid $color-separator;
 }
 .right_main--container {
+  position: relative;
   overflow: auto;
   flex: 1;
   height: 100%;
