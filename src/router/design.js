@@ -67,7 +67,7 @@ export default [
           {
             path: 'tabs',
             name: 'tabs',
-            component: () => import('@/views/design/TabsView.vue'),
+            component: () => import('@/views/design/tabs/IndexView.vue'),
             meta: { title: '标签页', mark: 'specification' }
           },
           {

@@ -1,0 +1,30 @@
+<template>
+  <div class="design_description" v-if="desc">
+    {{ desc }}
+  </div>
+  <div class="design_example" v-if="hasExp">
+    <slot></slot>
+  </div>
+</template>
+
+<script setup>
+defineProps({
+  desc: String,
+  hasExp: {
+    type: Boolean,
+    default: true
+  }
+})
+</script>
+
+<style scoped lang="scss">
+.design_description {
+  @include fontCategory(4);
+  margin-bottom: 3 * $baseDistance;
+}
+.design_example {
+  padding: 3 * $baseDistance;
+  margin-bottom: 5 * $baseDistance;
+  background-color: #f8f9fb;
+}
+</style>

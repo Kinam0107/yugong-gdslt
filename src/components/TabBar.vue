@@ -43,7 +43,7 @@ const props = defineProps({
     type: String,
     default: 'default'
   },
-  operabled: {
+  deletable: {
     type: Boolean,
     default: false
   },
@@ -55,7 +55,7 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue', 'update:tabs'])
 
 const enableOperation = computed(() => {
-  return props.type === 'card' && props.operabled
+  return props.type === 'card' && props.deletable
 })
 
 function change(tab, disabled) {
