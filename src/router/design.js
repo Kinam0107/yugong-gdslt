@@ -61,7 +61,7 @@ export default [
           {
             path: 'pageHeader',
             name: 'pageHeader',
-            component: () => import('@/views/design/PageHeaderView.vue'),
+            component: () => import('@/views/design/pageHeader/IndexView.vue'),
             meta: { title: '页头', mark: 'specification' }
           },
           {
