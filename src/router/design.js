@@ -79,7 +79,7 @@ export default [
           {
             path: 'steps',
             name: 'steps',
-            component: () => import('@/views/design/StepsView.vue'),
+            component: () => import('@/views/design/steps/IndexView.vue'),
             meta: { title: '步骤条', mark: 'specification' }
           }
         ]
