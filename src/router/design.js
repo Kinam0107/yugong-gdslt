@@ -73,7 +73,7 @@ export default [
           {
             path: 'pagination',
             name: 'pagination',
-            component: () => import('@/views/design/PaginationView.vue'),
+            component: () => import('@/views/design/pagination/IndexView.vue'),
             meta: { title: '分页', mark: 'specification' }
           },
           {
