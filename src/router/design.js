@@ -94,7 +94,7 @@ export default [
           {
             path: 'inputBox',
             name: 'inputBox',
-            component: () => import('@/views/design/InputBoxView.vue'),
+            component: () => import('@/views/design/input/IndexView.vue'),
             meta: { title: '输入框', mark: 'specification' }
           },
           {
