@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs_view">
+  <div class="pagination_view">
     <AnchorBox active-label="使用场景">
       <AnchorItem label="使用场景">
         <PaginationPlane desc="当加载/渲染所有数据将花费很多时间时使用，可切换页码浏览数据。" :hasExp="false" />
@@ -55,7 +55,7 @@ const total2 = ref(100)
 </script>
 
 <style scoped lang="scss">
-.tabs_view {
+.pagination_view {
   @include mainContentContainer(100%);
 }
 </style>
