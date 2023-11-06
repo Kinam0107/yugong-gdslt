@@ -55,7 +55,7 @@
             <span>{{ userInfo?.phoneNumber || userInfo?.user?.phone || '-' }}</span>
           </li>
         </ul>
-        <div class="bottom">
+        <div class="bottom" v-if="!props.showQuit">
           <el-button plain style="width: 100%" @click="quit">退出</el-button>
         </div>
       </div>

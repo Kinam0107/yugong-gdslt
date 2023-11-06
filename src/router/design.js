@@ -55,7 +55,7 @@ export default [
           {
             path: 'menu',
             name: 'menu',
-            component: () => import('@/views/design/MenuView.vue'),
+            component: () => import('@/views/design/menu/IndexView.vue'),
             meta: { title: '菜单', mark: 'specification' }
           },
           {
