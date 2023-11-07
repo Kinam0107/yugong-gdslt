@@ -1,5 +1,5 @@
 <template>
-  <div class="steps_view">
+  <div class="input_view">
     <AnchorBox active-label="使用场景">
       <AnchorItem label="使用场景">
         <InputPlane desc="通过鼠标或键盘输入内容，是最基础的表单域的组件，一般场景下采用中型32px高的输入框为标准尺寸。" />
@@ -151,7 +151,7 @@ import TextEditor from './TextEditor.vue'
 </script>
 
 <style scoped lang="scss">
-.steps_view {
+.input_view {
   @include mainContentContainer(100%);
 }
 </style>
