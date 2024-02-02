@@ -31,7 +31,7 @@
   max-width: 1440px;
   height: 800px;
   margin: 0 auto;
-  background-color: #eff8f5;
+  background-color: $color-garybg;
 }
 .top_bottom {
   position: relative;
@@ -41,7 +41,7 @@
     width: 100%;
     height: 7 * $baseDistance;
     opacity: 0.1;
-    background: #59b295;
+    background: $color-primary;
     z-index: 1;
   }
   .bottom {
@@ -57,7 +57,7 @@
       flex: 1;
       height: 100%;
       opacity: 0.1;
-      background: #59b295;
+      background: $color-primary;
     }
   }
 }
