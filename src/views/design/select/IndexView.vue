@@ -57,21 +57,41 @@
       </AnchorItem>
       <AnchorItem label="日期样式">
         <SelectPlane>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 24px"></div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 24px"></div>
-          <div style="display: flex; justify-content: space-between"></div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 24px">
+            <BaseLargeDatePicker style="width: 30%" />
+            <BaseLargeDatePicked style="width: 30%" />
+            <BaseLargeDatePickly style="width: 30%" />
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 24px">
+            <BaseDatePicker style="width: 30%" />
+            <BaseDatePicked style="width: 30%" />
+            <BaseDatePickly style="width: 30%" />
+          </div>
+          <div style="display: flex; justify-content: space-between">
+            <BaseSmallDatePicker style="width: 30%" />
+            <BaseSmallDatePicked style="width: 30%" />
+            <BaseSmallDatePickly style="width: 30%" />
+          </div>
         </SelectPlane>
         <SelectPlane>
-          <div style="display: flex; justify-content: space-between"></div>
+          <div style="display: flex; justify-content: space-between">
+            <DateRangePicker />
+          </div>
         </SelectPlane>
         <SelectPlane>
-          <div style="display: flex; justify-content: space-between"></div>
+          <div style="display: flex; justify-content: space-between">
+            <DateTimeRangePicker />
+          </div>
         </SelectPlane>
         <SelectPlane>
-          <div style="display: flex; justify-content: space-between"></div>
+          <div style="display: flex; justify-content: space-between">
+            <MonthPicker />
+          </div>
         </SelectPlane>
         <SelectPlane>
-          <div style="display: flex; justify-content: space-between"></div>
+          <div style="display: flex; justify-content: space-between">
+            <YearPicker />
+          </div>
         </SelectPlane>
       </AnchorItem>
     </AnchorBox>
@@ -100,6 +120,19 @@ import TreeMultiSelectWithFilter from './TreeMultiSelectWithFilter.vue'
 import InputSelect from './InputSelect.vue'
 import MultiSelectShuttleBox from './MultiSelectShuttleBox.vue'
 import TreeShapedShuttleBox from './TreeShapedShuttleBox.vue'
+import BaseLargeDatePicker from './BaseLargeDatePicker.vue'
+import BaseLargeDatePicked from './BaseLargeDatePicked.vue'
+import BaseLargeDatePickly from './BaseLargeDatePickly.vue'
+import BaseDatePicker from './BaseDatePicker.vue'
+import BaseDatePicked from './BaseDatePicked.vue'
+import BaseDatePickly from './BaseDatePickly.vue'
+import BaseSmallDatePicker from './BaseSmallDatePicker.vue'
+import BaseSmallDatePicked from './BaseSmallDatePicked.vue'
+import BaseSmallDatePickly from './BaseSmallDatePickly.vue'
+import DateRangePicker from './DateRangePicker.vue'
+import DateTimeRangePicker from './DateTimeRangePicker.vue'
+import MonthPicker from './MonthPicker.vue'
+import YearPicker from './YearPicker.vue'
 </script>
 
 <style scoped lang="scss">
