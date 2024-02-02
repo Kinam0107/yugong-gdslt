@@ -31,7 +31,7 @@
   max-width: 1440px;
   height: 800px;
   margin: 0 auto;
-  background-color: #eff8f5;
+  background-color: $color-garybg;
 }
 .top_bottom {
   position: relative;

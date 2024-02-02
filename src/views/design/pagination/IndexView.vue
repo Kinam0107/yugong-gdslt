@@ -23,9 +23,9 @@
       <AnchorItem label="迷你版（常用于弹窗）" :level="2">
         <PaginationPlane>
           <TablePagination small v-model:currentPage="currentPage2" v-model:pageSize="pageSize2" :total="total2" @change="pageChange">
-            <span style="color: #8c8c8c">
+            <span class="span">
               已选
-              <em style="color: #276af0">5条</em>
+              <em class="em">5条</em>
               数据
             </span>
           </TablePagination>
@@ -57,5 +57,11 @@ const total2 = ref(100)
 <style scoped lang="scss">
 .pagination_view {
   @include mainContentContainer(100%);
+  .span {
+    color: $color-info;
+  }
+  .em {
+    color: $color-primary;
+  }
 }
 </style>

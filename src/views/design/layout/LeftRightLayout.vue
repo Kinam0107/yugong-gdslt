@@ -32,7 +32,7 @@
   max-width: 1440px;
   height: 800px;
   margin: 0 auto 80px auto;
-  background-color: #eff8f5;
+  background-color: $color-garybg;
 }
 .left_right {
   position: relative;
