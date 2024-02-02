@@ -100,7 +100,7 @@ export default [
           {
             path: 'select',
             name: 'select',
-            component: () => import('@/views/design/SelectView.vue'),
+            component: () => import('@/views/design/select/IndexView.vue'),
             meta: { title: '选择器', mark: 'specification' }
           },
           {
