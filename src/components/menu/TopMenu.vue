@@ -36,13 +36,14 @@ const menuList = reactive(
 <style scoped lang="scss">
 .top_menu {
   display: flex;
-  gap: 6 * $baseDistance;
+  justify-content: flex-end;
+  gap: 5 * $baseDistance;
   height: 100%;
-  padding: 0 7 * $baseDistance;
+  padding-right: 10 * $baseDistance;
   li {
     height: 100%;
-    line-height: 7 * $baseDistance;
-    font-size: 14px;
+    line-height: 7.5 * $baseDistance;
+    font-size: 18px;
     color: rgba(255, 255, 255, 0.6);
     vertical-align: middle;
     text-decoration: none;
@@ -53,22 +54,22 @@ const menuList = reactive(
       &.deepbackground {
         position: relative;
         border: none;
-        background: rgba(0, 0, 0, 0.2);
+        background: rgba(9, 63, 153, 0.5);
         &::before {
           content: '';
           position: absolute;
           right: 100%;
-          width: 3 * $baseDistance;
+          width: 2.5 * $baseDistance;
           height: 100%;
-          background: rgba(0, 0, 0, 0.2);
+          background: rgba(9, 63, 153, 0.5);
         }
         &::after {
           content: '';
           position: absolute;
           left: 100%;
-          width: 3 * $baseDistance;
+          width: 2.5 * $baseDistance;
           height: 100%;
-          background: rgba(0, 0, 0, 0.2);
+          background: rgba(9, 63, 153, 0.5);
         }
       }
     }

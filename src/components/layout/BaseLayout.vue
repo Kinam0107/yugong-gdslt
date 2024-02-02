@@ -6,7 +6,7 @@
         <template #systemIcon>
           <img src="@/assets/images/login/system-icon.png" width="30" />
         </template>
-        <TopMenu />
+        <TopMenu selected-style="deepbackground" />
       </TopNav>
     </div>
     <div class="body--container">
@@ -22,7 +22,7 @@ import TopMenu from '@/components/menu/TopMenu.vue'
 </script>
 
 <style scoped lang="scss">
-$headHight: 7 * $baseDistance;
+$headHight: 7.5 * $baseDistance;
 .base--layout {
   height: 100%;
 }

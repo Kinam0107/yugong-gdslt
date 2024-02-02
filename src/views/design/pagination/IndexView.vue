@@ -25,7 +25,7 @@
           <TablePagination small v-model:currentPage="currentPage2" v-model:pageSize="pageSize2" :total="total2" @change="pageChange">
             <span style="color: #8c8c8c">
               已选
-              <em style="color: #36b29e">5条</em>
+              <em style="color: #276af0">5条</em>
               数据
             </span>
           </TablePagination>

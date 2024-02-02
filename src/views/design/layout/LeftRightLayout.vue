@@ -42,14 +42,14 @@
     width: 100%;
     height: 7 * $baseDistance;
     opacity: 0.1;
-    background: #59b295;
+    background: $color-primary;
     z-index: 1;
   }
   .left {
     width: 32 * $baseDistance;
     height: 100%;
     opacity: 0.1;
-    background: #59b295;
+    background: $color-primary;
     z-index: 0;
   }
   .right {
@@ -64,7 +64,7 @@
       flex: 1;
       height: 100%;
       opacity: 0.1;
-      background: #59b295;
+      background: $color-primary;
     }
   }
 }

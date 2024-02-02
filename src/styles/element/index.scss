@@ -1,6 +1,6 @@
 $--colors: (
   'primary': (
-    'base': #36b29e
+    'base': #276af0
   ),
   'success': (
     'base': #28ce8e
@@ -63,13 +63,13 @@ $--button-padding-horizontal: (
 
 $--tree: (
   'node-content-height': 32px,
-  'node-hover-bg-color': transparentize(#36b29e, 0.9),
+  'node-hover-bg-color': transparentize(#276af0, 0.9),
   'text-color': $color-titletext,
   'expand-icon-color': $color-prompttext
 );
 
 $--pagination: (
-  'bg-color': #36b29e,
+  'bg-color': #276af0,
   'text-color': $color-whitebg,
   'border-radius': 4px,
   'button-color': $color-titletext,
@@ -88,7 +88,7 @@ $--input-padding-horizontal: (
 );
 
 $--select-option: (
-  'hover-background': transparentize(#36b29e, 0.9)
+  'hover-background': transparentize(#276af0, 0.9)
 );
 
 $--transfer: (

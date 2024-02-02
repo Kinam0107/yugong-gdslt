@@ -9,14 +9,6 @@
       <slot></slot>
     </div>
     <div v-if="props.showDatetime" class="time">{{ time }}</div>
-    <el-icon v-if="props.showConfig" class="config" :size="20" color="#fff" @click="config">
-      <Setting />
-    </el-icon>
-    <el-icon v-if="props.showNotice" class="notice" :size="20" color="#fff" @click="notice">
-      <el-badge is-dot style="transform: translateY(2px)">
-        <Bell />
-      </el-badge>
-    </el-icon>
     <el-popover placement="bottom" :width="320" trigger="click" @show="showMore = true" @hide="showMore = false">
       <template #reference>
         <div class="user">
@@ -67,7 +59,7 @@
 <script setup>
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Setting, Bell, ArrowUp, ArrowDown } from '@element-plus/icons-vue'
+import { ArrowUp, ArrowDown } from '@element-plus/icons-vue'
 import { localData } from '@/utils/storage'
 import { logout } from '@/api/authCenterApi'
 
@@ -75,7 +67,7 @@ const props = defineProps({
   // 系统名称
   systemName: {
     type: String,
-    default: '智慧水利水工程运行管理'
+    default: '温州市水权交易监管平台'
   },
   // 背景色
   bgType: {
@@ -114,16 +106,6 @@ onMounted(() => {
 })
 onUnmounted(() => clearInterval(intervalId))
 
-// todo 设置
-function config() {
-  console.log('config')
-}
-
-// todo 通知
-function notice() {
-  console.log('notice')
-}
-
 // 用户信息相关
 const userInfo = reactive(localData.get('userInfo') || {})
 const showMore = ref(false)
@@ -147,7 +129,7 @@ function quit() {
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 3 * $baseDistance;
+  padding: 0 2 * $baseDistance;
   &.gradient {
     background-image: $color-gradient;
   }
@@ -175,13 +157,13 @@ function quit() {
 .system_name {
   display: flex;
   align-items: center;
-  gap: $baseDistance;
+  gap: 2 * $baseDistance;
   flex: none;
   height: 100%;
   margin-right: 3 * $baseDistance;
   > span {
-    font-family: 'YouSheBiaoTiHei-2';
     font-size: 28px;
+    font-weight: 500;
     color: #ffffff;
   }
 }
@@ -192,7 +174,6 @@ function quit() {
 .time {
   font-size: 14px;
   color: #ffffff;
-  padding: 0 3 * $baseDistance;
 }
 .config,
 .notice {
