@@ -97,6 +97,20 @@ $--transfer: (
   'panel-body-height': 280px
 );
 
+$--radio: (
+  'text-color': $color-titletext
+);
+
+$--radio-checked: (
+  'text-color': $color-titletext
+);
+
+$--checkbox: (
+  'text-color': $color-titletext,
+  'checked-text-color': $color-titletext,
+  'border-radius': 4px
+);
+
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
   $colors: $--colors,
   $text-color: $--text-color,
@@ -110,7 +124,10 @@ $--transfer: (
   $input: $--input,
   $input-padding-horizontal: $--input-padding-horizontal,
   $select-option: $--select-option,
-  $transfer: $--transfer
+  $transfer: $--transfer,
+  $radio: $--radio,
+  $radio-checked: $--radio-checked,
+  $checkbox: $--checkbox
 );
 
 @use 'element-plus/theme-chalk/src/index.scss' as *;

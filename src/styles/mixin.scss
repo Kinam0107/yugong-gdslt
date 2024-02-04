@@ -66,26 +66,3 @@
     height: calc($height - 6 * $baseDistance);
   }
 }
-
-// 设计规范的主体内容盒子基础布局
-@mixin designMainContentContainer($height: auto) {
-  @include mainContentContainer($height);
-  .design_title {
-    color: $color-titletext;
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 1.5;
-    margin-bottom: 3 * $baseDistance;
-  }
-  .design_description {
-    color: $color-titletext;
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 3 * $baseDistance;
-    > p {
-      color: $color-titletext;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-  }
-}
