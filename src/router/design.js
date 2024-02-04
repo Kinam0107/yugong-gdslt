@@ -133,7 +133,7 @@ export default [
           {
             path: 'list',
             name: 'list',
-            component: () => import('@/views/design/ListView.vue'),
+            component: () => import('@/views/design/list/IndexView.vue'),
             meta: { title: '列表', mark: 'specification' }
           },
           {

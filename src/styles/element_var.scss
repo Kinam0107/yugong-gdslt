@@ -111,6 +111,13 @@ $--checkbox: (
   'border-radius': 4px
 );
 
+$--table: (
+  'text-color': $color-titletext,
+  'header-text-color': $color-titletext,
+  'header-bg-color': #f8f9fb,
+  'row-hover-bg-color': #f8f9fb
+);
+
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
   $colors: $--colors,
   $text-color: $--text-color,
@@ -127,7 +134,8 @@ $--checkbox: (
   $transfer: $--transfer,
   $radio: $--radio,
   $radio-checked: $--radio-checked,
-  $checkbox: $--checkbox
+  $checkbox: $--checkbox,
+  $table: $--table
 );
 
 @use 'element-plus/theme-chalk/src/index.scss' as *;
