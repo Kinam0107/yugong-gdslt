@@ -118,7 +118,7 @@ export default [
           {
             path: 'form',
             name: 'form',
-            component: () => import('@/views/design/FormView.vue'),
+            component: () => import('@/views/design/form/IndexView.vue'),
             meta: { title: '表单', mark: 'specification' }
           }
         ]
