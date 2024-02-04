@@ -112,7 +112,7 @@ export default [
           {
             path: 'upload',
             name: 'upload',
-            component: () => import('@/views/design/UploadView.vue'),
+            component: () => import('@/views/design/upload/IndexView.vue'),
             meta: { title: '上传', mark: 'specification' }
           },
           {
