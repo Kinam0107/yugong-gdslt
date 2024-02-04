@@ -106,7 +106,7 @@ export default [
           {
             path: 'actionBox',
             name: 'actionBox',
-            component: () => import('@/views/design/ActionBoxView.vue'),
+            component: () => import('@/views/design/actionBox/IndexView.vue'),
             meta: { title: '操作框', mark: 'specification' }
           },
           {
