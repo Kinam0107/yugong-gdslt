@@ -118,6 +118,10 @@ $--table: (
   'row-hover-bg-color': #f8f9fb
 );
 
+$--descriptions: (
+  'item-bordered-label-background': #f8f9fb
+);
+
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
   $colors: $--colors,
   $text-color: $--text-color,
@@ -135,7 +139,8 @@ $--table: (
   $radio: $--radio,
   $radio-checked: $--radio-checked,
   $checkbox: $--checkbox,
-  $table: $--table
+  $table: $--table,
+  $descriptions: $--descriptions,
 );
 
 @use 'element-plus/theme-chalk/src/index.scss' as *;

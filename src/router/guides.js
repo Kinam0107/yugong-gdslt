@@ -145,7 +145,7 @@ export default [
           {
             path: 'descriptions',
             name: 'descriptions',
-            component: () => import('@/guides/DescriptionsView.vue'),
+            component: () => import('@/guides/descriptions/IndexView.vue'),
             meta: { title: '详情描述', mark: 'specification' }
           }
         ]
