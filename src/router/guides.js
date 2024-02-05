@@ -160,7 +160,7 @@ export default [
           {
             path: 'progress',
             name: 'progress',
-            component: () => import('@/guides/ProgressView.vue'),
+            component: () => import('@/guides/progress/IndexView.vue'),
             meta: { title: '进度条', mark: 'specification' }
           },
           {
