@@ -112,13 +112,13 @@ export default [
           {
             path: 'upload',
             name: 'upload',
-            component: () => import('@/views/design/UploadView.vue'),
+            component: () => import('@/views/design/upload/IndexView.vue'),
             meta: { title: '上传', mark: 'specification' }
           },
           {
             path: 'form',
             name: 'form',
-            component: () => import('@/views/design/FormView.vue'),
+            component: () => import('@/views/design/form/IndexView.vue'),
             meta: { title: '表单', mark: 'specification' }
           }
         ]
@@ -133,13 +133,13 @@ export default [
           {
             path: 'list',
             name: 'list',
-            component: () => import('@/views/design/ListView.vue'),
+            component: () => import('@/views/design/list/IndexView.vue'),
             meta: { title: '列表', mark: 'specification' }
           },
           {
             path: 'table',
             name: 'table',
-            component: () => import('@/views/design/TableView.vue'),
+            component: () => import('@/views/design/table/IndexView.vue'),
             meta: { title: '表格', mark: 'specification' }
           },
           {
