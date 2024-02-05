@@ -166,7 +166,7 @@ export default [
           {
             path: 'message',
             name: 'message',
-            component: () => import('@/guides/MessageView.vue'),
+            component: () => import('@/guides/message/IndexView.vue'),
             meta: { title: '全局提示', mark: 'specification' }
           },
           {
