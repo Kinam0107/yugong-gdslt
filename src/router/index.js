@@ -5,7 +5,7 @@ import { setToken, getToken } from '@/utils/userToken'
 import LoginView from '@/views/LoginView.vue'
 import BaseLayout from '@/components/layout/BaseLayout.vue'
 // import routes from './routes'
-import routes from './design'
+import routes from './guides'
 import globalConfig from '@/config'
 
 const defaultRoutes = [
