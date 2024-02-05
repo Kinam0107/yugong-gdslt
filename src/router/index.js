@@ -5,7 +5,7 @@ import { setToken, getToken } from '@/utils/userToken'
 import LoginView from '@/views/LoginView.vue'
 import BaseLayout from '@/components/layout/BaseLayout.vue'
 import routes from './routes'
-import design from './design'
+import guides from './guides'
 import globalConfig from '@/config'
 
 const defaultRoutes = [
@@ -22,7 +22,7 @@ const defaultRoutes = [
   }
 ]
 
-defaultRoutes.find((e) => e.name === 'root').children = import.meta.env.DEV ? [...routes, ...design] : routes
+defaultRoutes.find((e) => e.name === 'root').children = import.meta.env.DEV ? [...routes, ...guides] : routes
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
