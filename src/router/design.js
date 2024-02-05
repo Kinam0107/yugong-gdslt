@@ -139,7 +139,7 @@ export default [
           {
             path: 'table',
             name: 'table',
-            component: () => import('@/views/design/TableView.vue'),
+            component: () => import('@/views/design/table/IndexView.vue'),
             meta: { title: '表格', mark: 'specification' }
           },
           {
