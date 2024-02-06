@@ -172,7 +172,7 @@ export default [
           {
             path: 'alert',
             name: 'alert',
-            component: () => import('@/guides/AlertView.vue'),
+            component: () => import('@/guides/alert/IndexView.vue'),
             meta: { title: '警告提示', mark: 'specification' }
           },
           {
