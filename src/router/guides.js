@@ -178,7 +178,7 @@ export default [
           {
             path: 'modal',
             name: 'modal',
-            component: () => import('@/guides/ModalView.vue'),
+            component: () => import('@/guides/modal/IndexView.vue'),
             meta: { title: '对话框', mark: 'specification' }
           }
         ]
