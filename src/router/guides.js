@@ -145,7 +145,7 @@ export default [
           {
             path: 'descriptions',
             name: 'descriptions',
-            component: () => import('@/guides/DescriptionsView.vue'),
+            component: () => import('@/guides/descriptions/IndexView.vue'),
             meta: { title: '详情描述', mark: 'specification' }
           }
         ]
@@ -160,25 +160,25 @@ export default [
           {
             path: 'progress',
             name: 'progress',
-            component: () => import('@/guides/ProgressView.vue'),
+            component: () => import('@/guides/progress/IndexView.vue'),
             meta: { title: '进度条', mark: 'specification' }
           },
           {
             path: 'message',
             name: 'message',
-            component: () => import('@/guides/MessageView.vue'),
+            component: () => import('@/guides/message/IndexView.vue'),
             meta: { title: '全局提示', mark: 'specification' }
           },
           {
             path: 'alert',
             name: 'alert',
-            component: () => import('@/guides/AlertView.vue'),
+            component: () => import('@/guides/alert/IndexView.vue'),
             meta: { title: '警告提示', mark: 'specification' }
           },
           {
             path: 'modal',
             name: 'modal',
-            component: () => import('@/guides/ModalView.vue'),
+            component: () => import('@/guides/modal/IndexView.vue'),
             meta: { title: '对话框', mark: 'specification' }
           }
         ]

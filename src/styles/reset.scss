@@ -51,3 +51,48 @@ li {
 ::-webkit-scrollbar-track-piece {
   background-color: #f8f9fb;
 }
+
+// 添加对话框的基础样式（当弹窗内容超出浏览器高度时弹窗高度自适应浏览器且上下间距为6倍距离基数）
+div.el-dialog {
+  position: absolute;
+  margin: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  .el-dialog__header {
+    border-bottom: 1px solid $color-separator;
+    margin: 0;
+    padding: 2 * $baseDistance 3 * $baseDistance;
+    @include fontCategory(3);
+    font-weight: 500;
+    color: $color-titletext;
+  }
+  .el-dialog__body {
+    overflow: auto;
+    max-height: calc(100vh - 12 * $baseDistance - 57px - 65px);
+    padding: 3 * $baseDistance;
+  }
+  .el-dialog__footer {
+    border-top: 1px solid $color-separator;
+    padding: 2 * $baseDistance 3 * $baseDistance;
+  }
+}
+
+// 添加抽屉的基础样式
+.el-drawer {
+  .el-drawer__header {
+    border-bottom: 1px solid $color-separator;
+    margin: 0;
+    padding: 2 * $baseDistance 3 * $baseDistance;
+    @include fontCategory(3);
+    font-weight: 500;
+    color: $color-titletext;
+  }
+  .el-drawer__body {
+    padding: 3 * $baseDistance;
+  }
+  .el-drawer__footer {
+    border-top: 1px solid $color-separator;
+    padding: 2 * $baseDistance 3 * $baseDistance;
+  }
+}

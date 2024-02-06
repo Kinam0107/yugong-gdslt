@@ -3,6 +3,7 @@
     <div class="design_icon_box">
       <SvgIcon icon="arrow" @click="copy" />
       <SvgIcon icon="edit" @click="copy" />
+      <SvgIcon icon="pdf-fill" @click="copy" />
     </div>
     <div class="design_icon_box">
       <SvgIcon icon="mail" @click="copy" />

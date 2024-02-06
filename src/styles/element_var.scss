@@ -118,6 +118,23 @@ $--table: (
   'row-hover-bg-color': #f8f9fb
 );
 
+$--descriptions: (
+  'item-bordered-label-background': #f8f9fb
+);
+
+$--messagebox: (
+  'title-color': $color-titletext,
+  'font-size': 18px,
+  'content-color': $color-explaintext,
+  'content-font-size': 14px
+);
+
+$--dialog: (
+  'box-shadow': 0px 2px 8px 0px rgba(0, 0, 0, 0.15),
+  'title-font-size': 16px,
+  'border-radius': 4px
+);
+
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
   $colors: $--colors,
   $text-color: $--text-color,
@@ -135,7 +152,10 @@ $--table: (
   $radio: $--radio,
   $radio-checked: $--radio-checked,
   $checkbox: $--checkbox,
-  $table: $--table
+  $table: $--table,
+  $descriptions: $--descriptions,
+  $messagebox: $--messagebox,
+  $dialog: $--dialog
 );
 
 @use 'element-plus/theme-chalk/src/index.scss' as *;
