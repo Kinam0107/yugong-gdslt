@@ -255,7 +255,7 @@
             <div style="font-size: 16px; font-weight: 500; line-height: 24px; color: #262626">标题</div>
             <TabBar v-model="tab" :tabs="['已选中', '未选中项1', '未选中项2', '未选中项3', '未选中项4']" style="margin-bottom: -16px"></TabBar>
           </template>
-          <tempalte v-if="tab === '已选中'">
+          <template v-if="tab === '已选中'">
             <el-descriptions :column="2">
               <el-descriptions-item label="项目名称：" :span="2">省某某厅局应用平台产业化管理系统运营服务（2022-2023年）开发项目</el-descriptions-item>
               <el-descriptions-item label="项目编号：">2020081458</el-descriptions-item>
@@ -278,12 +278,12 @@
                 </ul>
               </el-descriptions-item>
             </el-descriptions>
-          </tempalte>
+          </template>
         </el-dialog>
       </AnchorItem>
       <AnchorItem label="抽屉样式">
         <el-button @click="drawer = true">常用于高级筛选，将复杂的搜索条件集合并进行填写，提交命令后刷新当前列表结果</el-button>
-        <el-drawer v-model="drawer" title="高级筛选" :direction="direction">
+        <el-drawer v-model="drawer" title="高级筛选">
           <el-form label-position="top">
             <el-form-item label="必填的字段名称" required>
               <el-input model-value="已完成输入" placeholder="请输入" />
