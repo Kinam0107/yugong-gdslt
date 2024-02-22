@@ -28,7 +28,20 @@ const defaultRoutes = [
   }
 ]
 
-defaultRoutes.find((e) => e.name === 'root').children = import.meta.env.DEV ? [...routes, ...guides] : routes
+const packagingRoutingData = (routes, mark) => {
+  return routes.map((route) => {
+    route.name = mark ? `${mark}_${route.path}` : route.path
+    if (mark) route.meta.mark = mark
+    if (route.children?.length) {
+      route.redirect = { name: route.children[0].name }
+      route.children = packagingRoutingData(route.children, mark || route.name)
+    }
+    return route
+  })
+}
+
+defaultRoutes.find((e) => e.name === 'root').children = import.meta.env.DEV ? [...packagingRoutingData(routes), ...packagingRoutingData(guides)] : packagingRoutingData(routes)
+console.log(defaultRoutes)
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

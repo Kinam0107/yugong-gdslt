@@ -1,199 +1,163 @@
 export default [
   {
     path: 'specification',
-    name: 'specification',
-    redirect: { name: 'overallSituation' },
     component: () => import('@/components/layout/SidebarLayout.vue'),
     meta: { title: '水利厅·桌面端规范' },
     children: [
       {
         path: 'overallSituation',
-        name: 'overallSituation',
-        redirect: { name: 'icon' },
         component: () => import('@/components/layout/PlaceholderLayout.vue'),
-        meta: { title: '全局', mark: 'specification', icon: 'app-store' },
+        meta: { title: '全局', icon: 'app-store' },
         children: [
           {
             path: 'layout',
-            name: 'layout',
             component: () => import('@/guides/layout/IndexView.vue'),
-            meta: { title: '布局', mark: 'specification' }
+            meta: { title: '布局' }
           },
           {
             path: 'color',
-            name: 'color',
             component: () => import('@/guides/color/IndexView.vue'),
-            meta: { title: '颜色', mark: 'specification' }
+            meta: { title: '颜色' }
           },
           {
             path: 'typeface',
-            name: 'typeface',
             component: () => import('@/guides/typeface/IndexView.vue'),
-            meta: { title: '字体', mark: 'specification' }
+            meta: { title: '字体' }
           },
           {
             path: 'button',
-            name: 'button',
             component: () => import('@/guides/button/IndexView.vue'),
-            meta: { title: '按钮', mark: 'specification' }
+            meta: { title: '按钮' }
           },
           {
             path: 'icon',
-            name: 'icon',
             component: () => import('@/guides/icon/IndexView.vue'),
-            meta: { title: '图标', mark: 'specification' }
+            meta: { title: '图标' }
           }
         ]
       },
       {
         path: 'navigation',
-        name: 'navigation',
-        redirect: { name: 'menu' },
         component: () => import('@/components/layout/PlaceholderLayout.vue'),
-        meta: { title: '导航', mark: 'specification', icon: 'component' },
+        meta: { title: '导航', icon: 'component' },
         children: [
           {
             path: 'menu',
-            name: 'menu',
             component: () => import('@/guides/menu/IndexView.vue'),
-            meta: { title: '菜单', mark: 'specification' }
+            meta: { title: '菜单' }
           },
           {
             path: 'pageHeader',
-            name: 'pageHeader',
             component: () => import('@/guides/pageHeader/IndexView.vue'),
-            meta: { title: '页头', mark: 'specification' }
+            meta: { title: '页头' }
           },
           {
             path: 'tabs',
-            name: 'tabs',
             component: () => import('@/guides/tabs/IndexView.vue'),
-            meta: { title: '标签页', mark: 'specification' }
+            meta: { title: '标签页' }
           },
           {
             path: 'pagination',
-            name: 'pagination',
             component: () => import('@/guides/pagination/IndexView.vue'),
-            meta: { title: '分页', mark: 'specification' }
+            meta: { title: '分页' }
           },
           {
             path: 'steps',
-            name: 'steps',
             component: () => import('@/guides/steps/IndexView.vue'),
-            meta: { title: '步骤条', mark: 'specification' }
+            meta: { title: '步骤条' }
           }
         ]
       },
       {
         path: 'dataEntry',
-        name: 'dataEntry',
-        redirect: { name: 'inputBox' },
         component: () => import('@/components/layout/PlaceholderLayout.vue'),
-        meta: { title: '数据录入', mark: 'specification', icon: 'data-materials' },
+        meta: { title: '数据录入', icon: 'data-materials' },
         children: [
           {
             path: 'inputBox',
-            name: 'inputBox',
             component: () => import('@/guides/input/IndexView.vue'),
-            meta: { title: '输入框', mark: 'specification' }
+            meta: { title: '输入框' }
           },
           {
             path: 'select',
-            name: 'select',
             component: () => import('@/guides/select/IndexView.vue'),
-            meta: { title: '选择器', mark: 'specification' }
+            meta: { title: '选择器' }
           },
           {
             path: 'actionBox',
-            name: 'actionBox',
             component: () => import('@/guides/actionBox/IndexView.vue'),
-            meta: { title: '操作框', mark: 'specification' }
+            meta: { title: '操作框' }
           },
           {
             path: 'upload',
-            name: 'upload',
             component: () => import('@/guides/upload/IndexView.vue'),
-            meta: { title: '上传', mark: 'specification' }
+            meta: { title: '上传' }
           },
           {
             path: 'form',
-            name: 'form',
             component: () => import('@/guides/form/IndexView.vue'),
-            meta: { title: '表单', mark: 'specification' }
+            meta: { title: '表单' }
           }
         ]
       },
       {
         path: 'dataDisplay',
-        name: 'dataDisplay',
-        redirect: { name: 'list' },
         component: () => import('@/components/layout/PlaceholderLayout.vue'),
-        meta: { title: '数据展示', mark: 'specification', icon: 'data-search' },
+        meta: { title: '数据展示', icon: 'data-search' },
         children: [
           {
             path: 'list',
-            name: 'list',
             component: () => import('@/guides/list/IndexView.vue'),
-            meta: { title: '列表', mark: 'specification' }
+            meta: { title: '列表' }
           },
           {
             path: 'table',
-            name: 'table',
             component: () => import('@/guides/table/IndexView.vue'),
-            meta: { title: '表格', mark: 'specification' }
+            meta: { title: '表格' }
           },
           {
             path: 'descriptions',
-            name: 'descriptions',
             component: () => import('@/guides/descriptions/IndexView.vue'),
-            meta: { title: '详情描述', mark: 'specification' }
+            meta: { title: '详情描述' }
           }
         ]
       },
       {
         path: 'feedback',
-        name: 'feedback',
-        redirect: { name: 'progress' },
         component: () => import('@/components/layout/PlaceholderLayout.vue'),
-        meta: { title: '反馈', mark: 'specification', icon: 'trumpet' },
+        meta: { title: '反馈', icon: 'trumpet' },
         children: [
           {
             path: 'progress',
-            name: 'progress',
             component: () => import('@/guides/progress/IndexView.vue'),
-            meta: { title: '进度条', mark: 'specification' }
+            meta: { title: '进度条' }
           },
           {
             path: 'message',
-            name: 'message',
             component: () => import('@/guides/message/IndexView.vue'),
-            meta: { title: '全局提示', mark: 'specification' }
+            meta: { title: '全局提示' }
           },
           {
             path: 'alert',
-            name: 'alert',
             component: () => import('@/guides/alert/IndexView.vue'),
-            meta: { title: '警告提示', mark: 'specification' }
+            meta: { title: '警告提示' }
           },
           {
             path: 'modal',
-            name: 'modal',
             component: () => import('@/guides/modal/IndexView.vue'),
-            meta: { title: '对话框', mark: 'specification' }
+            meta: { title: '对话框' }
           }
         ]
       },
       {
         path: 'other',
-        name: 'other',
         component: () => import('@/guides/other/IndexView.vue'),
-        meta: { title: '其他', mark: 'specification', icon: 'bookshelf' }
+        meta: { title: '其他', icon: 'bookshelf' }
       },
       {
         path: 'chart',
-        name: 'chart',
         component: () => import('@/guides/chart/IndexView.vue'),
-        meta: { title: '图表', mark: 'specification', icon: 'line-chart' }
+        meta: { title: '图表', icon: 'line-chart' }
       }
     ]
   }
