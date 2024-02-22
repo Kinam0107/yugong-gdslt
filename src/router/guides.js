@@ -186,22 +186,13 @@ export default [
       {
         path: 'other',
         name: 'other',
-        redirect: { name: 'other_' },
-        component: () => import('@/components/layout/PlaceholderLayout.vue'),
-        meta: { title: '其他', mark: 'specification', icon: 'bookshelf' },
-        children: [
-          {
-            path: 'other',
-            name: 'other_',
-            component: () => import('@/guides/OtherView.vue'),
-            meta: { title: '其他', mark: 'specification' }
-          }
-        ]
+        component: () => import('@/guides/other/IndexView.vue'),
+        meta: { title: '其他', mark: 'specification', icon: 'bookshelf' }
       },
       {
         path: 'chart',
         name: 'chart',
-        component: () => import('@/guides/ChartView.vue'),
+        component: () => import('@/guides/chart/IndexView.vue'),
         meta: { title: '图表', mark: 'specification', icon: 'line-chart' }
       }
     ]

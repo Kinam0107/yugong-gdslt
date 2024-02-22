@@ -48,3 +48,12 @@ Array.prototype.max = function () {
   }
   return max
 }
+
+// 数组求和
+Array.prototype.sum = function () {
+  let sum = 0
+  for (let i = this.length - 1; i >= 0; i--) {
+    sum += this[i]
+  }
+  return sum
+}

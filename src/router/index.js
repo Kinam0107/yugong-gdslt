@@ -4,6 +4,7 @@ import 'nprogress/nprogress.css'
 import { setToken, getToken } from '@/utils/userToken'
 import LoginView from '@/views/LoginView.vue'
 import BaseLayout from '@/components/layout/BaseLayout.vue'
+import _404View from '@/views/404View.vue'
 import routes from './routes'
 import guides from './guides'
 import globalConfig from '@/config'
@@ -19,6 +20,11 @@ const defaultRoutes = [
     name: 'root',
     component: BaseLayout,
     children: []
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: _404View
   }
 ]
 
