@@ -192,7 +192,7 @@ export default [
       {
         path: 'chart',
         name: 'chart',
-        component: () => import('@/guides/ChartView.vue'),
+        component: () => import('@/guides/chart/IndexView.vue'),
         meta: { title: '图表', mark: 'specification', icon: 'line-chart' }
       }
     ]
