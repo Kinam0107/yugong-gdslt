@@ -8,7 +8,11 @@
     <div class="menu">
       <slot></slot>
     </div>
-    <div v-if="props.showDatetime" class="time">{{ time }}</div>
+    <div v-if="props.showDatetime" class="time_wrapper">
+      <span class="time">{{ time }}</span>
+      <br />
+      <span class="date">{{ date }}</span>
+    </div>
     <el-popover placement="bottom" :width="320" trigger="click" @show="showMore = true" @hide="showMore = false">
       <template #reference>
         <div class="user">
@@ -97,11 +101,13 @@ const props = defineProps({
 })
 
 // 时间显示相关
-const time = ref(new Date().format('MM月dd日 EE HH:mm:ss'))
+const time = ref(new Date().format('HH:mm:ss'))
+const date = ref(new Date().format('yyyy年MM月dd日 EEE'))
 let intervalId
 onMounted(() => {
   intervalId = setInterval(() => {
-    time.value = new Date().format('MM月dd日 EE HH:mm:ss')
+    time.value = new Date().format('HH:mm:ss')
+    date.value = new Date().format('yyyy年MM月dd日 EEE')
   }, 1000)
 })
 onUnmounted(() => clearInterval(intervalId))
@@ -171,9 +177,17 @@ function quit() {
   flex: 1;
   height: 100%;
 }
-.time {
-  font-size: 14px;
+.time_wrapper {
   color: #ffffff;
+  font-family: DINAlternate;
+  .time {
+    display: inline-block;
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+  .date {
+    font-size: 14px;
+  }
 }
 .config,
 .notice {

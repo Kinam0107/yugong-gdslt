@@ -4,18 +4,18 @@
     <div class="menu">
       <SideMenu :hiddenIcon="props.hiddenIcon" :collapse="collapse" :dark="props.dark" />
     </div>
-    <div class="foot_menu" @click="collapse = !collapse" :class="[!collapse ? 'expand' : 'flod']">
+    <!-- <div class="foot_menu" @click="collapse = !collapse" :class="[!collapse ? 'expand' : 'flod']">
       <el-icon :size="16" class="icon">
         <Expand v-if="collapse" />
         <Fold v-else />
       </el-icon>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { Fold, Expand } from '@element-plus/icons-vue'
+// import { Fold, Expand } from '@element-plus/icons-vue'
 import SideMenu from '../menu/SideMenu.vue'
 
 const props = defineProps({
@@ -41,7 +41,8 @@ const collapse = ref(!props.expandFlag)
   height: 100%;
   .menu {
     overflow: auto;
-    height: calc(100% - 40px);
+    // height: calc(100% - 40px);
+    height: 100%;
   }
   .foot_menu {
     position: absolute;

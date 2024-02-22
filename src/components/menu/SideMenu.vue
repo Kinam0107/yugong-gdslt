@@ -44,7 +44,7 @@ function handleSelect(name) {
 
 <style scoped lang="scss">
 .side_menu {
-  width: 32 * $baseDistance;
+  width: 30 * $baseDistance;
   height: 100%;
   border: none !important;
   ::v-deep(span) {
@@ -65,7 +65,10 @@ function handleSelect(name) {
   }
   ::v-deep(.is-active:not(.is-opened)) {
     background: transparentize($color-primary, 0.9);
-    box-shadow: -4px 0px 0px 0px $color-primary inset;
+    box-shadow: 4px 0px 0px 0px $color-primary inset;
+    .svg-icon {
+      color: $color-primary;
+    }
   }
   ::v-deep(svg + span) {
     margin-left: $baseDistance;
