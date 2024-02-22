@@ -1,7 +1,7 @@
 export default [
-  {
-    // path: '/home',
-    // name: 'home',
-    // component: () => import('@/views/HomeView.vue')
-  }
+  // {
+  //   path: '/home',
+  //   name: 'home',
+  //   component: () => import('@/views/HomeView.vue')
+  // }
 ]
