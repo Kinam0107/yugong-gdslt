@@ -17,6 +17,7 @@
     "element-plus": "^2.4.0",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
+    "ol": "^8.2.0",
     "pinia": "^2.1.6",
     "vite-plugin-svg-icons": "^2.0.1",
     "vue": "^3.3.4",
