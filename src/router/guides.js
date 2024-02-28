@@ -158,6 +158,11 @@ export default [
         path: 'chart',
         component: () => import('@/guides/chart/IndexView.vue'),
         meta: { title: '图表', icon: 'line-chart' }
+      },
+      {
+        path: 'map',
+        component: () => import('@/guides/map/IndexView.vue'),
+        meta: { title: '地图', icon: 'whole-world' }
       }
     ]
   }

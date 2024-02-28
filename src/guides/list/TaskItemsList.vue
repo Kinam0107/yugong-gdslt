@@ -42,7 +42,7 @@
         @include fontCategory(5);
         padding: 3px 8px;
         border-radius: 10px;
-        background-color: $color-danger;
+        background-color: $color-error;
         color: #ffffff;
       }
     }

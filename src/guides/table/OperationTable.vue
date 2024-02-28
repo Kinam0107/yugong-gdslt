@@ -48,7 +48,7 @@ const tableData = [
     background-color: $color-success;
   }
   &.dot_2 {
-    background-color: $color-danger;
+    background-color: $color-error;
   }
 }
 </style>

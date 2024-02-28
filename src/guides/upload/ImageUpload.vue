@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+import { Upload } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
 const fileList = ref([

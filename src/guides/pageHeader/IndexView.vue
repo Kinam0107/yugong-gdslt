@@ -80,9 +80,9 @@
             <template #tab>
               <TabsMenu
                 :menuList="[
-                  { name: 'menu', title: '菜单' },
-                  { name: 'pageHeader', title: '页头' },
-                  { name: 'tabs', title: '标签页' }
+                  { name: 'specification_menu', title: '菜单' },
+                  { name: 'specification_pageHeader', title: '页头' },
+                  { name: 'specification_tabs', title: '标签页' }
                 ]"></TabsMenu>
             </template>
           </PageHeader>

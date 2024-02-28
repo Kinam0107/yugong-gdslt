@@ -61,9 +61,9 @@ const props = defineProps({
   background-color: $color-warning;
 }
 .danger {
-  background-color: $color-danger;
+  background-color: $color-error;
 }
 .info {
-  background-color: $color-info;
+  background-color: $color-prompttext;
 }
 </style>

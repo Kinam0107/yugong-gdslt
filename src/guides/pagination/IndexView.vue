@@ -58,7 +58,7 @@ const total2 = ref(100)
 .pagination_view {
   @include mainContentContainer(100%);
   .span {
-    color: $color-info;
+    color: $color-prompttext;
   }
   .em {
     color: $color-primary;

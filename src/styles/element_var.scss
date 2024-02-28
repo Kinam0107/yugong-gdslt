@@ -1,33 +1,23 @@
 $--colors: (
   'primary': (
-    'base': #276af0
+    'base': $color-primary
   ),
   'success': (
-    'base': #28ce8e
+    'base': $color-success
   ),
   'warning': (
-    'base': #faad10
+    'base': $color-warning
   ),
   'danger': (
-    'base': #f13939
+    'base': $color-error
   ),
   'error': (
-    'base': #f13939
+    'base': $color-error
   ),
   'info': (
-    'base': #8c8c8c
+    'base': $color-prompttext
   )
 );
-
-$color-titletext: #262626;
-$color-explaintext: #595959;
-$color-prompttext: #8c8c8c;
-$color-placeholdertext: #bfbfbf;
-$color-disabletext: #bfbfbf;
-$color-border: #d9d9d9;
-$color-separator: #f0f0f0;
-$color-garybg: #ecf2fa;
-$color-whitebg: #ffffff;
 
 $--text-color: (
   'primary': $color-titletext,
@@ -63,18 +53,18 @@ $--button-padding-horizontal: (
 
 $--tree: (
   'node-content-height': 32px,
-  'node-hover-bg-color': transparentize(#276af0, 0.9),
+  'node-hover-bg-color': transparentize($color-primary, 0.9),
   'text-color': $color-titletext,
   'expand-icon-color': $color-prompttext
 );
 
 $--pagination: (
-  'bg-color': #276af0,
+  'bg-color': $color-primary,
   'text-color': $color-whitebg,
   'border-radius': 4px,
   'button-color': $color-titletext,
   'button-disabled-color': $color-disabletext,
-  'button-disabled-bg-color': #f8f9fb,
+  'button-disabled-bg-color': $color-garybg,
   'button-bg-color': transparent
 );
 
@@ -88,7 +78,7 @@ $--input-padding-horizontal: (
 );
 
 $--select-option: (
-  'hover-background': transparentize(#276af0, 0.9)
+  'hover-background': transparentize($color-primary, 0.9)
 );
 
 $--transfer: (
@@ -114,12 +104,12 @@ $--checkbox: (
 $--table: (
   'text-color': $color-titletext,
   'header-text-color': $color-titletext,
-  'header-bg-color': #f8f9fb,
-  'row-hover-bg-color': #f8f9fb
+  'header-bg-color': $color-garybg,
+  'row-hover-bg-color': $color-garybg
 );
 
 $--descriptions: (
-  'item-bordered-label-background': #f8f9fb
+  'item-bordered-label-background': $color-garybg
 );
 
 $--messagebox: (
