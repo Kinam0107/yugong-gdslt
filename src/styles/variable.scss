@@ -1,5 +1,31 @@
 // 距离基数
 $baseDistance: 8px;
 
-// 渐变色
+// 主题色-单色
+$color-primary: #36b29e;
+// 主题色-渐变色
 $color-gradient: linear-gradient(90deg, #83b26b 0%, #3d9ccc 100%);
+// 辅助色-成功状态
+$color-success: #28ce8e;
+// 辅助色-失败状态
+$color-error: #f13939;
+// 辅助色-警告状态
+$color-warning: #faad10;
+// 中性色-标题正文
+$color-titletext: #262626;
+// 中性色-说明文字
+$color-explaintext: #595959;
+// 中性色-提示文字
+$color-prompttext: #8c8c8c;
+// 中性色-提示
+$color-placeholdertext: #bfbfbf;
+// 中性色-禁用
+$color-disabletext: #bfbfbf;
+// 中性色-边框
+$color-border: #d9d9d9;
+// 中性色-分隔线
+$color-separator: #f0f0f0;
+// 中性色-浅灰背景
+$color-garybg: #f4f9f7;
+// 中性色-纯白背景
+$color-whitebg: #ffffff;

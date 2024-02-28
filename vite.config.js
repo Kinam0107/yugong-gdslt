@@ -26,7 +26,6 @@ export default defineConfig({
       // 这里配置全局样式
       scss: {
         additionalData: `
-          @use "@/styles/element_var.scss" as *;
           @import "@/styles/variable.scss";
           @import "@/styles/mixin.scss";
         `
