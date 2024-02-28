@@ -1,14 +1,17 @@
-import { Feature } from 'ol'
+import { Feature, Overlay } from 'ol'
 import { Vector as VectorLayer } from 'ol/layer'
 import { Vector as VectorSource, Cluster } from 'ol/source'
-import { Point, Circle as GeoCircle, LineString } from 'ol/geom'
+import { Point, Circle as GeoCircle, LineString, Polygon } from 'ol/geom'
 import { Style, Icon, Circle, Fill, Stroke, Text } from 'ol/style'
 import { Select } from 'ol/interaction'
 import { singleClick } from 'ol/events/condition'
 import { boundingExtent } from 'ol/extent'
 import WebGLPointsLayer from 'ol/layer/WebGLPoints'
+import { getImgWidthHeight } from '@/utils/util.js'
 
+let oldAdmnFeature = null
 const mapLayers = {}
+const mapOverlays = {}
 
 /**
  * @description 移除地图图层
@@ -19,10 +22,13 @@ export function removeLayer(map, layerName) {
   const removeSingleLayer = (name) => {
     if (mapLayers[name]) {
       map.removeLayer(mapLayers[name])
-      mapLayers[name] = null
+      delete mapLayers[name]
+    } else if (mapOverlays[name]) {
+      map.removeOverlay(mapOverlays[name])
+      delete mapOverlays[name]
     }
   }
-  layerName ? removeSingleLayer(layerName) : Object.keys(mapLayers).forEach((e) => removeSingleLayer(e))
+  layerName ? removeSingleLayer(layerName) : Object.keys({ ...mapLayers, ...mapOverlays }).forEach((e) => removeSingleLayer(e))
 }
 
 /**
@@ -203,7 +209,7 @@ export function renderMassivePoint(map, layerName, points, style) {
 }
 
 /**
- *
+ * @description 线段加载
  * @param {Map} map 地图对象
  * @param {String} layerName 图层名称
  * @param {Array} lines 线段信息
@@ -238,10 +244,9 @@ export function renderLine(map, layerName, lines) {
           padding: titleStyleConf.titlePadding || [0, 0, 0, 0]
         })
       }
-      const lineStyle = new Style(styleConf)
-      lineFeature.setStyle(lineStyle)
-      return lineFeature
+      lineFeature.setStyle(new Style(styleConf))
     }
+    return lineFeature
   })
   mapLayers[layerName] = new VectorLayer({
     layerName,
@@ -250,4 +255,142 @@ export function renderLine(map, layerName, lines) {
     })
   })
   map.addLayer(mapLayers[layerName])
+}
+
+/**
+ * @description 多边形加载
+ * @param {Map} map 地图对象
+ * @param {String} layerName 图层名称
+ * @param {Array} polygons 多边形信息
+ */
+export function renderPolygon(map, layerName, polygons) {
+  removeLayer(map, layerName)
+  const polygonsInfo = Array.isArray(polygons) ? polygons : [polygons]
+  const polygonsFeature = polygonsInfo.map((polygon) => {
+    polygon.layerName = layerName
+    const { coordinates, polygonStyleConf, titleStyleConf } = polygon
+    const polygonFeature = new Feature({
+      geometry: new Polygon([coordinates]),
+      data: polygon
+    })
+    if (polygonStyleConf) {
+      const { fillColor, strokeColor, strokeWidth, strokeLineDash } = polygonStyleConf
+      let styleConf = {
+        fill: new Fill({ color: fillColor || [255, 255, 255, 0.33] }),
+        stroke: new Stroke({ color: strokeColor || 'red', width: strokeWidth || 1, lineDash: strokeLineDash })
+      }
+      if (titleStyleConf) {
+        styleConf.text = new Text({
+          text: titleStyleConf.titleText,
+          font: titleStyleConf.titleFont || 'normal 12px 微软雅黑',
+          textAlign: titleStyleConf.titleAlign || 'center',
+          textBaseline: titleStyleConf.titleBaseline || 'middle',
+          offsetX: titleStyleConf.titleOffsetX || 0,
+          offsetY: titleStyleConf.titleOffsetY || 0,
+          fill: new Fill({ color: titleStyleConf.titleColor || '#fff' }),
+          stroke: new Stroke({ color: titleStyleConf.titleStrokeColor || '#000', width: titleStyleConf.titleStrokeWidth || 1 }),
+          backgroundFill: new Fill({ color: titleStyleConf.titleBackgroundColor || 'transparent' }),
+          backgroundStroke: new Stroke({ color: titleStyleConf.titleBorderColor || 'transparent', width: titleStyleConf.titleBorderWidth || 0 }),
+          padding: titleStyleConf.titlePadding || [0, 0, 0, 0]
+        })
+      }
+      polygonFeature.setStyle(new Style(styleConf))
+    }
+    return polygonFeature
+  })
+  mapLayers[layerName] = new VectorLayer({
+    layerName,
+    source: new VectorSource({
+      features: polygonsFeature
+    })
+  })
+  map.addLayer(mapLayers[layerName])
+}
+
+/**
+ * @description 要素悬浮窗加载
+ * @param {Map} map 地图对象
+ * @param {String} layerName 图层名称
+ * @param {Object} featureData 要素中携带的数据
+ * @param {HTMLElement} element DOM元素
+ */
+export async function renderOverlay(map, layerName, featureData, element) {
+  removeLayer(map, layerName)
+  const { longitude, latitude, dotStyleConf } = featureData
+  if (dotStyleConf) {
+    const { src, anchor, anchorYUnits = 'fraction', scale = 1, radius = 5 } = dotStyleConf
+    let iconHeight = 0
+    if (src) {
+      const res = await getImgWidthHeight(src)
+      iconHeight = res.height || 0
+    } else if (radius) {
+      iconHeight = radius * 2
+    }
+    const anchorYValue = anchor ? anchor[1] : 0.5
+    const offsetY = anchorYUnits === 'fraction' ? -iconHeight * scale * anchorYValue : -iconHeight * scale
+    mapOverlays[layerName] = new Overlay({
+      element: element,
+      offset: [0, offsetY],
+      position: [Number(longitude), Number(latitude)],
+      positioning: 'bottom-center',
+      autoPan: false,
+      autoPanAnimation: { duration: 250 }
+    })
+    map.addOverlay(mapOverlays[layerName])
+  }
+}
+
+/**
+ * @description 指定位置的悬浮窗加载
+ * @param {Map} map 地图对象
+ * @param {String} layerName 图层名称
+ * @param {Object} positionConf 位置配置，其中coordinate为经纬度坐标，必传
+ * @param {HTMLElement} element DOM元素
+ */
+export function renderPositionOverlay(map, layerName, positionConf, element) {
+  if (mapOverlays[layerName]) {
+    if (positionConf.offset) mapOverlays[layerName].setOffset(positionConf.offset)
+    if (positionConf.coordinate) mapOverlays[layerName].setPosition(positionConf.coordinate)
+    if (positionConf.positioning) mapOverlays[layerName].setPositioning(positionConf.positioning)
+  } else {
+    mapOverlays[layerName] = new Overlay({
+      element: element,
+      offset: positionConf.offset || [0, 0],
+      position: positionConf.coordinate,
+      positioning: positionConf.positioning || 'bottom-center',
+      autoPan: false,
+      autoPanAnimation: { duration: 250 }
+    })
+    map.addOverlay(mapOverlays[layerName])
+  }
+}
+
+/**
+ * @description 改变单个行政区域的样式
+ * @param {Feature} admnFeature 行政区划要素
+ * @param {Object} styleObj 指定样式
+ */
+export function changeAdmnStyle(admnFeature, style) {
+  if (oldAdmnFeature) oldAdmnFeature.setStyle(getCityFeatureStyle(oldAdmnFeature))
+  oldAdmnFeature = admnFeature
+  if (admnFeature) admnFeature.setStyle(getCityFeatureStyle(admnFeature, style))
+}
+
+/**
+ * @description 获取市级行政区划要素样式
+ * @param {Feature} feature 行政区划要素
+ * @param {Object} style 指定样式，不传时使用默认样式
+ * @returns {Style}
+ */
+export function getCityFeatureStyle(feature, style = {}) {
+  return new Style({
+    fill: new Fill({ color: style.fillColor || 'transparent' }),
+    stroke: new Stroke({ color: style.strokeColor || '#00BAFF', width: style.strokeWidth || 1 }),
+    text: new Text({
+      text: feature.get('地名'),
+      font: 'normal 14px 微软雅黑',
+      fill: new Fill({ color: style.textColor || '#94E8FF' }),
+      padding: [1, 2, 1, 2]
+    })
+  })
 }

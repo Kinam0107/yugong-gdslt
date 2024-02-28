@@ -22,11 +22,12 @@ import { Vector as VectorLayer, Group as GroupLayer } from 'ol/layer'
 import { Vector as VectorSource } from 'ol/source'
 import GeoJSON from 'ol/format/GeoJSON'
 import { getVectorContext } from 'ol/render'
-import { Style, Fill, Stroke, Text } from 'ol/style'
+import { Style, Fill, Stroke } from 'ol/style'
 import { defaults as defaultControls } from 'ol/control'
 import { defaults as defaultInteractions } from 'ol/interaction'
 import 'ol/ol.css'
 import globalConfig from '@/config.js'
+import { getCityFeatureStyle } from '@/utils/map.js'
 
 const props = defineProps({
   baseMapMode: {
@@ -164,16 +165,7 @@ const drawCityLevelBoundary = () => {
       features: new GeoJSON().readFeatures(globalConfig.map.cityLevelBoundary)
     }),
     style: (feature) => {
-      return new Style({
-        fill: new Fill({ color: 'transparent' }),
-        stroke: new Stroke({ color: '#00BAFF', width: 1 }),
-        text: new Text({
-          text: feature.values_['地名'],
-          font: 'normal 14px 微软雅黑',
-          fill: new Fill({ color: '#94E8FF' }),
-          padding: [1, 2, 1, 2]
-        })
-      })
+      return getCityFeatureStyle(feature)
     }
   })
   cityLevelBoundaryLayer.on('prerender', (evt) => {
@@ -204,7 +196,7 @@ const mapSingleClick = (evt) => {
   })
   emits('singleClick', {
     coordinate: evt.coordinate,
-    featData: feature?.get('data'),
+    featureData: feature?.get('data'),
     cityFeature: cityFeature
   })
 }
@@ -230,7 +222,7 @@ const mapPointerMove = (evt) => {
   })
   emits('mouseMove', {
     coordinate: evt.coordinate,
-    featData: feature?.get('data'),
+    featureData: feature?.get('data'),
     cityFeature: cityFeature
   })
 }
