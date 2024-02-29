@@ -67,22 +67,47 @@ onMounted(() => {
 })
 
 const initMap = () => {
-  const baseUrl = {
-    地形晕渲: 'https://t3.tianditu.gov.cn/DataServer?T=ter_c&X={x}&Y={y}&L={z}&tk=',
-    影像底图: 'https://t0.tianditu.gov.cn/DataServer?T=img_c&X={x}&Y={y}&L={z}&tk=',
-    矢量底图: 'https://t0.tianditu.gov.cn/DataServer?T=vec_c&X={x}&Y={y}&L={z}&tk=',
-    影像注记: 'https://t3.tianditu.gov.cn/DataServer?T=cia_c&X={x}&Y={y}&L={z}&tk='
-  }
-  const baseLayer = new TileLayer({
+  const baseLayer_dxyr = new TileLayer({
+    id: '地形晕渲',
+    visible: props.baseMapMode === '地形晕渲',
     source: new XYZ({
-      url: baseUrl[props.baseMapMode] + globalConfig.map.secretKey,
+      url: 'https://t3.tianditu.gov.cn/DataServer?T=ter_c&X={x}&Y={y}&L={z}&tk=' + globalConfig.map.secretKey,
       projection: 'EPSG:4326'
     })
   })
-  if (props.hideMapOutsideBoundary) handleHideMapOutsideBoundary(baseLayer)
+  const baseLayer_yxdt = new TileLayer({
+    id: '影像底图',
+    visible: props.baseMapMode === '影像底图',
+    source: new XYZ({
+      url: 'https://t0.tianditu.gov.cn/DataServer?T=img_c&X={x}&Y={y}&L={z}&tk=' + globalConfig.map.secretKey,
+      projection: 'EPSG:4326'
+    })
+  })
+  const baseLayer_sldt = new TileLayer({
+    id: '矢量底图',
+    visible: props.baseMapMode === '矢量底图',
+    source: new XYZ({
+      url: 'https://t0.tianditu.gov.cn/DataServer?T=vec_c&X={x}&Y={y}&L={z}&tk=' + globalConfig.map.secretKey,
+      projection: 'EPSG:4326'
+    })
+  })
+  const baseLayer_yxzj = new TileLayer({
+    id: '影像注记',
+    visible: props.baseMapMode === '影像注记',
+    source: new XYZ({
+      url: 'https://t3.tianditu.gov.cn/DataServer?T=cia_c&X={x}&Y={y}&L={z}&tk=' + globalConfig.map.secretKey,
+      projection: 'EPSG:4326'
+    })
+  })
+  if (props.hideMapOutsideBoundary) {
+    handleHideMapOutsideBoundary(baseLayer_dxyr)
+    handleHideMapOutsideBoundary(baseLayer_yxdt)
+    handleHideMapOutsideBoundary(baseLayer_sldt)
+    handleHideMapOutsideBoundary(baseLayer_yxzj)
+  }
   map = new Map({
     target: olMap.value,
-    layers: [baseLayer],
+    layers: [baseLayer_dxyr, baseLayer_yxdt, baseLayer_sldt, baseLayer_yxzj],
     view: new View({
       projection: 'EPSG:4326',
       center: globalConfig.map.center,
@@ -183,14 +208,14 @@ const drawCityLevelBoundary = () => {
 
 const mapSingleClick = (evt) => {
   const feature = map.forEachFeatureAtPixel(evt.pixel, (feat, layer) => {
-    if (layer.get('layerName')) {
+    if (layer?.get('layerName')) {
       return feat
-    } else if (layer.get('clusterLayerName') && feat.get('features').length == 1) {
+    } else if (layer?.get('clusterLayerName') && feat.get('features').length == 1) {
       return feat.get('features')[0]
     }
   })
   const cityFeature = map.forEachFeatureAtPixel(evt.pixel, (feat, layer) => {
-    if (layer.get('id') === 'cityLevelBoundary') {
+    if (layer?.get('id') === 'cityLevelBoundary') {
       return feat
     }
   })
@@ -209,14 +234,14 @@ const mapDoubleClick = (evt) => {
 
 const mapPointerMove = (evt) => {
   const feature = map.forEachFeatureAtPixel(evt.pixel, (feat, layer) => {
-    if (layer.get('layerName')) {
+    if (layer?.get('layerName')) {
       return feat
-    } else if (layer.get('clusterLayerName') && feat.get('features').length == 1) {
+    } else if (layer?.get('clusterLayerName') && feat.get('features').length == 1) {
       return feat.get('features')[0]
     }
   })
   const cityFeature = map.forEachFeatureAtPixel(evt.pixel, (feat, layer) => {
-    if (layer.get('id') === 'cityLevelBoundary') {
+    if (layer?.get('id') === 'cityLevelBoundary') {
       return feat
     }
   })

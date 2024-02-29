@@ -3,13 +3,16 @@ import { Vector as VectorLayer } from 'ol/layer'
 import { Vector as VectorSource, Cluster } from 'ol/source'
 import { Point, Circle as GeoCircle, LineString, Polygon } from 'ol/geom'
 import { Style, Icon, Circle, Fill, Stroke, Text } from 'ol/style'
-import { Select } from 'ol/interaction'
+import { Select, Draw } from 'ol/interaction'
 import { singleClick } from 'ol/events/condition'
 import { boundingExtent } from 'ol/extent'
+import { createBox } from 'ol/interaction/Draw'
+import { getLength, getArea } from 'ol/sphere'
+import TileLayer from 'ol/layer/Tile'
 import WebGLPointsLayer from 'ol/layer/WebGLPoints'
 import { getImgWidthHeight } from '@/utils/util.js'
 
-let oldAdmnFeature = null
+let oldAdmnFeature
 const mapLayers = {}
 const mapOverlays = {}
 
@@ -393,4 +396,124 @@ export function getCityFeatureStyle(feature, style = {}) {
       padding: [1, 2, 1, 2]
     })
   })
+}
+
+/**
+ * @description 绘制点线面、圆形、矩形
+ * @param {Map} map 地图对象
+ * @param {String} layerName 图层名称
+ * @param {String} type 'Point'，'LineString'，'Polygon'，'Circle'，'Box'
+ * @param {Boolean} showLengthOrArea 是否显示测距测面数据
+ * @param {Function} handleFunction 绘制结束后对数据的处理
+ */
+export function draw(map, layerName, type, showLengthOrArea, handleFunction) {
+  removeLayer(map, layerName)
+  let drawControls
+  const drawSource = new VectorSource({})
+  mapLayers[layerName] = new VectorLayer({
+    source: drawSource,
+    style: new Style({
+      fill: new Fill({ color: [255, 255, 255, 0.33] }),
+      stroke: new Stroke({ color: 'red', width: 2 }),
+      image: new Circle({ radius: 5, fill: new Fill({ color: 'red' }) })
+    })
+  })
+  map.addLayer(mapLayers[layerName])
+  if (drawControls) map.removeInteraction(drawControls)
+  if (type === 'Box') {
+    drawControls = new Draw({
+      source: drawSource,
+      type: 'Circle',
+      geometryFunction: createBox()
+    })
+  } else {
+    drawControls = new Draw({
+      source: drawSource,
+      type: type
+    })
+  }
+  drawControls.on('drawend', (e) => {
+    let radius = undefined
+    let coordinate = []
+    let length = 0
+    let area = 0
+    const geometry = e.feature.getGeometry()
+    if (type === 'Circle') {
+      radius = geometry.getRadius()
+      coordinate = geometry.getCenter()
+    } else {
+      coordinate = geometry.getCoordinates()
+    }
+    if (type === 'LineString') {
+      length = getLength(geometry, { projection: 'EPSG:4326' })
+      length = length >= 1000 ? Math.round((length / 1000) * 100) / 100 + '公里' : Math.round(length) + '米'
+    } else if (type === 'Polygon' || type === 'Box') {
+      area = getArea(geometry, { projection: 'EPSG:4326' })
+      area = area > 10000 ? Math.round((area / 1000000) * 100) / 100 + '平方公里' : Math.round(area * 100) / 100 + '平方米'
+    }
+    map.removeInteraction(drawControls)
+    if (showLengthOrArea) {
+      const newFeature = new Feature({
+        geometry: geometry,
+        name: type
+      })
+      const disstyle = new Style({
+        text: new Text({
+          text: length || area,
+          font: '14px sans-serif',
+          fill: new Fill({ color: 'red' })
+        })
+      })
+      newFeature.setStyle(disstyle)
+      mapLayers[layerName].getSource().addFeature(newFeature)
+    }
+    handleFunction({ coordinate, radius, length, area })
+  })
+  map.addInteraction(drawControls)
+}
+
+/**
+ * @description 切换底图
+ * @param {Map} map 地图对象
+ * @param {String} mode 底图模式：['地形晕渲', '影像底图', '矢量底图', '影像注记']
+ */
+export function changeBaseMap(map, baseMapMode) {
+  const mapBaseTileLayers = map.getAllLayers().filter((e) => e instanceof TileLayer)
+  const lastShowTileLayers = mapBaseTileLayers.find((e) => e.get('visible'))
+  const targetShowTileLayers = mapBaseTileLayers.find((e) => e.get('id') === baseMapMode)
+  if (lastShowTileLayers !== targetShowTileLayers) {
+    targetShowTileLayers.setVisible(true)
+    lastShowTileLayers.setVisible(false)
+  }
+}
+
+/**
+ * @description 定位到某个点
+ * @param {Map} map 地图对象
+ * @param {Object} animateConf 定位配置对象，其中center为经纬度坐标，必传
+ * @param {Function} handleFunction 定点后对数据的处理
+ */
+export function gotoPoint(map, animateConf, handleFunction) {
+  const { center, zoom = 10, duration = 100 } = animateConf || {}
+  map.getView().animate({
+    center: center,
+    zoom: zoom,
+    duration: duration
+  })
+  if (handleFunction) {
+    const pixel = map.getPixelFromCoordinate(center)
+    const feature = map.forEachFeatureAtPixel(pixel, (feat, layer) => {
+      if (layer?.get('layerName')) {
+        return feat
+      } else if (layer?.get('clusterLayerName') && feat.get('features').length == 1) {
+        return feat.get('features')[0]
+      }
+    })
+    const cityFeature = map.forEachFeatureAtPixel(pixel, (feat, layer) => {
+      if (layer?.get('id') === 'cityLevelBoundary') {
+        return feat
+      }
+    })
+    handleFunction({ featureData: feature?.get('data'), cityFeature: cityFeature })
+  }
 }

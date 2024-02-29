@@ -2,13 +2,31 @@
   <div class="map_view">
     <OlMap @initFinished="handleInitFinished" @single-click="handleSingleClick" @double-click="handleDoubleClick" @mouse-move="handleMouseMove" @move-end="handleMoveEnd">
       <template #default>
-        <el-button class="ghost_button" type="primary" @click="drawImagePoint">加载图片点位</el-button>
-        <el-button class="ghost_button" type="primary" @click="drawDotPoint">加载圆点点位</el-button>
-        <el-button class="ghost_button" type="primary" @click="drawCirclePoint">加载圆圈范围</el-button>
-        <el-button class="ghost_button" type="primary" @click="drawLine">加载线段</el-button>
-        <el-button class="ghost_button" type="primary" @click="drawPolygon">加载多边形</el-button>
-        <el-button class="ghost_button" type="primary" @click="removeAll">移除所有图层</el-button>
-        <el-button class="ghost_button" type="primary" @click="showAdmn = !showAdmn">{{ showAdmn ? '关闭' : '开启' }}行政区划悬浮窗功能</el-button>
+        <el-button type="primary" @click="setImagePoint">加载图片点位</el-button>
+        <el-button type="primary" @click="setDotPoint">加载圆点点位</el-button>
+        <el-button type="primary" @click="setCirclePoint">加载圆圈范围</el-button>
+        <el-button type="primary" @click="setLine">加载线段</el-button>
+        <br />
+        <br />
+        <el-button type="primary" @click="setPolygon">加载多边形</el-button>
+        <el-button type="primary" @click="removeAll">移除所有图层</el-button>
+        <el-button type="primary" @click="showAdmn = !showAdmn">{{ showAdmn ? '关闭' : '开启' }}行政区划悬浮窗功能</el-button>
+        <br />
+        <br />
+        <el-button type="primary" @click="drawPoint">绘制点</el-button>
+        <el-button type="primary" @click="drawLineString">绘制线</el-button>
+        <el-button type="primary" @click="drawPolygon">绘制面</el-button>
+        <el-button type="primary" @click="drawCircle">绘制圆形</el-button>
+        <el-button type="primary" @click="drawBox">绘制矩形</el-button>
+        <br />
+        <br />
+        <el-button type="primary" @click="switchUnderlay('地形晕渲')">地形晕渲</el-button>
+        <el-button type="primary" @click="switchUnderlay('影像底图')">影像底图</el-button>
+        <el-button type="primary" @click="switchUnderlay('矢量底图')">矢量底图</el-button>
+        <el-button type="primary" @click="switchUnderlay('影像注记')">影像注记</el-button>
+        <br />
+        <br />
+        <el-button type="primary" @click="coordinatePositioning()">坐标定位</el-button>
       </template>
       <template #legend>图例</template>
       <template #toolbox>工具箱</template>
@@ -38,7 +56,7 @@
 
 <script setup>
 import OlMap from '@/components/map/OlMap.vue'
-import { renderPoint, renderLine, renderPolygon, renderOverlay, renderPositionOverlay, removeLayer, changeAdmnStyle } from '@/utils/map.js'
+import { renderPoint, renderLine, renderPolygon, renderOverlay, renderPositionOverlay, removeLayer, changeAdmnStyle, draw, changeBaseMap, gotoPoint } from '@/utils/map.js'
 import largeReservoir from '@/assets/images/points/reservoir-large.png'
 import mediumReservoir from '@/assets/images/points/reservoir-medium.png'
 import smallReservoir from '@/assets/images/points/reservoir-small.png'
@@ -48,7 +66,7 @@ import { Close } from '@element-plus/icons-vue'
 let map
 const handleInitFinished = (e) => {
   map = e
-  drawImagePoint()
+  setImagePoint()
 }
 
 const featureOverlay = ref()
@@ -101,7 +119,7 @@ const handleMouseMove = (e) => {
 }
 const handleMoveEnd = () => {}
 
-const drawImagePoint = () => {
+const setImagePoint = () => {
   renderPoint(map, '大中小型水库落点测试图层', [
     {
       name: 'XXXXX水库',
@@ -127,7 +145,7 @@ const drawImagePoint = () => {
   ])
 }
 
-const drawDotPoint = () => {
+const setDotPoint = () => {
   renderPoint(map, '大中小型水库落点测试图层', [
     { longitude: 112.34907598073522, latitude: 23.502291842718748, dotStyleConf: { radius: 10 }, titleStyleConf: { titleText: '大型水库', titleOffsetY: -18 } },
     { longitude: 114.06540370532672, latitude: 23.557873243492697, dotStyleConf: { strokeColor: 'red' } },
@@ -135,7 +153,7 @@ const drawDotPoint = () => {
   ])
 }
 
-const drawCirclePoint = () => {
+const setCirclePoint = () => {
   renderPoint(map, '大中小型水库落点测试图层', [
     { longitude: 112.34907598073522, latitude: 23.502291842718748, circleStyleConf: { radius: 15000 }, titleStyleConf: { titleText: '大型水库' } },
     { longitude: 114.06540370532672, latitude: 23.557873243492697, circleStyleConf: { fillColor: 'blue' } },
@@ -143,7 +161,7 @@ const drawCirclePoint = () => {
   ])
 }
 
-const drawLine = () => {
+const setLine = () => {
   renderLine(map, '水库间线段测试图层', [
     {
       coordinates: [
@@ -156,7 +174,7 @@ const drawLine = () => {
   ])
 }
 
-const drawPolygon = () => {
+const setPolygon = () => {
   renderPolygon(map, '水库间区域测试图层', [
     {
       coordinates: [
@@ -172,6 +190,44 @@ const drawPolygon = () => {
 
 const removeAll = () => {
   removeLayer(map)
+}
+
+const drawPoint = () => {
+  draw(map, '绘制图层', 'Point', false, (e) => {
+    console.log('点投影坐标:', e.coordinate)
+  })
+}
+const drawLineString = () => {
+  draw(map, '绘制图层', 'LineString', true, (e) => {
+    console.log('线段投影坐标:', e.coordinate, '; 测距距离:', e.length)
+  })
+}
+const drawPolygon = () => {
+  draw(map, '绘制图层', 'Polygon', true, (e) => {
+    console.log('多边形投影坐标:', e.coordinate, '; 测面面积:', e.area)
+  })
+}
+const drawCircle = () => {
+  draw(map, '绘制图层', 'Circle', false, (e) => {
+    console.log('圆心投影坐标:', e.coordinate, '; 半径:', e.radius)
+  })
+}
+const drawBox = () => {
+  draw(map, '绘制图层', 'Box', true, (e) => {
+    console.log('矩形投影坐标:', e.coordinate, '; 测面面积:', e.area)
+  })
+}
+
+const switchUnderlay = (mode) => {
+  changeBaseMap(map, mode)
+}
+
+const coordinatePositioning = () => {
+  gotoPoint(map, { center: [112.349075, 23.502291] }, (e) => {
+    pointData.value = e.featureData
+    showFeatureOverlay.value = true
+    renderOverlay(map, '水库落点浮窗', e.featureData, featureOverlay.value)
+  })
 }
 </script>
 
