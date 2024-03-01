@@ -28,18 +28,24 @@ const defaultRoutes = [
   }
 ]
 
-const packagingRoutingData = (routes, mark) => {
+const packagingRoutingData = (routes, mark, superRoute) => {
   return routes.map((route) => {
-    route.name = mark ? `${mark}_${route.path}` : route.path
-    if (mark) route.meta.mark = mark
+    route.name = superRoute ? `${superRoute.name}_${route.path}` : mark ? `${mark}_${route.path}` : route.path
+    if (superRoute && superRoute.meta.leaf) {
+      route.meta.end = superRoute.name
+      route.meta.fatherTitle = superRoute.meta.title
+    } else if (mark) {
+      route.meta.mark = mark
+    }
     if (route.children?.length) {
-      route.redirect = { name: `${mark || route.name}_${route.children[0].path}` }
-      route.children = packagingRoutingData(route.children, mark || route.name)
+      route.redirect = { name: `${route.name}_${route.children[0].path}` }
+      route.children = packagingRoutingData(route.children, mark || route.name, route)
     }
     return route
   })
 }
 
+console.log('routes: ', packagingRoutingData(routes))
 defaultRoutes.find((e) => e.name === 'root').children = import.meta.env.DEV ? [...packagingRoutingData(routes), ...packagingRoutingData(guides)] : packagingRoutingData(routes)
 defaultRoutes.find((e) => e.name === 'root').redirect = defaultRoutes.find((e) => e.name === 'root').children[0].name
 

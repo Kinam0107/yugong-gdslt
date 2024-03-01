@@ -1,6 +1,6 @@
 <!-- 侧边菜单 -->
 <template>
-  <el-menu :class="[{ is_dark: dark }, 'side_menu']" :collapse="props.collapse" :default-active="defaultActive" unique-opened @select="handleSelect">
+  <el-menu :class="[{ is_dark: dark }, 'side_menu']" :collapse="props.collapse" :default-active="defaultActive" @select="handleSelect">
     <template v-for="item in menuData.children" :key="item.name">
       <SideMenuRecursion :menuData="item" :hiddenIcon="props.hiddenIcon" :collapse="props.collapse" />
     </template>
@@ -31,7 +31,7 @@ const route = useRoute()
 const router = useRouter()
 
 const defaultActive = computed(() => {
-  return route.name
+  return route.meta.end || route.name
 })
 const menuData = computed(() => {
   return router.getRoutes().find((e) => e.name === route.meta.mark)

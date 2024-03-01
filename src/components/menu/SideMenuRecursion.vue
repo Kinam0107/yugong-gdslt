@@ -1,5 +1,5 @@
 <template>
-  <el-sub-menu v-if="props.menuData.children?.length > 0" :index="props.menuData.name">
+  <el-sub-menu v-if="props.menuData.children?.length > 0 && !props.menuData.meta.leaf" :index="props.menuData.name">
     <template #title>
       <SvgIcon v-if="iconDispaly" :size="16" :icon="props.menuData.meta.icon" />
       <span>{{ menuData.meta?.title || '-' }}</span>

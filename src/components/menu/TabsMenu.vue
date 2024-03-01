@@ -1,20 +1,27 @@
-<!-- 顶部菜单 -->
+<!-- 末级菜单 -->
 <template>
   <ul class="tabs_menu">
-    <RouterLink v-for="item in props.menuList" :key="item.name" :to="{ name: item.name }" custom v-slot="{ isActive, navigate }">
-      <li :class="{ active: isActive }" @click="navigate" role="link">{{ item.title }}</li>
+    <RouterLink v-for="item in props.menuList || menuData.children" :key="item.name" :to="{ name: item.name }" custom v-slot="{ isActive, navigate }">
+      <li :class="{ active: isActive }" @click="navigate" role="link">{{ item.meta.title }}</li>
     </RouterLink>
   </ul>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { computed } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 
 const props = defineProps({
   menuList: {
-    type: Array,
-    default: () => []
+    type: Array
   }
+})
+
+const route = useRoute()
+const router = useRouter()
+
+const menuData = computed(() => {
+  return router.getRoutes().find((e) => e.name === route.meta.end)
 })
 </script>
 
