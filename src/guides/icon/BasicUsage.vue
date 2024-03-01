@@ -1,10 +1,18 @@
 <template>
   <IconPlane desc="点击图标可复制组件代码">
     <div class="design_icon_box">
+      <SvgIcon icon="locate" @click="copy" />
+      <SvgIcon icon="safe-run" @click="copy" />
+      <SvgIcon icon="basic" @click="copy" />
+      <SvgIcon icon="operation" @click="copy" />
+      <SvgIcon icon="security" @click="copy" />
+      <SvgIcon icon="examine" @click="copy" />
+      <SvgIcon icon="water-drop" @click="copy" />
+      <SvgIcon icon="note" @click="copy" />
+      <SvgIcon icon="electricity" @click="copy" />
       <SvgIcon icon="arrow" @click="copy" />
       <SvgIcon icon="edit" @click="copy" />
       <SvgIcon icon="pdf-fill" @click="copy" />
-      <SvgIcon icon="backtop-fill" @click="copy" />
     </div>
     <div class="design_icon_box">
       <SvgIcon icon="mail" @click="copy" />
@@ -88,7 +96,6 @@
       <SvgIcon icon="grid-left" @click="copy" />
       <SvgIcon icon="grid-right" @click="copy" />
       <SvgIcon icon="whole-world" @click="copy" />
-      <SvgIcon icon="security-shield" @click="copy" />
     </div>
     <div class="design_icon_box">
       <SvgIcon icon="security-shield" @click="copy" />
