@@ -3,13 +3,21 @@
     <div class="head--container" v-if="!route.meta.end">
       <PageHeader title>{{ route.meta.title }}</PageHeader>
     </div>
-    <div class="body--container">{{ props.title }}页面正在开发中...</div>
+    <div class="body--container">
+      <ExceptionPageLayout icon="noData" :title="props.title + '页面正在开发中...'" />
+    </div>
   </div>
 </template>
 <script setup>
 import { useRoute } from 'vue-router'
+import ExceptionPageLayout from '@/components/layout/ExceptionPageLayout.vue'
 const route = useRoute()
-const props = defineProps(['title'])
+const props = defineProps({
+  title: {
+    type: String,
+    default: ''
+  }
+})
 </script>
 
 <style scoped lang="scss">
