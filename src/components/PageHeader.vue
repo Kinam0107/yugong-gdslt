@@ -52,6 +52,7 @@ const emits = defineEmits(['back'])
   flex-direction: column;
   gap: 2 * $baseDistance;
   padding: 3 * $baseDistance;
+  border-bottom: 1px solid $color-border;
 }
 .crumb_wrapper {
   ::v-deep(.el-breadcrumb) {
