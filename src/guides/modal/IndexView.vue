@@ -451,7 +451,7 @@ const drawer = ref(false)
   }
 }
 .fill {
-  ::v-deep(.el-input-group__append) {
+  :deep(.el-input-group__append) {
     background-color: $color-primary;
     color: #ffffff;
     box-shadow: none;

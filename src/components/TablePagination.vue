@@ -81,7 +81,6 @@ const layout = computed(() => {
 
 const handleSizeChange = (val) => {
   const maxPage = Math.ceil(props.total / val)
-  console.log(currentPage_.value, maxPage)
   if (currentPage_.value > maxPage) {
     emits('update:currentPage', maxPage)
   }
@@ -106,7 +105,7 @@ const handleCurrentChange = () => {
       font-size: 14px;
     }
   }
-  ::v-deep(.el-pagination.is-background) {
+  :deep(.el-pagination.is-background) {
     .btn-prev,
     .btn-next {
       box-shadow: 0 0 0 1px $color-border inset;

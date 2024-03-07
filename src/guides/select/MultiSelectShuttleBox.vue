@@ -27,7 +27,7 @@ const data = [
   margin-bottom: $baseDistance;
 }
 .el-transfer {
-  ::v-deep(.el-transfer__buttons) {
+  :deep(.el-transfer__buttons) {
     padding: 0 20px;
     button {
       display: block;

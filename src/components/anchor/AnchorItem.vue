@@ -22,24 +22,24 @@ const props = defineProps({
 .anchor_item {
   padding: 0;
   margin: 0;
+  + .anchor_item {
+    margin-top: $baseDistance;
+  }
 }
 .anchor_item_label {
   padding: $baseDistance 0;
   margin-bottom: $baseDistance;
 }
 .level_1 {
-  @include fontCategory(1);
-}
-.level_2 {
   @include fontCategory(2);
 }
-.level_3 {
+.level_2 {
   @include fontCategory(3);
 }
-.level_4 {
+.level_3 {
   @include fontCategory(4);
 }
-.level_5 {
+.level_4 {
   @include fontCategory(5);
 }
 </style>

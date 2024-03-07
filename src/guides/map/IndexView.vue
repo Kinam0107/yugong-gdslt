@@ -237,7 +237,7 @@ const coordinatePositioning = () => {
   overflow: hidden;
   padding: 0;
 
-  ::v-deep(.slot-wrapper) {
+  :deep(.slot-wrapper) {
     &.default {
       left: 16px;
       top: 8px;

@@ -4,7 +4,7 @@
       <slot name="crumb"></slot>
     </div>
     <div v-if="props.title" class="page_info_wrapper">
-      <div v-if="props.back" class="back_btn" @click="emits.back">
+      <div v-if="props.back" class="back_btn" @click="emits('back')">
         <SvgIcon :size="16" icon="arrow" />
       </div>
       <div class="page_name" :class="{ small: props.small }">
@@ -52,10 +52,10 @@ const emits = defineEmits(['back'])
   flex-direction: column;
   gap: 2 * $baseDistance;
   padding: 3 * $baseDistance;
-  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid $color-separator;
 }
 .crumb_wrapper {
-  ::v-deep(.el-breadcrumb) {
+  :deep(.el-breadcrumb) {
     .el-breadcrumb__item {
       > span {
         color: $color-prompttext;

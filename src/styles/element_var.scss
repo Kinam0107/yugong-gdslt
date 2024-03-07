@@ -64,7 +64,7 @@ $--pagination: (
   'border-radius': 4px,
   'button-color': $color-titletext,
   'button-disabled-color': $color-disabletext,
-  'button-disabled-bg-color': $color-garybg,
+  'button-disabled-bg-color': $color-graybg,
   'button-bg-color': transparent
 );
 
@@ -104,12 +104,12 @@ $--checkbox: (
 $--table: (
   'text-color': $color-titletext,
   'header-text-color': $color-titletext,
-  'header-bg-color': $color-garybg,
-  'row-hover-bg-color': $color-garybg
+  'header-bg-color': $color-graybg,
+  'row-hover-bg-color': $color-graybg
 );
 
 $--descriptions: (
-  'item-bordered-label-background': $color-garybg
+  'item-bordered-label-background': $color-graybg
 );
 
 $--messagebox: (

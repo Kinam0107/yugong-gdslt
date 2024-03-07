@@ -69,7 +69,7 @@ ul.file_list {
 .el-collapse {
   border-left: 1px solid #ebeef5;
   border-right: 1px solid #ebeef5;
-  ::v-deep .el-collapse-item {
+  :deep(.el-collapse-item) {
     .el-collapse-item__header {
       padding-left: $baseDistance;
       background-color: #f8f9fb;

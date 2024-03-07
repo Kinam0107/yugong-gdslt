@@ -74,7 +74,7 @@ const remove = (item) => {
 }
 .no-fill {
   padding: 8px 12px;
-  ::v-deep(.el-input-group__append) {
+  :deep(.el-input-group__append) {
     background-color: transparent;
   }
 }

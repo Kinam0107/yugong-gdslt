@@ -21,7 +21,7 @@ const input = ref('')
   margin-bottom: $baseDistance;
 }
 .no-fill {
-  ::v-deep(.el-input-group__append) {
+  :deep(.el-input-group__append) {
     background-color: transparent;
   }
 }

@@ -54,7 +54,7 @@ const filterNode = (value, data) => {
 
 <style scoped lang="scss">
 .no-fill {
-  ::v-deep(.el-input-group__append) {
+  :deep(.el-input-group__append) {
     background-color: transparent;
     &:hover {
       background-color: transparentize($color-primary, 0.9);
@@ -62,7 +62,7 @@ const filterNode = (value, data) => {
   }
 }
 .el-tree--highlight-current {
-  ::v-deep(.el-tree-node.is-current > .el-tree-node__content) {
+  :deep(.el-tree-node.is-current > .el-tree-node__content) {
     border-right: 0.5 * $baseDistance solid $color-primary;
   }
 }

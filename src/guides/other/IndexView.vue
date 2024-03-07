@@ -87,13 +87,13 @@ import ExceptionPageLayout from '@/components/layout/ExceptionPageLayout.vue'
   position: relative;
   width: 100px;
   height: 40px;
-  background-color: $color-garybg;
+  background-color: $color-graybg;
 }
 .badge_number_wrapper {
   width: 48px;
   height: 48px;
   border-radius: $baseDistance;
-  background-color: $color-garybg;
+  background-color: $color-graybg;
 }
 .gd_page {
   position: relative;

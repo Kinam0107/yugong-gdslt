@@ -33,6 +33,6 @@ $headHight: 7 * $baseDistance;
   position: relative;
   overflow: auto;
   height: calc(100% - $headHight);
-  background-color: $color-garybg;
+  background-color: $color-graybg;
 }
 </style>

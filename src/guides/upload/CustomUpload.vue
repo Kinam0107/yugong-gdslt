@@ -57,7 +57,7 @@ const beforeRemove = (uploadFile) => {
     margin-left: $baseDistance;
     color: $color-prompttext;
   }
-  ::v-deep .el-upload-list {
+  :deep .el-upload-list {
     .el-upload-list__item {
       height: 5 * $baseDistance;
       margin-bottom: $baseDistance;

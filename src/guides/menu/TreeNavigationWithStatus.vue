@@ -85,7 +85,7 @@ const defaultProps = {
   color: $color-warning;
 }
 .el-tree--highlight-current {
-  ::v-deep(.el-tree-node.is-current > .el-tree-node__content) {
+  :deep(.el-tree-node.is-current > .el-tree-node__content) {
     border-right: 0.5 * $baseDistance solid $color-primary;
     .custom-tree-node {
       padding-right: 2.5 * $baseDistance;

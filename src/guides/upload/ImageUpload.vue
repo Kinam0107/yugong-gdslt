@@ -51,7 +51,7 @@ const handlePreview = (file) => {
     margin-left: $baseDistance;
     color: $color-prompttext;
   }
-  ::v-deep .el-upload-list {
+  :deep .el-upload-list {
     display: flex;
     gap: $baseDistance;
     flex-wrap: wrap;

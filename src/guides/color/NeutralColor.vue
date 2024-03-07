@@ -6,7 +6,7 @@
     <ColorItem name="提示或禁用" :value="['#BFBFBF', '$color-placeholdertext', '$color-disabletext']"></ColorItem>
     <ColorItem name="边框" :value="['#D9D9D9', '$color-border']"></ColorItem>
     <ColorItem name="分隔线" :value="['#F0F0F0', '$color-separator']"></ColorItem>
-    <ColorItem name="浅灰背景" :value="['#F4F9F7', '$color-garybg']"></ColorItem>
+    <ColorItem name="浅灰背景" :value="['#F4F9F7', '$color-graybg']"></ColorItem>
     <ColorItem name="纯白背景" :value="['#FFFFFF', '$color-whitebg']"></ColorItem>
   </ColorPlane>
 </template>

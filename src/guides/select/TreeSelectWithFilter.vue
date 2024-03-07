@@ -56,14 +56,14 @@ const nodeClick = (node) => {
   margin-bottom: $baseDistance;
 }
 .el-tree--highlight-current {
-  ::v-deep(.el-tree-node.is-current > .el-tree-node__content) {
+  :deep(.el-tree-node.is-current > .el-tree-node__content) {
     font-weight: bold;
     color: $color-primary;
   }
 }
 .no-fill {
   padding: 8px 12px;
-  ::v-deep(.el-input-group__append) {
+  :deep(.el-input-group__append) {
     background-color: transparent;
   }
 }

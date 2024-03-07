@@ -40,7 +40,7 @@ const nodeClick = (node) => {
   margin-bottom: $baseDistance;
 }
 .el-tree--highlight-current {
-  ::v-deep(.el-tree-node.is-current > .el-tree-node__content) {
+  :deep(.el-tree-node.is-current > .el-tree-node__content) {
     font-weight: bold;
     color: $color-primary;
   }

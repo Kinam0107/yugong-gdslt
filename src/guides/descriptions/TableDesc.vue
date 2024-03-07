@@ -18,7 +18,7 @@
 
 <style scoped lang="scss">
 .el-descriptions {
-  ::v-deep .el-descriptions__body{
+  :deep(.el-descriptions__body) {
     .el-descriptions__label {
       width: 120px;
       text-align: center;

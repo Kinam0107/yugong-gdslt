@@ -47,15 +47,15 @@ function handleSelect(name) {
   width: 32 * $baseDistance;
   height: 100%;
   border: none !important;
-  ::v-deep(span) {
+  :deep(span) {
     color: $color-titletext;
     font-size: 14px;
     font-weight: 400;
   }
-  ::v-deep(i) {
+  :deep(i) {
     color: $color-titletext;
   }
-  ::v-deep(> li) {
+  :deep(> li) {
     > span,
     > i,
     > .el-sub-menu__title > span,
@@ -63,16 +63,16 @@ function handleSelect(name) {
       font-weight: 500;
     }
   }
-  ::v-deep(.is-active:not(.is-opened)) {
+  :deep(.is-active:not(.is-opened)) {
     background: transparentize($color-primary, 0.9);
     box-shadow: -4px 0px 0px 0px $color-primary inset;
   }
-  ::v-deep(svg + span) {
+  :deep(svg + span) {
     margin-left: $baseDistance;
   }
   &.el-menu--collapse {
     width: 8 * $baseDistance;
-    ::v-deep(.is-active) {
+    :deep(.is-active) {
       > div > svg {
         color: $color-primary;
       }
@@ -81,33 +81,33 @@ function handleSelect(name) {
 }
 .side_menu.is_dark {
   background-color: $color-titletext;
-  ::v-deep(.el-menu) {
+  :deep(.el-menu) {
     background-color: $color-titletext;
   }
-  ::v-deep(span) {
+  :deep(span) {
     color: white;
   }
-  ::v-deep(i) {
+  :deep(i) {
     color: white;
   }
-  ::v-deep(.is-active:not(.is-opened)) {
+  :deep(.is-active:not(.is-opened)) {
     background: $color-primary;
     box-shadow: none;
   }
-  ::v-deep(svg + span) {
+  :deep(svg + span) {
     margin-left: $baseDistance;
   }
-  ::v-deep(svg) {
+  :deep(svg) {
     color: white;
   }
-  ::v-deep(.el-menu-item:hover) {
+  :deep(.el-menu-item:hover) {
     background-color: transparentize($color-primary, 0.5);
   }
-  ::v-deep(.el-sub-menu__title:hover) {
+  :deep(.el-sub-menu__title:hover) {
     background-color: transparentize($color-primary, 0.5);
   }
   &.el-menu--collapse {
-    ::v-deep(.is-active) {
+    :deep(.is-active) {
       > div > svg {
         color: white;
       }

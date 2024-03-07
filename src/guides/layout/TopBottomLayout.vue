@@ -31,7 +31,7 @@
   max-width: 1440px;
   height: 800px;
   margin: 0 auto;
-  background-color: $color-garybg;
+  background-color: $color-graybg;
 }
 .top_bottom {
   position: relative;

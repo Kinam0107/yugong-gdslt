@@ -55,13 +55,13 @@ const defaultProps = {
 
 <style scoped lang="scss">
 .el-tree {
-  ::v-deep(.el-tree-node > .el-tree-node__content) {
+  :deep(.el-tree-node > .el-tree-node__content) {
     height: auto;
     padding: 4px 0;
   }
 }
 .el-tree--highlight-current {
-  ::v-deep(.el-tree-node.is-current > .el-tree-node__content) {
+  :deep(.el-tree-node.is-current > .el-tree-node__content) {
     border-right: 0.5 * $baseDistance solid $color-primary;
     .custom-tree-node-hastips {
       padding-right: 2.5 * $baseDistance;
