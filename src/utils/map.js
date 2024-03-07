@@ -494,7 +494,7 @@ export function changeBaseMap(map, baseMapMode) {
  * @param {Function} handleFunction 定点后对数据的处理
  */
 export function gotoPoint(map, animateConf, handleFunction) {
-  const { center, zoom = 10, duration = 100 } = animateConf || {}
+  const { center, zoom, duration = 100 } = animateConf || {}
   map.getView().animate({
     center: center,
     zoom: zoom,
@@ -516,4 +516,25 @@ export function gotoPoint(map, animateConf, handleFunction) {
     })
     handleFunction({ featureData: feature?.get('data'), cityFeature: cityFeature })
   }
+}
+
+/**
+ * @description 改变地图鼠标图标
+ * @param {Map} map 地图对象
+ * @param {String} icon cursor的属性值或引入的图标，为空时恢复默认图标
+ */
+export function changeCursor(map, icon) {
+  const attributes = ['default', 'auto', 'crosshair', 'pointer', 'move', 'e-resize', 'ne-resize', 'nw-resize', 'n-resize', 'se-resize', 'sw-resize', 's-resize', 'w-resize', 'text', 'wait', 'help']
+  map.on('pointermove', () => {
+    if (icon) {
+      map.getTargetElement().style.cursor = attributes.includes(icon) ? icon : 'url(' + icon + '), default'
+    } else {
+      // const pixel = map.getEventPixel(e.originalEvent)
+      // if (map.hasFeatureAtPixel(pixel)) {
+      //   map.getTargetElement().style.cursor = 'pointer'
+      // } else {
+      map.getTargetElement().style.cursor = 'auto'
+      // }
+    }
+  })
 }

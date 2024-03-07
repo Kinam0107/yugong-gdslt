@@ -31,7 +31,7 @@ export default [
                   },
                   {
                     path: 'baseInfo',
-                    component: developing,
+                    component: () => import('@/views/waterSupply/waterWorksBasicInformation/IndexView.vue'),
                     meta: { title: '基础信息维护' }
                   },
                   {

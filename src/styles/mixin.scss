@@ -55,14 +55,14 @@
 
 // 主体内容盒子基础布局
 @mixin mainContentContainer($height: auto) {
-  overflow: auto;
   margin: 3 * $baseDistance;
-  padding: 3 * $baseDistance 3 * $baseDistance 2 * $baseDistance;
+  padding: 3 * $baseDistance;
   background-color: #fff;
   border-radius: $baseDistance;
   @if $height == 'auto' {
     height: $height;
   } @else {
+    overflow: auto;
     height: calc($height - 6 * $baseDistance);
   }
 }
