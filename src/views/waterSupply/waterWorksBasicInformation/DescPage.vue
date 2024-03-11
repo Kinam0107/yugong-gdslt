@@ -27,62 +27,25 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import FormView from './FormView.vue'
+import axios from '@/api/axios/base'
 
 const props = defineProps({
-  id: String
+  id: {
+    type: String,
+    required: true
+  }
 })
 const emits = defineEmits(['back', 'edit'])
 
 const formState = ref()
 onMounted(() => {
-  console.log('get formState by id: ', props.id)
-  setTimeout(() => {
-    formState.value = {
-      engineerName: '白云区城市供水管网延伸工程',
-      engineerCode: '440111000032',
-      adcd: '440103',
-      position: '位置1',
-      scale: '',
-      property: '',
-      waterSupplyScale: '',
-      dayRealSupplyWater: '',
-      yearRealSupplyWater: '',
-      waterSupplyStartTime: '',
-      completionCommissionTime: '',
-      whetherCompletionWorks: '',
-      runningState: '',
-      waterCompanyState: '',
-      waterSupplyPersonnel: '',
-      waterSupplyHouseNum: '',
-      waterSupplyHouseholds: '',
-      obtainHealthPermit: '',
-      obtainWaterPermit: '',
-      underCountyAdministration: '',
-      ifProfessionalManagement: '',
-      ifStandardizeProject: '',
-      whetherInfoManagePlatform: '',
-      waterQualityExperimentConst: '',
-      warningSigns: '',
-      engineerManageUnit: '',
-      unitProperty: '',
-      manageUnitPrincipal: '',
-      principalPhone: '',
-      projectRuningManageNum: '',
-      waterSupervisionUnit: '',
-      supervisionUnitPrincipal: '',
-      supervisionPrincipalPhone: '',
-      waterSupplyPhone: '',
-      maintenanceServicePhone: '',
-      fullCostWaterPrice: '',
-      runningCostWaterPrice: '',
-      chargeMode: '',
-      livingWaterPrice: '',
-      waterRateRecovery: '',
-      incomeAndExpenditure: '',
-      longitude: '112.826645',
-      latitude: '23.573422'
-    }
-  }, 500)
+  axios({
+    url: '/agricultural-water-center/water-supply-engineer-base-info/findById',
+    method: 'get',
+    params: { id: props.id }
+  }).then((res) => {
+    formState.value = res.data
+  })
 })
 </script>
 

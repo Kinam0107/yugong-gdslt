@@ -19,13 +19,13 @@
           {{ dataEcho('GSGCXZ', form.property, { emptyEcho: '-' }) }}
         </el-descriptions-item>
         <el-descriptions-item label="设计日供水规模：">
-          {{ form.waterSupplyScale || '-' + ' m³/D' }}
+          {{ (form.waterSupplyScale || '-') + ' m³/D' }}
         </el-descriptions-item>
         <el-descriptions-item label="日实际供水量：">
-          {{ form.dayRealSupplyWater || '-' + ' m³/D' }}
+          {{ (form.dayRealSupplyWater || '-') + ' m³/D' }}
         </el-descriptions-item>
         <el-descriptions-item label="年实际供水量：">
-          {{ form.yearRealSupplyWater || '-' + ' m³' }}
+          {{ (form.yearRealSupplyWater || '-') + ' m³' }}
         </el-descriptions-item>
         <el-descriptions-item label="开始供水时间：">
           {{ form.waterSupplyStartTime?.substring(0, 10) || '-' }}
@@ -37,19 +37,19 @@
           {{ dataEcho('SF', form.whetherCompletionWorks, { emptyEcho: '-' }) }}
         </el-descriptions-item>
         <el-descriptions-item label="运行状态：">
-          {{ dataEcho('ZCYC', form.runningState, { emptyEcho: '-' }) }}
+          {{ form.runningState || '-' }}
         </el-descriptions-item>
         <el-descriptions-item label="水厂状态：">
           {{ dataEcho('SCZT', form.waterCompanyState, { emptyEcho: '-' }) }}
         </el-descriptions-item>
         <el-descriptions-item label="供水人数：">
-          {{ form.waterSupplyPersonnel || '-' + ' 人' }}
+          {{ (form.waterSupplyPersonnel || '-') + ' 人' }}
         </el-descriptions-item>
         <el-descriptions-item label="供水到户人数：">
-          {{ form.waterSupplyHouseNum || '-' + ' 人' }}
+          {{ (form.waterSupplyHouseNum || '-') + ' 人' }}
         </el-descriptions-item>
         <el-descriptions-item label="供水户数：">
-          {{ form.waterSupplyHouseholds || '-' + ' 户' }}
+          {{ (form.waterSupplyHouseholds || '-') + ' 户' }}
         </el-descriptions-item>
         <el-descriptions-item label="已取得卫生许可证：">
           {{ dataEcho('SF', form.obtainHealthPermit, { emptyEcho: '-' }) }}
@@ -83,7 +83,7 @@
           {{ form.engineerManageUnit || '-' }}
         </el-descriptions-item>
         <el-descriptions-item label="单位性质：">
-          {{ dataEcho('NCGSDWXZ', form.unitProperty, { emptyEcho: '-' }) }}
+          {{ dataEcho('NCGSDWXZ', form.unitProperty, { emptyEcho: form.unitProperty || '-' }) }}
         </el-descriptions-item>
         <el-descriptions-item label="管理单位负责人：">
           {{ form.manageUnitPrincipal || '-' }}
@@ -92,7 +92,7 @@
           {{ form.principalPhone || '-' }}
         </el-descriptions-item>
         <el-descriptions-item label="工程专职运行管理人员数量：">
-          {{ form.projectRuningManageNum || '-' + ' 人' }}
+          {{ (form.projectRuningManageNum || '-') + ' 人' }}
         </el-descriptions-item>
         <el-descriptions-item label="上级水行政监管单位：">
           {{ form.waterSupervisionUnit || '-' }}
@@ -114,16 +114,16 @@
     <AnchorItem label="水费水价信息">
       <el-descriptions :column="3">
         <el-descriptions-item label="全成本水价：">
-          {{ form.fullCostWaterPrice || '-' + ' 元/m³' }}
+          {{ (form.fullCostWaterPrice || '-') + ' 元/m³' }}
         </el-descriptions-item>
         <el-descriptions-item label="运行成本水价：">
-          {{ form.runningCostWaterPrice || '-' + ' 元/m³' }}
+          {{ (form.runningCostWaterPrice || '-') + ' 元/m³' }}
         </el-descriptions-item>
         <el-descriptions-item label="计费方式：">
           {{ form.chargeMode || '-' }}
         </el-descriptions-item>
         <el-descriptions-item label="居民生活执行水价：">
-          {{ form.livingWaterPrice || '-' + ' 元/m³' }}
+          {{ (form.livingWaterPrice || '-') + ' 元/m³' }}
         </el-descriptions-item>
         <el-descriptions-item label="水费回收率：">
           {{ form.waterRateRecovery || '-' }}
@@ -144,7 +144,7 @@
       </div>
     </AnchorItem>
   </AnchorBox>
-  <el-form v-else :model="form" :rules="rules" inline label-width="210px" label-suffix="：">
+  <el-form v-else ref="formRef" :model="form" :rules="rules" inline label-width="210px" label-suffix="：">
     <div class="title">基础信息</div>
     <el-form-item v-if="props.mode === 'add'" label="工程名称" prop="engineerName">
       <el-input v-model="form.engineerName" placeholder="请输入" />
@@ -197,7 +197,8 @@
     </el-form-item>
     <el-form-item label="运行状态" prop="runningState">
       <el-radio-group v-model="form.runningState">
-        <el-radio v-for="item in getOptions('ZCYC')" :key="'runningState' + item.value" :label="item.value">{{ item.label }}</el-radio>
+        <el-radio label="正常"></el-radio>
+        <el-radio label="异常"></el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item label="水厂状态" prop="waterCompanyState">
@@ -384,6 +385,7 @@ const form = reactive({
   engineerName: '',
   engineerCode: '',
   adcd: '',
+  adnm: '',
   position: '',
   scale: '',
   property: '',
@@ -518,7 +520,18 @@ const handleSingleClick = (e) => {
   }
 }
 
-defineExpose({ form })
+const formRef = ref()
+const formValidate = (callback) => {
+  formRef.value.validate((valid) => {
+    if (valid) {
+      callback()
+    } else {
+      return false
+    }
+  })
+}
+
+defineExpose({ form, formValidate })
 </script>
 
 <style scoped lang="scss">

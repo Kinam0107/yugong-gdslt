@@ -28,6 +28,8 @@
 import { ref } from 'vue'
 import FormView from './FormView.vue'
 import { localData } from '@/utils/storage'
+import axios from '@/api/axios/base'
+import { ElMessage } from 'element-plus'
 
 const emits = defineEmits(['back'])
 
@@ -38,8 +40,21 @@ const save = () => {
   emits('back')
 }
 const commit = () => {
-  localData.remove('waterWorksBasicInformation')
-  emits('back')
+  formView.value.formValidate(() => {
+    axios({
+      url: '/agricultural-water-center/water-supply-engineer-base-info/save',
+      method: 'post',
+      data: formView.value.form
+    })
+      .then(() => {
+        ElMessage.success('新增成功')
+        emits('back')
+        emits('success')
+      })
+      .catch(() => {
+        ElMessage.error('新增失败')
+      })
+  })
 }
 </script>
 

@@ -17,43 +17,47 @@
           <el-option v-for="item in getOptions('GSGCGM')" :key="'GSGCGM' + item.value" :label="item.label" :value="item.value" />
         </el-select>
         <label></label>
-        <el-input style="width: 200px" v-model="params.keyword" placeholder="请输入关键词" @change="search()">
+        <el-input style="width: 200px" v-model="params.engineerName" placeholder="请输入关键词" @change="search()">
           <template #append><el-button :icon="Search" @click="search()" /></template>
         </el-input>
       </div>
     </div>
     <div class="table_wrapper" ref="tableWrapper">
-      <el-table :data="tableData" :max-height="tableMaxHeight" border @sort-change="sortChange">
+      <el-table v-loading="loading" :data="tableData" :max-height="tableMaxHeight" border @sort-change="sortChange">
         <el-table-column type="index" label="序号" width="60" align="center" fixed />
-        <el-table-column prop="xzqh" label="行政区划" width="120" />
-        <el-table-column prop="gcmc" label="工程名称" min-width="300" />
-        <el-table-column prop="gcgm" label="工程规模" min-width="140">
-          <template #default="scope">{{ dataEcho('GSGCGM', scope.row.gcgm) }}</template>
+        <el-table-column prop="adnm" label="行政区划" width="120" />
+        <el-table-column prop="engineerName" label="工程名称" min-width="300" />
+        <el-table-column label="工程规模" min-width="140">
+          <template #default="scope">{{ dataEcho('GSGCGM', scope.row.scale) }}</template>
         </el-table-column>
-        <el-table-column prop="sjrgsgm" label="设计日供水规模(m³/D)" min-width="200" align="right" sortable="custom" />
-        <el-table-column prop="tysj" label="投运时间" min-width="110" sortable="custom" />
+        <el-table-column prop="waterSupplyScale" label="设计日供水规模(m³/D)" min-width="200" align="right" sortable="custom" />
+        <el-table-column label="投运时间" min-width="110" sortable="custom">
+          <template #default="scope">{{ scope.row.completionCommissionTime?.substring(0, 10) }}</template>
+        </el-table-column>
         <el-table-column prop="yxzt" label="运行状态" min-width="90">
           <template #default="scope">
-            <i :style="{ backgroundColor: ['#f13939', '#28ce8e'][scope.row.yxzt] }" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 10px"></i>
-            {{ ['异常', '正常'][scope.row.yxzt] }}
+            <i
+              :style="{ backgroundColor: scope.row.runningState === '正常' ? '#28ce8e' : scope.row.runningState === '异常' ? '#f13939' : '' }"
+              style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 10px"></i>
+            {{ scope.row.runningState }}
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150px" header-align="right" align="left" fixed="right">
           <template #default="scope">
             <el-button size="small" link type="primary" @click="desc(scope.row.id)">查看</el-button>
             <el-button size="small" link type="primary" @click="edit(scope.row.id)">编辑</el-button>
-            <el-button size="small" link type="primary">删除</el-button>
+            <el-button size="small" link type="primary" @click="remove(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <TablePagination v-model:currentPage="params.currentPage" v-model:pageSize="params.pageSize" :total="tableTotal" @change="search()" />
+      <TablePagination v-model:currentPage="params.current" v-model:pageSize="params.size" :total="tableTotal" @change="search()" />
     </div>
   </div>
   <div class="mask_layer_under_form" v-if="showAddForm">
-    <AddPage @back="back" />
+    <AddPage @back="back" @success="search()" />
   </div>
   <div class="mask_layer_under_form" v-if="showEditForm">
-    <EditPage :id="formId" @back="back" />
+    <EditPage :id="formId" @back="back" @success="search()" />
   </div>
   <div class="mask_layer_under_form" v-if="showDescForm">
     <DescPage :id="formId" @back="back" @edit="edit" />
@@ -67,19 +71,23 @@ import { dataEcho, getOptions } from '@/utils/enum'
 import AddPage from './AddPage.vue'
 import EditPage from './EditPage.vue'
 import DescPage from './DescPage.vue'
+import axios from '@/api/axios/base'
+import { ElMessageBox, ElMessage } from 'element-plus'
 
 onMounted(() => {
   search()
   getTableMaxHeight()
 })
 
+const loading = ref(false)
 const params = reactive({
   year: new Date().format('yyyy'),
   adcd: undefined,
   scale: undefined,
-  keyword: undefined,
-  currentPage: 1,
-  pageSize: 10,
+  engineerName: undefined,
+  page: true,
+  current: 1,
+  size: 10,
   order: undefined,
   sort: undefined
 })
@@ -91,13 +99,23 @@ const sortChange = ({ prop, order }) => {
   search()
 }
 const search = () => {
-  console.log('serach params:', params)
-  tableData.value = [
-    { id: '1', xzqh: '肇庆市 高要区', gcmc: '清湾水厂', gcgm: '1', sjrgsgm: '50000', tysj: '2023-09-01', yxzt: '1' },
-    { id: '2', xzqh: '肇庆市', gcmc: '23', gcgm: '1', sjrgsgm: '34', tysj: '2023-10-25', yxzt: '1' },
-    { id: '3', xzqh: '广州市 白云区', gcmc: '白云区城市供水管网延伸工程', gcgm: '1', sjrgsgm: '600000', tysj: '2019-02-01', yxzt: '1' }
-  ]
-  tableTotal.value = 3
+  loading.value = true
+  axios({
+    url: '/agricultural-water-center/water-supply-engineer-base-info/page',
+    method: 'get',
+    params: params
+  })
+    .then((res) => {
+      tableData.value = res.data.records || []
+      tableTotal.value = res.data.total || 0
+    })
+    .catch(() => {
+      tableData.value = []
+      tableTotal.value = 0
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 const tableWrapper = ref()
@@ -132,6 +150,28 @@ const desc = (id) => {
   showDescForm.value = true
   showAddForm.value = false
   showEditForm.value = false
+}
+const remove = (row) => {
+  ElMessageBox.confirm(`将彻底删除 ${row.engineerName} 数据，请慎重！`, '删除供水工程', {
+    type: 'warning',
+    showClose: false,
+    cancelButtonText: '取消',
+    confirmButtonText: '确定'
+  }).then(() => {
+    axios({
+      url: '/agricultural-water-center/water-supply-engineer-base-info/delete',
+      method: 'post',
+      data: { id: row.id },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+      .then(() => {
+        ElMessage.success(`删除成功`)
+        search()
+      })
+      .catch(() => {
+        ElMessage.error('删除失败')
+      })
+  })
 }
 </script>
 

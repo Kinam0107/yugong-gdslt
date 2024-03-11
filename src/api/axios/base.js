@@ -13,8 +13,8 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    if (['/auth-center/login'].includes(config.url || '')) {
-      config.headers['token'] = getToken()
+    if (!['/auth-center/login'].includes(config.url || '')) {
+      config.headers['Authorization'] = getToken()
     }
     return config
   },
