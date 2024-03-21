@@ -17,7 +17,7 @@
         <div class="subtitle">账号登录</div>
         <el-form>
           <el-input v-model="username" size="large" placeholder="请输入用户账号" clearable :prefix-icon="User" />
-          <el-input v-model="password" type="password" size="large" placeholder="请输入用户账号" clearable show-password :prefix-icon="Lock" />
+          <el-input v-model="password" type="password" size="large" placeholder="请输入密码" clearable show-password :prefix-icon="Lock" />
           <el-button type="primary" size="large" style="width: 100%" @click="login">登录</el-button>
         </el-form>
       </div>
@@ -30,9 +30,12 @@ import { ref, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { User, Lock } from '@element-plus/icons-vue'
-import { login as loginApi, getUserInfo as getUserInfoApi } from '@/api/authCenterApi'
+import { login as loginApi, getUserInfo as getUserInfoApi, getPubKey as getPubKeyApi } from '@/api/authCenterApi'
 import { getToken, setToken, clearToken } from '@/utils/userToken'
 import { localData } from '@/utils/storage'
+import { JSEncrypt } from 'jsencrypt'
+import globalConfig from '@/config'
+import { useEventListener } from '@/composables/event'
 
 const router = useRouter()
 const username = ref('')
@@ -42,26 +45,65 @@ onBeforeMount(() => {
   // 访问登录页面时清空token和用户信息
   clearToken()
   localData.remove('userInfo')
+  // 获取加密公钥
+  if (globalConfig.loginEncryption) getPubKey()
 })
+
+useEventListener(window, 'keypress', (event) => {
+  if (event.key === 'Enter') login()
+})
+
+// 加密公钥
+let publicKey
+const getPubKey = () => {
+  getPubKeyApi().then((res) => {
+    publicKey = res.data
+  })
+}
 
 // 用户登录
 function login() {
-  loginApi(username.value, password.value)
-    .then((res) => {
-      if (res.data) {
-        setToken(res.data)
+  if (!username.value && !password.value) {
+    ElMessage.error('请输入账号和密码！')
+  } else if (!username.value) {
+    ElMessage.error('请输入账号！')
+  } else if (!password.value) {
+    ElMessage.error('请输入密码！')
+  } else {
+    let _username = username.value
+    let _password = password.value
+    if (globalConfig.loginEncryption) {
+      const encrypt = new JSEncrypt()
+      if (publicKey) {
+        _username = btoa(encodeURI(username.value))
+        encrypt.setPublicKey(publicKey)
+        _password = encrypt.encrypt(password.value)
+        if (_password.length < 20) {
+          ElMessage.error('登陆失败！')
+          return
+        }
       } else {
-        ElMessage.error('未获取到用户凭证！')
+        getPubKey()
+        return
       }
-    })
-    .catch(() => {
-      ElMessage.error('登录失败！')
-    })
-    .finally(() => {
-      if (getToken()) {
-        getUserInfo()
-      }
-    })
+    }
+    loginApi(_username, _password)
+      .then((res) => {
+        if (res.data) {
+          setToken(res.data)
+        } else {
+          ElMessage.error('未获取到用户凭证！')
+        }
+      })
+      .catch(() => {
+        ElMessage.error('登录失败！')
+      })
+      .finally(() => {
+        if (getToken()) {
+          getUserInfo()
+        }
+      })
+  }
 }
 
 // 获取用户信息

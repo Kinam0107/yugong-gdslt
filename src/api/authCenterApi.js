@@ -25,3 +25,11 @@ export function logout() {
     url: pre + '/logout'
   })
 }
+
+// 获取加密公钥
+export function getPubKey() {
+  return axios({
+    method: 'get',
+    url: pre + '/getPubKey'
+  })
+}

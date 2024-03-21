@@ -8,7 +8,6 @@ import allDictObj from './dataDictionary.js'
  * @returns
  */
 export function dataEcho(dictKey, value, options) {
-  console.log(dictKey, value, options)
   if (typeof value === 'number') value = String(value)
   if (!value) return options?.emptyEcho || ''
   const dictionary = allDictObj[dictKey] || {}
