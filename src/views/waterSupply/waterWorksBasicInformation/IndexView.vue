@@ -26,7 +26,11 @@
       <el-table v-loading="loading" :data="tableData" :max-height="tableMaxHeight" border @sort-change="sortChange">
         <el-table-column type="index" label="序号" width="60" align="center" fixed />
         <el-table-column prop="adnm" label="行政区划" width="120" />
-        <el-table-column prop="engineerName" label="工程名称" min-width="300" />
+        <el-table-column label="工程名称" min-width="300">
+          <template #default="scope">
+            <el-button size="small" link type="primary" @click="jumpSingleProjectPage(scope.row.id, scope.row.engineerName)">{{ scope.row.engineerName }}</el-button>
+          </template>
+        </el-table-column>
         <el-table-column label="工程规模" min-width="140">
           <template #default="scope">{{ dataEcho('GSGCGM', scope.row.scale) }}</template>
         </el-table-column>
@@ -73,6 +77,8 @@ import EditPage from './EditPage.vue'
 import DescPage from './DescPage.vue'
 import axios from '@/api/axios/base'
 import { ElMessageBox, ElMessage } from 'element-plus'
+import { useRoute, useRouter } from 'vue-router'
+import { localData } from '@/utils/storage'
 
 onMounted(() => {
   search()
@@ -172,6 +178,16 @@ const remove = (row) => {
         ElMessage.error('删除失败')
       })
   })
+}
+
+const route = useRoute()
+const router = useRouter()
+const jumpSingleProjectPage = (id, name) => {
+  localData.set('JumpInformation', {
+    routePath: route.path,
+    projectName: name
+  })
+  router.push('/waterworks/' + id)
 }
 </script>
 

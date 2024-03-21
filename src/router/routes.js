@@ -2,6 +2,7 @@ import sidebar from '@/components/layout/SidebarLayout.vue'
 import endbar from '@/components/layout/EndbarLayout.vue'
 import developing from '@/components/layout/DevelopingLayout.vue'
 import placeholder from '@/components/layout/PlaceholderLayout.vue'
+import single from '@/components/layout/SingleProjectLayout.vue'
 
 export default [
   {
@@ -889,6 +890,67 @@ export default [
             ]
           }
         ]
+      }
+    ]
+  },
+  {
+    path: 'waterworks/:id',
+    component: single,
+    meta: { titile: '供水工程', nonMenu: true },
+    children: [
+      {
+        path: 'status',
+        component: placeholder,
+        meta: { title: '工程状况', icon: 'basic' },
+        children: [
+          {
+            path: 'baseInfo',
+            component: placeholder,
+            meta: { title: '基础信息' },
+            children: [
+              {
+                path: 'index',
+                component: developing,
+                meta: { title: '基础信息' }
+              },
+              {
+                path: 'keyPointImages',
+                component: developing,
+                meta: { title: '关键点图片' }
+              },
+              {
+                path: 'electricityUsage',
+                component: developing,
+                meta: { title: '用电情况' }
+              }
+            ]
+          },
+          {
+            path: 'engineeringCharacteristics',
+            component: developing,
+            meta: { title: '工程特性' }
+          },
+          {
+            path: 'engineeringMilestones',
+            component: developing,
+            meta: { title: '工程大事记' }
+          }
+        ]
+      },
+      {
+        path: 'operation',
+        component: developing,
+        meta: { title: '运行管护', icon: 'operation' }
+      },
+      {
+        path: 'security',
+        component: developing,
+        meta: { title: '安全管理', icon: 'security' }
+      },
+      {
+        path: 'guarantee',
+        component: developing,
+        meta: { title: '管理保障', icon: 'examine' }
       }
     ]
   }

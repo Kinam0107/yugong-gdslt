@@ -1,6 +1,9 @@
 <template>
-  <div class="page_header" :style="{ 'padding-bottom': tab ? '0' : '' }">
+  <div class="page_header" :style="{ 'padding-bottom': props.tab ? '0' : '', 'border-bottom': props.crumb && !props.title && !props.tab ? 'none' : '' }">
     <div v-if="props.crumb" class="crumb_wrapper">
+      <div v-if="!props.title && props.back" class="back_btn" @click="emits('back')">
+        <SvgIcon :size="16" icon="arrow" />
+      </div>
       <slot name="crumb"></slot>
     </div>
     <div v-if="props.title" class="page_info_wrapper">
@@ -14,7 +17,7 @@
         <slot name="btn"></slot>
       </div>
     </div>
-    <div v-if="tab" class="tabs_wrapper">
+    <div v-if="props.tab" class="tabs_wrapper">
       <slot name="tab"></slot>
     </div>
   </div>
@@ -55,6 +58,9 @@ const emits = defineEmits(['back'])
   border-bottom: 1px solid $color-separator;
 }
 .crumb_wrapper {
+  display: flex;
+  gap: 2 * $baseDistance;
+  align-items: center;
   :deep(.el-breadcrumb) {
     .el-breadcrumb__item {
       > span {
@@ -67,20 +73,20 @@ const emits = defineEmits(['back'])
     }
   }
 }
+.back_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
 .page_info_wrapper {
   display: flex;
   gap: 2 * $baseDistance;
-  .back_btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    background: #fff;
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-  }
   .page_name {
     flex: 1;
     color: $color-titletext;

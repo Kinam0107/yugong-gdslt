@@ -11,15 +11,15 @@ import globalConfig from '@/config'
 
 const defaultRoutes = [
   {
-    path: '/login',
-    name: 'login',
-    component: LoginView
-  },
-  {
     path: '/',
     name: 'root',
     component: BaseLayout,
     children: []
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView
   },
   {
     path: '/:pathMatch(.*)*',

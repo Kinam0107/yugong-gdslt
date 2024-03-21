@@ -23,7 +23,7 @@ const menuList = reactive(
   router
     .getRoutes()
     .find((e) => e.name === 'root')
-    .children.filter((e) => e.name)
+    .children.filter((e) => !e.meta.nonMenu)
     .map((e) => {
       return {
         name: e.name,
