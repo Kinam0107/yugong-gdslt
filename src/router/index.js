@@ -38,16 +38,16 @@ const packagingRoutingData = (routes, mark, superRoute) => {
       route.meta.mark = mark
     }
     if (route.children?.length) {
-      route.redirect = { name: `${route.name}_${route.children[0].path}` }
+      route.redirect = { name: `${route.name}_${route.children[route.meta.redirectIndex || 0].path}` }
       route.children = packagingRoutingData(route.children, mark || route.name, route)
     }
     return route
   })
 }
 
-console.log('routes: ', packagingRoutingData(routes))
 defaultRoutes.find((e) => e.name === 'root').children = import.meta.env.DEV ? [...packagingRoutingData(routes), ...packagingRoutingData(guides)] : packagingRoutingData(routes)
 defaultRoutes.find((e) => e.name === 'root').redirect = defaultRoutes.find((e) => e.name === 'root').children[0].name
+// console.log('routes: ', packagingRoutingData(routes))
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

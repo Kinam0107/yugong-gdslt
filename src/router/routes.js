@@ -23,7 +23,7 @@ export default [
               {
                 path: 'waterworks',
                 component: endbar,
-                meta: { title: '供水工程', leaf: true },
+                meta: { title: '供水工程', redirectIndex: 1, leaf: true },
                 children: [
                   {
                     path: 'statistic',
@@ -495,7 +495,7 @@ export default [
   {
     path: 'pumpStation',
     component: sidebar,
-    meta: { title: '泵站' },
+    meta: { title: '泵站', redirectIndex: 1 },
     children: [
       {
         path: 'aMap',
