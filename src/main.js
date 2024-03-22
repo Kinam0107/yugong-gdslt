@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import ElementPlus from 'element-plus'
 import 'virtual:svg-icons-register'
-// import 'default-passive-events'
+import 'default-passive-events'
 import '@/utils/prototype'
 import '@/styles/index.scss'
 import App from '@/App.vue'
@@ -12,16 +12,18 @@ import SvgIcon from '@/components/SvgIcon.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import TabBar from '@/components/TabBar.vue'
 import TablePagination from '@/components/TablePagination.vue'
+import { permitDirective } from '@/utils/directives'
 
 const app = createApp(App)
 
-app.use(createPinia())
-app.use(router)
-app.use(ElementPlus)
-app.component('AdmnSelect', AdmnSelect)
-app.component('SvgIcon', SvgIcon)
-app.component('PageHeader', PageHeader)
-app.component('TabBar', TabBar)
-app.component('TablePagination', TablePagination)
-
-app.mount('#app')
+app
+  .use(createPinia())
+  .use(router)
+  .use(ElementPlus)
+  .component('AdmnSelect', AdmnSelect)
+  .component('SvgIcon', SvgIcon)
+  .component('PageHeader', PageHeader)
+  .component('TabBar', TabBar)
+  .component('TablePagination', TablePagination)
+  .directive('permit', permitDirective)
+  .mount('#app')

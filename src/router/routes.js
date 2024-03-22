@@ -36,19 +36,9 @@ export default [
                     meta: { title: '基础信息维护' }
                   },
                   {
-                    path: 'spatialData',
-                    component: developing,
-                    meta: { title: '空间数据上图管理' }
-                  },
-                  {
                     path: 'subsidiary',
                     component: developing,
                     meta: { title: '附属对象管理' }
-                  },
-                  {
-                    path: 'changeReview',
-                    component: developing,
-                    meta: { title: '名录变更审核' }
                   }
                 ]
               },

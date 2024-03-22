@@ -68,7 +68,7 @@
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Setting, Bell, ArrowUp, ArrowDown } from '@element-plus/icons-vue'
-import { localData } from '@/utils/storage'
+import { getUserInfo } from '@/utils/userInfo'
 import { logout } from '@/api/authCenterApi'
 
 const props = defineProps({
@@ -125,7 +125,7 @@ function notice() {
 }
 
 // 用户信息相关
-const userInfo = reactive(localData.get('userInfo') || {})
+const userInfo = reactive(getUserInfo() || {})
 const showMore = ref(false)
 
 // todo 修改密码

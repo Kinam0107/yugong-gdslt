@@ -32,7 +32,8 @@ import { ElMessage } from 'element-plus'
 import { User, Lock } from '@element-plus/icons-vue'
 import { login as loginApi, getUserInfo as getUserInfoApi, getPubKey as getPubKeyApi } from '@/api/authCenterApi'
 import { getToken, setToken, clearToken } from '@/utils/userToken'
-import { localData } from '@/utils/storage'
+import { setUserInfo, clearUserInfo } from '@/utils/userInfo'
+import { setPermit, clearPermit } from '@/utils/userPermit'
 import { JSEncrypt } from 'jsencrypt'
 import globalConfig from '@/config'
 import { useEventListener } from '@/composables/event'
@@ -44,7 +45,8 @@ const password = ref('')
 onBeforeMount(() => {
   // 访问登录页面时清空token和用户信息
   clearToken()
-  localData.remove('userInfo')
+  clearUserInfo()
+  clearPermit()
   // 获取加密公钥
   if (globalConfig.loginEncryption) getPubKey()
 })
@@ -110,12 +112,21 @@ function login() {
 function getUserInfo() {
   getUserInfoApi()
     .then((res) => {
-      localData.set('userInfo', res?.data || {})
+      setUserInfo(res?.data || {})
     })
     .catch(() => {
       ElMessage.error('获取用户信息失败！')
     })
     .finally(() => {
+      setPermit([
+        'waterSupply:waterStationBasic:add',
+        'waterSupply:waterStationBasic:export',
+        'waterSupply:waterStationBasic:template',
+        'waterSupply:waterStationBasic:import',
+        'waterSupply:waterStationBasic:view',
+        'waterSupply:waterStationBasic:edit',
+        'waterSupply:waterStationBasic:remove'
+      ])
       router.push({ name: 'root' })
     })
 }

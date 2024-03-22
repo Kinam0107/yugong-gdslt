@@ -2,10 +2,10 @@
   <div class="content_wrapper">
     <div class="action_wrapper">
       <div class="function_bar">
-        <el-button type="primary" @click="add()">新增</el-button>
-        <el-button>导出</el-button>
-        <el-button>模板</el-button>
-        <el-button>导入</el-button>
+        <el-button v-permit:waterSupply:waterStationBasic:add type="primary" @click="add()">新增</el-button>
+        <el-button v-permit:waterSupply:waterStationBasic:export @click="download()">导出</el-button>
+        <el-button v-permit:waterSupply:waterStationBasic:template>模板</el-button>
+        <el-button v-permit:waterSupply:waterStationBasic:import>导入</el-button>
       </div>
       <div class="filter_bar">
         <label>名录年份：</label>
@@ -48,9 +48,9 @@
         </el-table-column>
         <el-table-column label="操作" width="150px" header-align="right" align="left" fixed="right">
           <template #default="scope">
-            <el-button size="small" link type="primary" @click="desc(scope.row.id)">查看</el-button>
-            <el-button size="small" link type="primary" @click="edit(scope.row.id)">编辑</el-button>
-            <el-button size="small" link type="primary" @click="remove(scope.row)">删除</el-button>
+            <el-button v-permit:waterSupply:waterStationBasic:view size="small" link type="primary" @click="desc(scope.row.id)">查看</el-button>
+            <el-button v-permit:waterSupply:waterStationBasic:edit size="small" link type="primary" @click="edit(scope.row.id)">编辑</el-button>
+            <el-button v-permit:waterSupply:waterStationBasic:remove size="small" link type="primary" @click="remove(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -178,6 +178,10 @@ const remove = (row) => {
         ElMessage.error('删除失败')
       })
   })
+}
+
+const download = () => {
+  console.log('download')
 }
 
 const route = useRoute()
