@@ -1,4 +1,18 @@
 /**
+ * @description 文件流下载
+ */
+export function downloadBlob(res, name) {
+  const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+  const link = document.createElement('a')
+  link.style.display = 'none'
+  link.href = URL.createObjectURL(blob)
+  link.setAttribute('download', name)
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
+/**
  * @description 获取图片的宽高
  * @param {String} src 图片路径
  * @param {Number} maxWaitLoad 超时时间
