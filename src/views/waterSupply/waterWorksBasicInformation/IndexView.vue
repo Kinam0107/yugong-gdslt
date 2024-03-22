@@ -3,9 +3,19 @@
     <div class="action_wrapper">
       <div class="function_bar">
         <el-button v-permit:waterSupply:waterStationBasic:add type="primary" @click="add()">新增</el-button>
-        <el-button v-permit:waterSupply:waterStationBasic:export @click="download()">导出</el-button>
-        <el-button v-permit:waterSupply:waterStationBasic:template>模板</el-button>
-        <el-button v-permit:waterSupply:waterStationBasic:import>导入</el-button>
+        <ExportOut
+          v-slot="{ disabled, exported }"
+          url="/agricultural-water-center/water-supply-engineer-base-info/supplyInfoExport"
+          :params="{ year: params.year, adcd: params.adcd, scale: params.scale, engineerName: params.engineerName }"
+          :name="`供水工程信息${new Date().format('_yy_MM_dd_HH_mm_ss')}`"
+          largeAmount>
+          <el-button v-permit:waterSupply:waterStationBasic:export :disabled="disabled" @click="exported">导出</el-button>
+        </ExportOut>
+        <el-button v-permit:waterSupply:waterStationBasic:template @click="downloadTemplate()">模板</el-button>
+        <el-button v-permit:waterSupply:waterStationBasic:import @click="batchImport()">
+          <input v-show="false" id="gsgcImport" type="file" @change="batchImport" />
+          导入
+        </el-button>
       </div>
       <div class="filter_bar">
         <label>名录年份：</label>
@@ -79,6 +89,7 @@ import axios from '@/api/axios/base'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import { localData } from '@/utils/storage'
+import { downloadBlob } from '@/utils/util'
 
 onMounted(() => {
   search()
@@ -171,7 +182,7 @@ const remove = (row) => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
       .then(() => {
-        ElMessage.success(`删除成功`)
+        ElMessage.success('删除成功')
         search()
       })
       .catch(() => {
@@ -180,8 +191,37 @@ const remove = (row) => {
   })
 }
 
-const download = () => {
-  console.log('download')
+const downloadTemplate = () => {
+  axios({
+    method: 'get',
+    url: '/agricultural-water-center/water-supply-engineer-base-info/downloadTemplate',
+    responseType: 'blob'
+  }).then((res) => {
+    downloadBlob(res, '供水工程基础信息导入模板.xlsx')
+  })
+}
+const batchImport = (e) => {
+  if (e) {
+    axios({
+      method: 'post',
+      url: '/agricultural-water-center/water-supply-engineer-base-info/importExcel',
+      data: {
+        file: e.target.files[0],
+        name: 'supply_basic_info'
+      },
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+      .then(() => {
+        ElMessage.success('导入成功')
+        e.target.value = ''
+        search()
+      })
+      .catch(() => {
+        ElMessage.error('导入失败')
+      })
+  } else {
+    document.getElementById('gsgcImport').click()
+  }
 }
 
 const route = useRoute()
