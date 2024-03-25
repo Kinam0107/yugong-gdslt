@@ -12,7 +12,7 @@
           <el-button v-permit:waterSupply:waterStationBasic:export :disabled="disabled" @click="exported">导出</el-button>
         </ExportOut>
         <el-button v-permit:waterSupply:waterStationBasic:template @click="downloadTemplate()">模板</el-button>
-        <el-button v-permit:waterSupply:waterStationBasic:import @click="batchImport()">
+        <el-button v-permit:waterSupply:waterStationBasic:import @click="batchImport('gsgcImport')">
           <input v-show="false" id="gsgcImport" type="file" @change="batchImport" />
           导入
         </el-button>
@@ -37,8 +37,10 @@
         <el-table-column type="index" label="序号" width="60" align="center" fixed />
         <el-table-column prop="adnm" label="行政区划" width="120" />
         <el-table-column label="工程名称" min-width="300">
-          <template #default="scope">
-            <el-button size="small" link type="primary" @click="jumpSingleProjectPage(scope.row.id, scope.row.engineerName)">{{ scope.row.engineerName }}</el-button>
+          <template #default="{ row }">
+            <el-button size="small" link type="primary" @click="jumpPage(`/waterworks/${row.id}`, row.id, row.engineerName)">
+              {{ row.engineerName }}
+            </el-button>
           </template>
         </el-table-column>
         <el-table-column label="工程规模" min-width="140">
@@ -87,9 +89,9 @@ import EditPage from './EditPage.vue'
 import DescPage from './DescPage.vue'
 import axios from '@/api/axios/base'
 import { ElMessageBox, ElMessage } from 'element-plus'
-import { useRoute, useRouter } from 'vue-router'
-import { localData } from '@/utils/storage'
 import { downloadBlob } from '@/utils/util'
+import { useJumpSingleProjectPage } from '@/composables/togglePage'
+const { jumpPage } = useJumpSingleProjectPage()
 
 onMounted(() => {
   search()
@@ -201,7 +203,7 @@ const downloadTemplate = () => {
   })
 }
 const batchImport = (e) => {
-  if (e) {
+  if (e.target) {
     axios({
       method: 'post',
       url: '/agricultural-water-center/water-supply-engineer-base-info/importExcel',
@@ -220,18 +222,8 @@ const batchImport = (e) => {
         ElMessage.error('导入失败')
       })
   } else {
-    document.getElementById('gsgcImport').click()
+    document.getElementById(e).click()
   }
-}
-
-const route = useRoute()
-const router = useRouter()
-const jumpSingleProjectPage = (id, name) => {
-  localData.set('JumpInformation', {
-    routePath: route.path,
-    projectName: name
-  })
-  router.push('/waterworks/' + id)
 }
 </script>
 

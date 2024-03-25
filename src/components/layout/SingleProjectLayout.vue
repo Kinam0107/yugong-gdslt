@@ -1,11 +1,11 @@
 <template>
   <div class="single_project--layout">
     <div class="head--container">
-      <PageHeader back crumb @click="back">
+      <PageHeader back crumb @click="backPage()">
         <template #crumb>
           <el-breadcrumb separator="/">
-            <el-breadcrumb-item style="cursor: pointer" @click="back">{{ jumpInfo.projectName }}</el-breadcrumb-item>
-            <el-breadcrumb-item>{{ route.meta.title }}</el-breadcrumb-item>
+            <el-breadcrumb-item style="cursor: pointer" @click="backPage()">{{ projectName }}</el-breadcrumb-item>
+            <el-breadcrumb-item>{{ pageTitle }}</el-breadcrumb-item>
           </el-breadcrumb>
         </template>
       </PageHeader>
@@ -22,17 +22,10 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
 import SideMenu from '../menu/SideMenu.vue'
-import { useRoute, useRouter, RouterView } from 'vue-router'
-import { localData } from '@/utils/storage'
-
-const jumpInfo = reactive(localData.get('JumpInformation'))
-const route = useRoute()
-const router = useRouter()
-const back = () => {
-  router.push(jumpInfo.routePath)
-}
+import { RouterView } from 'vue-router'
+import { useJumpSingleProjectPage } from '@/composables/togglePage'
+const { backPage, projectName, pageTitle } = useJumpSingleProjectPage()
 </script>
 
 <style scoped lang="scss">
