@@ -75,7 +75,7 @@
 import AnchorBox from '@/components/anchor/AnchorBox.vue'
 import AnchorItem from '@/components/anchor/AnchorItem.vue'
 import OtherPlane from './cpns/OtherPlane.vue'
-import ConerMark from '@/components/ConerMark.vue'
+import ConerMark from '@/components/mark/ConerMark.vue'
 import ExceptionPageLayout from '@/components/layout/ExceptionPageLayout.vue'
 </script>
 
