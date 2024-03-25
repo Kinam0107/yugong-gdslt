@@ -40,6 +40,7 @@ const menuList = reactive(
   height: 100%;
   padding: 0 7 * $baseDistance;
   li {
+    flex-shrink: 0;
     height: 100%;
     line-height: 7 * $baseDistance;
     font-size: 14px;

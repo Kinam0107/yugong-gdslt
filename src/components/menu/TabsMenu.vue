@@ -30,6 +30,7 @@ const menuData = computed(() => {
   display: flex;
   gap: 4 * $baseDistance;
   li {
+    flex-shrink: 0;
     line-height: 3 * $baseDistance;
     font-size: 14px;
     color: $color-titletext;
