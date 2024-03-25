@@ -2,14 +2,18 @@
 <template>
   <ul class="top_menu">
     <RouterLink v-for="item in menuList" :key="item.name" :to="{ name: item.name }" custom v-slot="{ isActive, navigate }">
-      <li :class="[{ active: isActive }, props.selectedStyle]" @click="navigate" role="link">{{ item.title }}</li>
+      <li :class="[{ active: isActive || manualSetupActive === item.name }, props.selectedStyle]" @click="navigate" role="link">
+        {{ item.title }}
+      </li>
     </RouterLink>
   </ul>
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { nextTick, reactive, ref, watch } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
+import { useMaintainMenuSelection } from '@/composables/togglePage'
+const router = useRouter()
 
 const props = defineProps({
   selectedStyle: {
@@ -18,7 +22,21 @@ const props = defineProps({
   }
 })
 
-const router = useRouter()
+const manualSetupActive = ref()
+const setActive = () => {
+  const { activeMenu } = useMaintainMenuSelection()
+  manualSetupActive.value = activeMenu
+}
+watch(
+  () => router.currentRoute.value,
+  () => {
+    nextTick(() => {
+      setActive()
+    })
+  },
+  { immediate: true }
+)
+
 const menuList = reactive(
   router
     .getRoutes()

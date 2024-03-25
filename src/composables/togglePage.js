@@ -18,6 +18,8 @@ export function useJumpSingleProjectPage() {
     router.push({
       path: targetPath
     })
+    const { setActive } = useMaintainMenuSelection()
+    setActive(route)
   }
 
   const backPage = () => {
@@ -26,15 +28,34 @@ export function useJumpSingleProjectPage() {
         path: localData.get(key).backPath,
         state: { params: localData.get(key).params }
       })
-      nextTick(() => {
-        localData.remove(key)
-      })
     }
   }
 
+  const clearCache = () => {
+    nextTick(() => {
+      localData.remove(key)
+    })
+  }
+
+  const storeParams = history.state.params || null
   const projectName = localData.get(key)?.projectName || ''
   const pageTitle = route.meta.title || ''
-  const storeParams = history.state.params || null
 
-  return { jumpPage, backPage, projectName, pageTitle, storeParams }
+  return { jumpPage, backPage, clearCache, storeParams, projectName, pageTitle }
+}
+
+export function useMaintainMenuSelection() {
+  const key = 'activeMenuRouteName'
+
+  const setActive = (route) => {
+    localData.set(key, route.matched[1].name)
+  }
+
+  const activeMenu = localData.get(key)
+
+  const clearActive = () => {
+    localData.remove(key)
+  }
+
+  return { setActive, activeMenu, clearActive }
 }

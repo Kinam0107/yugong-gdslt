@@ -22,10 +22,17 @@
 </template>
 
 <script setup>
-import SideMenu from '../menu/SideMenu.vue'
+import { onBeforeUnmount } from 'vue'
 import { RouterView } from 'vue-router'
-import { useJumpSingleProjectPage } from '@/composables/togglePage'
-const { backPage, projectName, pageTitle } = useJumpSingleProjectPage()
+import SideMenu from '../menu/SideMenu.vue'
+import { useJumpSingleProjectPage, useMaintainMenuSelection } from '@/composables/togglePage'
+const { backPage, clearCache, projectName, pageTitle } = useJumpSingleProjectPage()
+const { clearActive } = useMaintainMenuSelection()
+
+onBeforeUnmount(() => {
+  clearCache()
+  clearActive()
+})
 </script>
 
 <style scoped lang="scss">
