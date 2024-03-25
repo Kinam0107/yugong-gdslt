@@ -13,7 +13,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import TabBar from '@/components/TabBar.vue'
 import TablePagination from '@/components/TablePagination.vue'
 import ExportOut from '@/components/ExportOut.vue'
-import { permitDirective } from '@/utils/directives'
+import { permitDirective, echartsAdaptDirective } from '@/utils/directives'
 
 const app = createApp(App)
 
@@ -28,4 +28,5 @@ app
   .component('TablePagination', TablePagination)
   .component('ExportOut', ExportOut)
   .directive('permit', permitDirective)
+  .directive('echartsAdapt', echartsAdaptDirective)
   .mount('#app')

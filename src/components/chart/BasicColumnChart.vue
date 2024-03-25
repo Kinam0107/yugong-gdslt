@@ -1,9 +1,9 @@
 <template>
-  <div class="basic_column_chart" ref="chart"></div>
+  <div class="basic_column_chart" ref="chart" v-echartsAdapt></div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import * as echarts from 'echarts'
 
 const props = defineProps({
@@ -33,7 +33,8 @@ const props = defineProps({
     default: ''
   },
   data: {
-    type: Object,
+    // 只有一类数据时传数组值
+    type: [Object, Array],
     default: () => {
       return {
         成功数: [3000, 4400, 5800, 4400, 4400],
@@ -44,6 +45,10 @@ const props = defineProps({
   isStack: {
     type: Boolean,
     default: false
+  },
+  grid: {
+    type: Array,
+    default: () => [24, 24, 24, 24]
   }
 })
 
@@ -61,37 +66,43 @@ onUnmounted(() => {
   }
 })
 
+const onlyOneType = computed(() => {
+  return Array.isArray(props.data)
+})
+
 const initChart = () => {
   myChart = echarts.init(chart.value)
   const option = {
-    legend: {
-      left: 24,
-      bottom: 24,
-      itemGap: 24,
-      itemWidth: 8,
-      itemHeight: 8,
-      icon: 'rect',
-      textStyle: {
-        color: '#8C8C8C',
-        fontFamily: 'PingFang SC',
-        fontSize: 12,
-        fontWeight: 400,
-        lineHeight: 20
-      },
-      data: Object.entries(props.data).map((item, index) => {
-        return {
-          name: item[0],
-          itemStyle: {
-            color: `rgb(${props.color[index]})`
-          }
-        }
-      })
-    },
+    legend: onlyOneType.value
+      ? undefined
+      : {
+          left: 24,
+          bottom: 24,
+          itemGap: 24,
+          itemWidth: 8,
+          itemHeight: 8,
+          icon: 'rect',
+          textStyle: {
+            color: '#8C8C8C',
+            fontFamily: 'PingFang SC',
+            fontSize: 12,
+            fontWeight: 400,
+            lineHeight: 20
+          },
+          data: Object.entries(props.data).map((item, index) => {
+            return {
+              name: item[0],
+              itemStyle: {
+                color: `rgb(${props.color[index]})`
+              }
+            }
+          })
+        },
     grid: {
-      left: 24,
-      top: 48,
-      right: 24,
-      bottom: 56,
+      top: props.yAxisUnit ? props.grid[0] + 32 : props.grid[0] + 24,
+      right: props.grid[1],
+      bottom: onlyOneType.value ? props.grid[2] : props.grid[2] + 32,
+      left: props.grid[3],
       containLabel: true
     },
     xAxis: {
@@ -156,29 +167,44 @@ const initChart = () => {
         type: 'shadow'
       }
     },
-    series: Object.entries(props.data).map((item, index) => {
-      const obj = {
-        name: item[0],
-        type: 'bar',
-        barWidth: 8,
-        emphasis: {
-          focus: 'series'
-        },
-        data: item[1],
-        itemStyle: {
-          color: getColor(props.color[index])
-        },
-        tooltip: {
-          valueFormatter: (value) => value + props.yAxisUnit
+    series: onlyOneType.value
+      ? {
+          type: 'bar',
+          barWidth: 8,
+          emphasis: {
+            focus: 'series'
+          },
+          data: props.data,
+          itemStyle: {
+            color: getColor(props.color[0])
+          },
+          tooltip: {
+            valueFormatter: (value) => value + props.yAxisUnit
+          }
         }
-      }
-      if (props.isStack) {
-        obj.stack = 'total'
-      } else {
-        obj.barGap = 0.5
-      }
-      return obj
-    })
+      : Object.entries(props.data).map((item, index) => {
+          const obj = {
+            name: item[0],
+            type: 'bar',
+            barWidth: 8,
+            emphasis: {
+              focus: 'series'
+            },
+            data: item[1],
+            itemStyle: {
+              color: getColor(props.color[index])
+            },
+            tooltip: {
+              valueFormatter: (value) => value + props.yAxisUnit
+            }
+          }
+          if (props.isStack) {
+            obj.stack = 'total'
+          } else {
+            obj.barGap = 0.5
+          }
+          return obj
+        })
   }
   myChart.setOption(option)
 }

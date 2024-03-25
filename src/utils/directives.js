@@ -37,6 +37,7 @@ prevVnode：代表之前的渲染中指令所绑定元素的 VNode。仅在 befo
 
 import globalConfig from '@/config'
 import { getPermit } from './userPermit'
+import * as echarts from 'echarts'
 
 // 用户权限
 export const permitDirective = {
@@ -55,5 +56,24 @@ export const permitDirective = {
     } else if (!globalConfig.disablePermit) {
       throw new Error('未指定权限')
     }
+  }
+}
+
+// echarts自适应
+export const echartsAdaptDirective = {
+  mounted(el) {
+    el['_changeEchartsSize'] = () => {
+      const chart = echarts.getInstanceByDom(el)
+      if (!chart) {
+        return
+      } else {
+        chart.resize()
+      }
+    }
+    window.addEventListener('resize', el['_changeEchartsSize'])
+  },
+  unmounted(el) {
+    document.removeEventListener('click', el['_changeEchartsSize'])
+    delete el['_changeEchartsSize']
   }
 }
