@@ -23,11 +23,11 @@ export default [
               {
                 path: 'waterworks',
                 component: endbar,
-                meta: { title: '供水工程', redirectIndex: 1, leaf: true },
+                meta: { title: '供水工程', leaf: true },
                 children: [
                   {
                     path: 'statistic',
-                    component: developing,
+                    component: () => import('@/views/waterSupply/waterWorksStatisticAnalysis/IndexView.vue'),
                     meta: { title: '统计分析' }
                   },
                   {

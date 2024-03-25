@@ -56,6 +56,7 @@ const chart = ref()
 let myChart = null
 
 onMounted(() => {
+  myChart = echarts.init(chart.value)
   initChart()
 })
 
@@ -71,7 +72,6 @@ const onlyOneType = computed(() => {
 })
 
 const initChart = () => {
-  myChart = echarts.init(chart.value)
   const option = {
     legend: onlyOneType.value
       ? undefined
@@ -232,6 +232,8 @@ const getColor = (color) => {
     ]
   }
 }
+
+defineExpose({ initChart })
 </script>
 
 <style scoped lang="scss">
