@@ -38,7 +38,7 @@
         <el-table-column prop="adnm" label="行政区划" width="120" />
         <el-table-column label="工程名称" min-width="300">
           <template #default="{ row }">
-            <el-button size="small" link type="primary" @click="jumpPage(`/waterworks/${row.id}`, row.id, row.engineerName)">
+            <el-button size="small" link type="primary" @click="jumpPage(`/waterworks/${row.id}`, row.id, row.engineerName, params)">
               {{ row.engineerName }}
             </el-button>
           </template>
@@ -51,11 +51,8 @@
           <template #default="scope">{{ scope.row.completionCommissionTime?.substring(0, 10) }}</template>
         </el-table-column>
         <el-table-column prop="yxzt" label="运行状态" min-width="90">
-          <template #default="scope">
-            <i
-              :style="{ backgroundColor: scope.row.runningState === '正常' ? '#28ce8e' : scope.row.runningState === '异常' ? '#f13939' : '' }"
-              style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 10px"></i>
-            {{ scope.row.runningState }}
+          <template #default="{ row }">
+            <StatusMark :icon-color="{ 正常: '#28ce8e', 异常: '#f13939' }[row.runningState]">{{ row.runningState }}</StatusMark>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150px" header-align="right" align="left" fixed="right">
@@ -84,6 +81,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import { dataEcho, getOptions } from '@/utils/enum'
+import StatusMark from '@/components/mark/StatusMark.vue'
 import AddPage from './AddPage.vue'
 import EditPage from './EditPage.vue'
 import DescPage from './DescPage.vue'
@@ -91,7 +89,7 @@ import axios from '@/api/axios/base'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { downloadBlob } from '@/utils/util'
 import { useJumpSingleProjectPage } from '@/composables/togglePage'
-const { jumpPage } = useJumpSingleProjectPage()
+const { jumpPage, storeParams } = useJumpSingleProjectPage()
 
 onMounted(() => {
   search()
@@ -99,17 +97,19 @@ onMounted(() => {
 })
 
 const loading = ref(false)
-const params = reactive({
-  year: new Date().format('yyyy'),
-  adcd: undefined,
-  scale: undefined,
-  engineerName: undefined,
-  page: true,
-  current: 1,
-  size: 10,
-  order: undefined,
-  sort: undefined
-})
+const params = reactive(
+  storeParams || {
+    year: new Date().format('yyyy'),
+    adcd: undefined,
+    scale: undefined,
+    engineerName: undefined,
+    page: true,
+    current: 1,
+    size: 10,
+    order: undefined,
+    sort: undefined
+  }
+)
 const tableTotal = ref(0)
 const tableData = ref([])
 const sortChange = ({ prop, order }) => {
