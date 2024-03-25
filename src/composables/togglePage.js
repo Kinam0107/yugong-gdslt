@@ -39,9 +39,8 @@ export function useJumpSingleProjectPage() {
 
   const storeParams = history.state.params || null
   const projectName = localData.get(key)?.projectName || ''
-  const pageTitle = route.meta.title || ''
 
-  return { jumpPage, backPage, clearCache, storeParams, projectName, pageTitle }
+  return { jumpPage, backPage, clearCache, storeParams, projectName }
 }
 
 export function useMaintainMenuSelection() {

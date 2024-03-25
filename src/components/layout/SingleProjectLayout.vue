@@ -5,7 +5,7 @@
         <template #crumb>
           <el-breadcrumb separator="/">
             <el-breadcrumb-item style="cursor: pointer" @click="backPage()">{{ projectName }}</el-breadcrumb-item>
-            <el-breadcrumb-item>{{ pageTitle }}</el-breadcrumb-item>
+            <el-breadcrumb-item>{{ route.meta.title }}</el-breadcrumb-item>
           </el-breadcrumb>
         </template>
       </PageHeader>
@@ -23,11 +23,12 @@
 
 <script setup>
 import { onBeforeUnmount } from 'vue'
-import { RouterView } from 'vue-router'
+import { useRoute, RouterView } from 'vue-router'
 import SideMenu from '../menu/SideMenu.vue'
 import { useJumpSingleProjectPage, useMaintainMenuSelection } from '@/composables/togglePage'
-const { backPage, clearCache, projectName, pageTitle } = useJumpSingleProjectPage()
+const { backPage, clearCache, projectName } = useJumpSingleProjectPage()
 const { clearActive } = useMaintainMenuSelection()
+const route = useRoute()
 
 onBeforeUnmount(() => {
   clearCache()

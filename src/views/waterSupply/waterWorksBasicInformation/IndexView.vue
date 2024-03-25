@@ -3,14 +3,14 @@
     <div class="action_wrapper">
       <div class="function_bar">
         <el-button v-permit:waterSupply:waterStationBasic:add type="primary" @click="add()">新增</el-button>
-        <ExportOut
+        <export-out
           v-slot="{ disabled, exported }"
           url="/agricultural-water-center/water-supply-engineer-base-info/supplyInfoExport"
           :params="{ year: params.year, adcd: params.adcd, scale: params.scale, engineerName: params.engineerName }"
           :name="`供水工程信息${new Date().format('_yy_MM_dd_HH_mm_ss')}`"
           largeAmount>
           <el-button v-permit:waterSupply:waterStationBasic:export :disabled="disabled" @click="exported">导出</el-button>
-        </ExportOut>
+        </export-out>
         <el-button v-permit:waterSupply:waterStationBasic:template @click="downloadTemplate()">模板</el-button>
         <el-button v-permit:waterSupply:waterStationBasic:import @click="batchImport('gsgcImport')">
           <input v-show="false" id="gsgcImport" type="file" @change="batchImport" />
@@ -63,7 +63,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <TablePagination v-model:currentPage="params.current" v-model:pageSize="params.size" :total="tableTotal" @change="search()" />
+      <table-pagination v-model:currentPage="params.current" v-model:pageSize="params.size" :total="tableTotal" @change="search()" />
     </div>
   </div>
   <div class="mask_layer_under_form" v-if="showAddForm">
