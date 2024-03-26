@@ -119,6 +119,7 @@ function getUserInfo() {
     })
     .finally(() => {
       setPermit([
+        'waterSupply:waterStationAnalysis:export',
         'waterSupply:waterStationBasic:add',
         'waterSupply:waterStationBasic:export',
         'waterSupply:waterStationBasic:template',

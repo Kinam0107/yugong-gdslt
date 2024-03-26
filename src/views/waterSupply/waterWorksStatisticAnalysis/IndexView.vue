@@ -28,16 +28,92 @@
       </div>
       <div class="water_box">
         <div class="title">供水情况</div>
+        <div class="statistic">
+          <div class="item first">
+            <div class="label">覆盖自然村(个)</div>
+            <div class="count">{{ waterSupplySituation.villageNum?.toLocaleString() }}</div>
+          </div>
+          <div class="item second">
+            <div class="label">供水人口(人)</div>
+            <div class="count">{{ waterSupplySituation.personNum?.toLocaleString() }}</div>
+          </div>
+          <div class="item third">
+            <div class="label">供水户数(户)</div>
+            <div class="count">{{ waterSupplySituation.houseNum?.toLocaleString() }}</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="item_wrapper base_box">
       <div class="title">供水工程基本数据统计</div>
+      <BasicDataStatistics class="statistic" :year="params.year" :adcd="params.adcd" />
     </div>
     <div class="item_wrapper wuhua_box">
-      <div class="title">五化指标</div>
+      <div class="title">
+        五化指标
+        <span v-if="deadline" class="deadline">截止至 {{ deadline }}</span>
+      </div>
+      <div class="statistic">
+        <div class="item">
+          <div class="label">规模化覆盖人口</div>
+          <div class="value">
+            {{ dataWuhua.scalePersonNum?.toLocaleString() }}
+            <span>人</span>
+          </div>
+          <div class="value">
+            {{ (dataWuhua.scalePersonRate || 0) * 100 }}
+            <span>%</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="label">标准化建设工程</div>
+          <div class="value">
+            {{ dataWuhua.standardProjectNum?.toLocaleString() }}
+            <span>宗</span>
+          </div>
+          <div class="value">
+            {{ (dataWuhua.standardProjectRate || 0) * 100 }}
+            <span>%</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="label">县域统管覆盖人口</div>
+          <div class="value">
+            {{ dataWuhua.countyPersonNum?.toLocaleString() }}
+            <span>人</span>
+          </div>
+          <div class="value">
+            {{ (dataWuhua.countyPersonRate || 0) * 100 }}
+            <span>%</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="label">专业化管理工程</div>
+          <div class="value">
+            {{ dataWuhua.majorProjectNum?.toLocaleString() }}
+            <span>宗</span>
+          </div>
+          <div class="value">
+            {{ (dataWuhua.majorProjectRate || 0) * 100 }}
+            <span>%</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="label">智慧化服务人口</div>
+          <div class="value">
+            {{ dataWuhua.wisdomPersonNum?.toLocaleString() }}
+            <span>人</span>
+          </div>
+          <div class="value">
+            {{ (dataWuhua.wisdomPersonRate || 0) * 100 }}
+            <span>%</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="item_wrapper proxy_box">
       <div class="title">供水工程五化指标数据统计</div>
+      <IndicatorDataStatistics class="statistic" :year="params.year" :adcd="params.adcd" />
     </div>
   </div>
 </template>
@@ -46,6 +122,8 @@
 import { reactive, ref, onMounted, nextTick } from 'vue'
 import BasicColumnChart from '@/components/chart/BasicColumnChart.vue'
 import StackedHorizontalBar from '@/components/chart/StackedHorizontalBar.vue'
+import BasicDataStatistics from './BasicDataStatistics.vue'
+import IndicatorDataStatistics from './IndicatorDataStatistics.vue'
 import axios from '@/api/axios/base'
 
 const isSticky = ref(false)
@@ -63,6 +141,8 @@ const params = reactive({
 const searchAll = () => {
   searchAdcd()
   searchScale()
+  searchWater()
+  searchWuhua()
 }
 onMounted(() => {
   searchAll()
@@ -95,6 +175,7 @@ const searchAdcd = () => {
     })
   })
 }
+
 const yAxisScale = ref([])
 const dataScale = ref([])
 const scaleChart = ref()
@@ -116,6 +197,29 @@ const searchScale = () => {
     nextTick(() => {
       scaleChart.value.initChart()
     })
+  })
+}
+
+const waterSupplySituation = ref({})
+const searchWater = () => {
+  axios({
+    url: '/agricultural-water-center/waterSupplyAnalysis/waterSupplyCondition',
+    method: 'get',
+    params: params
+  }).then((res) => {
+    waterSupplySituation.value = res.data || {}
+  })
+}
+
+const deadline = ref('')
+const dataWuhua = ref({})
+const searchWuhua = () => {
+  axios({
+    url: '/agricultural-water-center/waterSupplyAnalysis/fiveModernizations',
+    method: 'get',
+    params: params
+  }).then((res) => {
+    dataWuhua.value = res.data || {}
   })
 }
 </script>
@@ -152,6 +256,11 @@ const searchScale = () => {
         font-family: DINAlternate;
       }
     }
+    .deadline {
+      @include fontCategory(5);
+      margin-left: 3 * $baseDistance;
+      font-weight: normal;
+    }
   }
   .filter_box {
     position: sticky;
@@ -159,7 +268,7 @@ const searchScale = () => {
     width: 100%;
     display: flex;
     align-items: center;
-    z-index: 1;
+    z-index: 9;
     &.sticky {
       margin-left: 0;
       margin-right: 0;
@@ -198,18 +307,118 @@ const searchScale = () => {
     margin: 0;
     flex: 1;
     .statistic {
-      width: 100%;
       height: 160px;
+    }
+  }
+  .water_box .statistic {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2 * $baseDistance;
+    padding-top: 2 * $baseDistance;
+    .item {
+      border-radius: 0.5 * $baseDistance;
+      padding: 0 2 * $baseDistance;
+      &.first {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 42px;
+        background-image: linear-gradient(180deg, #cff3f6, rgba(207, 243, 246, 0.3));
+        .count {
+          color: $color-primary;
+        }
+      }
+      &.second {
+        display: flex;
+        flex-direction: column;
+        gap: $baseDistance;
+        justify-content: center;
+        flex: 1;
+        height: calc(100% - 42px - 2 * $baseDistance);
+        background-image: linear-gradient(180deg, #c7f3e3, rgba(199, 243, 227, 0.3));
+        .count {
+          color: $color-primary;
+        }
+      }
+      &.third {
+        display: flex;
+        flex-direction: column;
+        gap: $baseDistance;
+        justify-content: center;
+        flex: 1;
+        height: calc(100% - 42px - 2 * $baseDistance);
+        background-image: linear-gradient(180deg, #ffe4d2, rgba(255, 228, 210, 0.3));
+        .count {
+          color: $color-warning;
+        }
+      }
+      .label {
+        @include fontCategory();
+      }
+      .count {
+        @include fontCategory(2);
+        font-weight: normal;
+        font-family: DINAlternate;
+      }
     }
   }
   .base_box {
     width: 100%;
+    .statistic {
+      padding-top: 2 * $baseDistance;
+    }
   }
   .wuhua_box {
     width: 100%;
+    .statistic {
+      padding-top: 2 * $baseDistance;
+      display: flex;
+      gap: 2 * $baseDistance;
+      .item {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1;
+        height: 150px;
+        border-radius: 0.5 * $baseDistance;
+        padding: 2 * $baseDistance 3 * $baseDistance;
+        &:nth-child(1),
+        &:nth-child(2),
+        &:nth-child(3) {
+          background-image: linear-gradient(180deg, #c7f3e3, rgba(199, 243, 227, 0.3));
+          .value {
+            color: $color-primary;
+          }
+        }
+        &:nth-child(4),
+        &:nth-child(5) {
+          background-image: linear-gradient(180deg, #d1f1ff, rgba(214, 227, 255, 0.2));
+          .value {
+            color: #36a3d9;
+          }
+        }
+        .label {
+          @include fontCategory();
+        }
+        .value {
+          font-size: 40px;
+          font-weight: 700;
+          font-family: DINAlternate;
+          white-space: nowrap;
+          > span {
+            @include fontCategory();
+            font-weight: normal;
+          }
+        }
+      }
+    }
   }
   .proxy_box {
     width: 100%;
+    .statistic {
+      padding-top: 2 * $baseDistance;
+    }
   }
 }
 </style>
