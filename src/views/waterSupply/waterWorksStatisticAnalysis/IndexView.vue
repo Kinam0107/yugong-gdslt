@@ -16,12 +16,15 @@
         </span>
       </div>
       <div class="statistic">
-        <BasicColumnChart ref="adcdChart" :xAxisValue="xAxisAdcd" yAxisUnit="宗" :data="dataAdcd" :grid="[0, 0, 0, 0]" />
+        <BasicColumnChart ref="adcdChart" :xAxisValue="xAxisAdcd" yAxisUnit="宗" :data="dataAdcd" :grid="[32, 0, 0, 0]" />
       </div>
     </div>
     <div class="item_wrapper transverse_box">
       <div class="scale_box">
         <div class="title">工程规模</div>
+        <div class="statistic">
+          <StackedHorizontalBar ref="scaleChart" :yAxisValue="yAxisScale" unit="宗" :data="dataScale" :grid="[12, 0, 0, 0]" />
+        </div>
       </div>
       <div class="water_box">
         <div class="title">供水情况</div>
@@ -42,6 +45,7 @@
 <script setup>
 import { reactive, ref, onMounted, nextTick } from 'vue'
 import BasicColumnChart from '@/components/chart/BasicColumnChart.vue'
+import StackedHorizontalBar from '@/components/chart/StackedHorizontalBar.vue'
 import axios from '@/api/axios/base'
 
 const isSticky = ref(false)
@@ -58,6 +62,7 @@ const params = reactive({
 })
 const searchAll = () => {
   searchAdcd()
+  searchScale()
 }
 onMounted(() => {
   searchAll()
@@ -87,6 +92,29 @@ const searchAdcd = () => {
     dataAdcd.value = dataAdcdTemp
     nextTick(() => {
       adcdChart.value.initChart()
+    })
+  })
+}
+const yAxisScale = ref([])
+const dataScale = ref([])
+const scaleChart = ref()
+const searchScale = () => {
+  axios({
+    url: '/agricultural-water-center/waterSupplyAnalysis/scaleAnalysis',
+    method: 'get',
+    params: params
+  }).then((res) => {
+    let yAxisScaleTemp = []
+    let dataScaleTemp = []
+    let data = res.data || []
+    data.forEach((e) => {
+      yAxisScaleTemp.push(e.type)
+      dataScaleTemp.push(e.num)
+    })
+    yAxisScale.value = yAxisScaleTemp
+    dataScale.value = dataScaleTemp
+    nextTick(() => {
+      scaleChart.value.initChart()
     })
   })
 }
@@ -131,6 +159,7 @@ const searchAdcd = () => {
     width: 100%;
     display: flex;
     align-items: center;
+    z-index: 1;
     &.sticky {
       margin-left: 0;
       margin-right: 0;
@@ -168,6 +197,10 @@ const searchAdcd = () => {
     padding-bottom: 2 * $baseDistance;
     margin: 0;
     flex: 1;
+    .statistic {
+      width: 100%;
+      height: 160px;
+    }
   }
   .base_box {
     width: 100%;

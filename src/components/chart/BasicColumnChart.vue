@@ -99,9 +99,9 @@ const initChart = () => {
           })
         },
     grid: {
-      top: props.yAxisUnit ? props.grid[0] + 32 : props.grid[0] + 24,
+      top: props.grid[0],
       right: props.grid[1],
-      bottom: onlyOneType.value ? props.grid[2] : props.grid[2] + 32,
+      bottom: props.grid[2],
       left: props.grid[3],
       containLabel: true
     },

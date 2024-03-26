@@ -16,7 +16,8 @@
           :data="{
             成功数: [3000, 4400, 5800, 4400, 4400],
             失败数: [2000, 2000, 2000, 2000, 2000]
-          }" />
+          }"
+          :grid="[48, 24, 48, 24]" />
       </div>
       <div class="stacked_horizontal_bar_wrapper">
         <StackedHorizontalBar
@@ -26,7 +27,8 @@
           :data="{
             总数: [2000, 1800, 1600, 1400, 1200],
             新增数: [312, 312, 312, 312, 312]
-          }" />
+          }"
+          :grid="[32, 24, 48, 24]" />
       </div>
       <div class="doughnut_chart_wrapper">
         <DoughnutChart
