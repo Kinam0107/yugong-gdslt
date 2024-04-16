@@ -29,7 +29,9 @@
         <el-button type="primary" @click="coordinatePositioning()">坐标定位</el-button>
       </template>
       <template #legend>图例</template>
-      <template #toolbox>工具箱</template>
+      <template #toolbox>
+        <MapTool v-if="!mapLoading" :map="map" />
+      </template>
     </OlMap>
     <div ref="featureOverlay">
       <template v-if="showFeatureOverlay">
@@ -62,10 +64,13 @@ import mediumReservoir from '@/assets/images/points/reservoir-medium.png'
 import smallReservoir from '@/assets/images/points/reservoir-small.png'
 import { ref, watch } from 'vue'
 import { Close } from '@element-plus/icons-vue'
+import MapTool from '@/components/map/MapTool.vue'
 
 let map
+const mapLoading = ref(true)
 const handleInitFinished = (e) => {
   map = e
+  mapLoading.value = false
   setImagePoint()
 }
 
@@ -241,6 +246,10 @@ const coordinatePositioning = () => {
     &.default {
       left: 16px;
       top: 8px;
+    }
+    &.toolbox {
+      left: 16px;
+      bottom: 12px;
     }
   }
 }

@@ -15,6 +15,11 @@
       <SvgIcon icon="pdf-fill" @click="copy" />
     </div>
     <div class="design_icon_box">
+      <SvgIcon icon="ruler" @click="copy" />
+      <SvgIcon icon="polygon" @click="copy" />
+      <SvgIcon icon="clear" @click="copy" />
+    </div>
+    <div class="design_icon_box">
       <SvgIcon icon="mail" @click="copy" />
       <SvgIcon icon="time-circle" @click="copy" />
       <SvgIcon icon="trash-can" @click="copy" />

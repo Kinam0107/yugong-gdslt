@@ -467,7 +467,7 @@ export function draw(map, layerName, type, showLengthOrArea, handleFunction) {
       newFeature.setStyle(disstyle)
       mapLayers[layerName].getSource().addFeature(newFeature)
     }
-    handleFunction({ coordinate, radius, length, area })
+    if (handleFunction) handleFunction({ coordinate, radius, length, area })
   })
   map.addInteraction(drawControls)
 }

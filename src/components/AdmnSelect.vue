@@ -1,5 +1,6 @@
 <template>
   <el-cascader
+    ref="admnSelect"
     v-model="value"
     :options="options"
     :props="{
@@ -16,11 +17,13 @@
     :disabled="disabled"
     :clearable="clearable"
     show-all-levels
-    style="width: 100%" />
+    style="width: 100%"
+    @change="change"
+    @visible-change="visibleChange" />
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import options from '@/assets/data/administrativeDivisionData.js'
 
 const props = defineProps({
@@ -41,7 +44,7 @@ const props = defineProps({
     type: Boolean
   }
 })
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue', 'change', 'visibleChange'])
 
 const value = computed({
   get() {
@@ -51,4 +54,14 @@ const value = computed({
     emits('update:modelValue', val)
   }
 })
+
+const admnSelect = ref()
+const change = (val) => {
+  const node = admnSelect.value.getCheckedNodes()[0]
+  emits('change', val, node?.data?.level || '')
+}
+
+const visibleChange = (val) => {
+  emits('visibleChange', val)
+}
 </script>

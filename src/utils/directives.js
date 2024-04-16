@@ -77,3 +77,19 @@ export const echartsAdaptDirective = {
     delete el['_changeEchartsSize']
   }
 }
+
+// 处理点击外部区域的事件
+export const clickOutsideDirective = {
+  beforeMount(el, binding) {
+    el['_clickOutsideEvent'] = (event) => {
+      if (!(el === event.target || el.contains(event.target))) {
+        binding.value(event)
+      }
+    }
+    document.addEventListener('click', el['_clickOutsideEvent'])
+  },
+  unmounted(el) {
+    document.removeEventListener('click', el['_clickOutsideEvent'])
+    delete el['_clickOutsideEvent']
+  }
+}
