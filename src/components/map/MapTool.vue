@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import { nextTick, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import globalConfig from '@/config.js'
 import GeoJSON from 'ol/format/GeoJSON'
 import { Vector as VectorLayer } from 'ol/layer'
