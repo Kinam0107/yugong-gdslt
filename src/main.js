@@ -13,6 +13,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import TabBar from '@/components/TabBar.vue'
 import TablePagination from '@/components/TablePagination.vue'
 import ExportOut from '@/components/ExportOut.vue'
+import PopupWindow from '@/components/PopupWindow.vue'
 import { permitDirective, echartsAdaptDirective, clickOutsideDirective } from '@/utils/directives'
 
 const app = createApp(App)
@@ -27,6 +28,7 @@ app
   .component('TabBar', TabBar)
   .component('TablePagination', TablePagination)
   .component('ExportOut', ExportOut)
+  .component('PopupWindow', PopupWindow)
   .directive('permit', permitDirective)
   .directive('echartsAdapt', echartsAdaptDirective)
   .directive('clickOutside', clickOutsideDirective)
