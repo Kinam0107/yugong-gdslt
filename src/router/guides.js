@@ -2,7 +2,7 @@ export default [
   {
     path: 'specification',
     component: () => import('@/components/layout/SidebarLayout.vue'),
-    meta: { title: '水利厅·桌面端规范' },
+    meta: { title: '水利厅·桌面端规范', nonMenu: true },
     children: [
       {
         path: 'overallSituation',
