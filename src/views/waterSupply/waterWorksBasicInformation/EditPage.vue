@@ -26,7 +26,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import FormView from './FormView.vue'
-import axios from '@/api/axios/base'
+import axios from '@/api/axios'
 import { ElMessage } from 'element-plus'
 
 const props = defineProps({

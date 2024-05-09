@@ -1,4 +1,4 @@
-import axios from './axios/base'
+import axios from './axios'
 const pre = '/auth-center'
 
 // 用户登录

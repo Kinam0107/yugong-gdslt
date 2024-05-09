@@ -28,7 +28,7 @@
 import { ref } from 'vue'
 import FormView from './FormView.vue'
 import { localData } from '@/utils/storage'
-import axios from '@/api/axios/base'
+import axios from '@/api/axios'
 import { ElMessage } from 'element-plus'
 
 const emits = defineEmits(['back'])

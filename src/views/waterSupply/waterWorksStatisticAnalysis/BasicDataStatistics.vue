@@ -69,7 +69,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { getOptions } from '@/utils/enum'
-import axios from '@/api/axios/base'
+import axios from '@/api/axios'
 
 const props = defineProps({
   year: String,

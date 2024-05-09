@@ -124,7 +124,7 @@ import BasicColumnChart from '@/components/chart/BasicColumnChart.vue'
 import StackedHorizontalBar from '@/components/chart/StackedHorizontalBar.vue'
 import BasicDataStatistics from './BasicDataStatistics.vue'
 import IndicatorDataStatistics from './IndicatorDataStatistics.vue'
-import axios from '@/api/axios/base'
+import axios from '@/api/axios'
 
 const isSticky = ref(false)
 const piecemealWrapper = ref()

@@ -17,7 +17,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import axios from '@/api/axios/base'
+import axios from '@/api/axios'
 import { ElMessage } from 'element-plus'
 import { downloadBlob } from '@/utils/util'
 

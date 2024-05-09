@@ -27,7 +27,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import FormView from './FormView.vue'
-import axios from '@/api/axios/base'
+import axios from '@/api/axios'
 
 const props = defineProps({
   id: {
