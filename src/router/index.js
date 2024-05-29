@@ -7,6 +7,7 @@ import BaseLayout from '@/components/layout/BaseLayout.vue'
 import _404View from '@/views/404View.vue'
 import routes from './routes'
 import guides from './guides'
+import embed from './embed'
 import globalConfig from '@/config'
 
 const defaultRoutes = [
@@ -21,6 +22,7 @@ const defaultRoutes = [
     name: 'login',
     component: LoginView
   },
+  ...embed,
   {
     path: '/:pathMatch(.*)*',
     name: '404',
@@ -46,7 +48,7 @@ const packagingRoutingData = (routes, mark, superRoute) => {
 }
 
 defaultRoutes.find((e) => e.name === 'root').children = import.meta.env.DEV ? [...packagingRoutingData(routes), ...packagingRoutingData(guides)] : packagingRoutingData(routes)
-defaultRoutes.find((e) => e.name === 'root').redirect = defaultRoutes.find((e) => e.name === 'root').children[0].name
+defaultRoutes.find((e) => e.name === 'root').redirect = defaultRoutes.find((e) => e.name === 'root').children[0]?.name || embed[0]?.name
 console.log('All routes: ', defaultRoutes)
 
 const router = createRouter({
