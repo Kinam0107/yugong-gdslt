@@ -24,8 +24,8 @@ const props = defineProps({
 
 const manualSetupActive = ref()
 const setActive = () => {
-  const { activeMenu } = useMaintainMenuSelection()
-  manualSetupActive.value = activeMenu
+  const { getActive } = useMaintainMenuSelection()
+  manualSetupActive.value = getActive()
 }
 watch(
   () => router.currentRoute.value,

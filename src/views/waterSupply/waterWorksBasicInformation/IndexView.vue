@@ -89,7 +89,7 @@ import axios from '@/api/axios'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { downloadBlob } from '@/utils/util'
 import { useJumpSingleProjectPage } from '@/composables/togglePage'
-const { jumpPage, storeParams } = useJumpSingleProjectPage()
+const { jumpPage, getParams } = useJumpSingleProjectPage()
 
 onMounted(() => {
   search()
@@ -98,7 +98,7 @@ onMounted(() => {
 
 const loading = ref(false)
 const params = reactive(
-  storeParams || {
+  getParams() || {
     year: new Date().format('yyyy'),
     adcd: undefined,
     scale: undefined,
