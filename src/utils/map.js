@@ -532,16 +532,15 @@ export function gotoPoint(map, animateConf, handleFunction) {
  */
 export function changeCursor(map, icon) {
   const attributes = ['default', 'auto', 'crosshair', 'pointer', 'move', 'e-resize', 'ne-resize', 'nw-resize', 'n-resize', 'se-resize', 'sw-resize', 's-resize', 'w-resize', 'text', 'wait', 'help']
-  map.on('pointermove', () => {
+  map.on('pointermove', (e) => {
     if (icon) {
       map.getTargetElement().style.cursor = attributes.includes(icon) ? icon : 'url(' + icon + '), default'
     } else {
-      // const pixel = map.getEventPixel(e.originalEvent)
-      // if (map.hasFeatureAtPixel(pixel)) {
-      //   map.getTargetElement().style.cursor = 'pointer'
-      // } else {
-      map.getTargetElement().style.cursor = 'auto'
-      // }
+      const pixel = map.getEventPixel(e.originalEvent)
+      const feature = map.forEachFeatureAtPixel(pixel, (feat, layer) => {
+        if (layer?.get('layerName') || layer?.get('clusterLayerName')) return feat
+      })
+      map.getTargetElement().style.cursor = feature ? 'pointer' : 'auto'
     }
   })
 }

@@ -27,7 +27,7 @@ import { defaults as defaultControls } from 'ol/control'
 import { defaults as defaultInteractions } from 'ol/interaction'
 import 'ol/ol.css'
 import globalConfig from '@/config.js'
-import { getCityFeatureStyle } from '@/utils/map.js'
+import { getCityFeatureStyle, changeCursor } from '@/utils/map.js'
 
 const props = defineProps({
   baseMapMode: {
@@ -125,6 +125,7 @@ const initMap = () => {
   map.on('dblclick', mapDoubleClick)
   map.on('pointermove', mapPointerMove)
   map.on('moveend', mapMoveEnd)
+  changeCursor(map)
   nextTick(() => {
     emits('initFinished', map)
   })
