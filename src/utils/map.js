@@ -116,7 +116,8 @@ export function renderPoint(map, layerName, points, clusterStyleConf) {
         distance: distance || 100,
         source: new VectorSource({
           features: pointsFeature
-        })
+        }),
+        zIndex: 3
       }),
       style: (feature) => {
         const size = feature.get('features').length
@@ -167,7 +168,8 @@ export function renderPoint(map, layerName, points, clusterStyleConf) {
       layerName,
       source: new VectorSource({
         features: pointsFeature
-      })
+      }),
+      zIndex: 3
     })
     map.addLayer(mapLayers[layerName])
   }
@@ -199,6 +201,7 @@ export function renderMassivePoint(map, layerName, points, style) {
     source: new VectorSource({
       features: pointsFeature
     }),
+    zIndex: 3,
     style: style || {
       symbol: {
         symbolType: 'circle',
@@ -255,7 +258,8 @@ export function renderLine(map, layerName, lines) {
     layerName,
     source: new VectorSource({
       features: linesFeature
-    })
+    }),
+    zIndex: 2
   })
   map.addLayer(mapLayers[layerName])
 }
@@ -305,7 +309,8 @@ export function renderPolygon(map, layerName, polygons) {
     layerName,
     source: new VectorSource({
       features: polygonsFeature
-    })
+    }),
+    zIndex: 1
   })
   map.addLayer(mapLayers[layerName])
 }
@@ -501,20 +506,22 @@ export function gotoPoint(map, animateConf, handleFunction) {
     duration: duration
   })
   if (handleFunction) {
-    const pixel = map.getPixelFromCoordinate(center)
-    const feature = map.forEachFeatureAtPixel(pixel, (feat, layer) => {
-      if (layer?.get('layerName')) {
-        return feat
-      } else if (layer?.get('clusterLayerName') && feat.get('features').length == 1) {
-        return feat.get('features')[0]
-      }
-    })
-    const cityFeature = map.forEachFeatureAtPixel(pixel, (feat, layer) => {
-      if (layer?.get('id') === 'cityLevelBoundary') {
-        return feat
-      }
-    })
-    handleFunction({ featureData: feature?.get('data'), cityFeature: cityFeature })
+    setTimeout(() => {
+      const pixel = map.getPixelFromCoordinate(center)
+      const feature = map.forEachFeatureAtPixel(pixel, (feat, layer) => {
+        if (layer?.get('layerName')) {
+          return feat
+        } else if (layer?.get('clusterLayerName') && feat.get('features').length == 1) {
+          return feat.get('features')[0]
+        }
+      })
+      const cityFeature = map.forEachFeatureAtPixel(pixel, (feat, layer) => {
+        if (layer?.get('id') === 'cityLevelBoundary') {
+          return feat
+        }
+      })
+      handleFunction({ featureData: feature?.get('data'), cityFeature: cityFeature })
+    }, duration + 50)
   }
 }
 
