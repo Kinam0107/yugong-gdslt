@@ -116,9 +116,9 @@ export function renderPoint(map, layerName, points, clusterStyleConf) {
         distance: distance || 100,
         source: new VectorSource({
           features: pointsFeature
-        }),
-        zIndex: 3
+        })
       }),
+      zIndex: 3,
       style: (feature) => {
         const size = feature.get('features').length
         if (size > 1) {
@@ -499,12 +499,25 @@ export function changeBaseMap(map, baseMapMode) {
  * @param {Function} handleFunction 定点后对数据的处理
  */
 export function gotoPoint(map, animateConf, handleFunction) {
-  const { center, zoom, duration = 100 } = animateConf || {}
-  map.getView().animate({
-    center: center,
-    zoom: zoom,
-    duration: duration
-  })
+  let { center, zoom, duration = 100, x = 0, y = 0 } = animateConf || {}
+  // 按像素平移地图。：x方向横向平移距离(向右为正);y：y方向纵向平移距离(向下为正)
+  if (x || y) {
+    map.getView().setZoom(zoom)
+    setTimeout(() => {
+      const centerPix = map.getPixelFromCoordinate(center)
+      center = map.getCoordinateFromPixel([centerPix[0] - x, centerPix[1] - y])
+      map.getView().animate({
+        center: center,
+        duration: duration
+      })
+    }, 25)
+  } else {
+    map.getView().animate({
+      center: center,
+      zoom: zoom,
+      duration: duration
+    })
+  }
   if (handleFunction) {
     setTimeout(() => {
       const pixel = map.getPixelFromCoordinate(center)
