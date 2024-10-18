@@ -1,7 +1,5 @@
 /* 全局样式文件：引入 reset.scss 文件，并根据项目情况添加一些全局可使用的原子类 */
-@import './element_var.scss';
 @import url('./reset.scss');
-@import url('./font.scss');
 
 // 清除浮动
 .clearfix {
@@ -10,62 +8,5 @@
     content: '';
     display: block;
     clear: both;
-  }
-}
-
-// 幽灵按钮
-.ghost_button {
-  &.el-button--primary {
-    background-color: transparent !important;
-    border-color: #fff !important;
-  }
-  &.is-disabled {
-    opacity: 0.5 !important;
-  }
-  &.is-loading {
-    opacity: 0.5 !important;
-  }
-}
-
-// 内容区域的基础布局
-.content_wrapper {
-  display: flex;
-  flex-direction: column;
-
-  .action_wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    .function_bar {
-      display: flex;
-      align-items: center;
-      margin-bottom: 3 * $baseDistance;
-      .el-button + .el-button {
-        margin-left: 2 * $baseDistance;
-      }
-    }
-    .filter_bar {
-      display: flex;
-      align-items: center;
-      margin-bottom: 3 * $baseDistance;
-      label {
-        @include fontCategory();
-        flex-shrink: 0;
-        &:not(:first-child) {
-          margin-left: 2 * $baseDistance;
-        }
-      }
-      .el-input-group__append {
-        background-color: $color-primary;
-        color: #ffffff;
-        box-shadow: none;
-      }
-    }
-  }
-  .table_wrapper {
-    flex: 1;
-    .table_pagination {
-      margin-top: 2 * $baseDistance;
-    }
   }
 }

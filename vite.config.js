@@ -3,7 +3,6 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import globalConfig from './src/config.js'
 const filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(filename)
 
@@ -35,10 +34,10 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     proxy: {
-      [globalConfig.baseUrl]: {
-        target: globalConfig.proxyTarget,
+      '/api': {
+        target: 'https://qianfan.baidubce.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(RegExp(`^${globalConfig.baseUrl}`), '')
+        rewrite: (path) => path.replace(RegExp(`^/api`), '')
       }
     }
   }

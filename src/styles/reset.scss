@@ -6,7 +6,7 @@
   margin: 0;
   box-sizing: border-box;
   font-family: Arial, 'Roboto', 'PingFang SC', 'Source Han Sans', 'Microsoft YaHei', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   &:focus {
     outline: none;
   }
@@ -25,14 +25,10 @@ li {
 // 整个滚动条
 ::-webkit-scrollbar {
   // 对应纵向滚动条的宽度
-  width: 4px;
+  width: 2px;
   // 对应横向滚动条的宽度
-  height: 4px;
+  height: 2px;
 }
-// 滚动条上的箭头按钮
-// ::-webkit-scrollbar-button {
-//   background-color: #f8f9fb;
-// }
 // 滚动条上的滚动滑块
 ::-webkit-scrollbar-thumb {
   border-radius: 8px;
@@ -46,70 +42,4 @@ li {
 // 滚动条没有滑块的轨道部分
 ::-webkit-scrollbar-track-piece {
   background-color: #f8f9fb;
-}
-
-// 移除input在type="number"时的上下箭头
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-// input[type='number'] {
-//   -moz-appearance: textfield;
-// }
-
-// 添加对话框的基础样式（当弹窗内容超出浏览器高度时弹窗高度自适应浏览器且上下间距为6倍距离基数）
-div.el-dialog {
-  position: absolute;
-  margin: auto;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  .el-dialog__header {
-    border-bottom: 1px solid $color-separator;
-    margin: 0;
-    padding: 2 * $baseDistance 3 * $baseDistance;
-    @include fontCategory(3);
-    font-weight: 500;
-    color: $color-titletext;
-  }
-  .el-dialog__body {
-    overflow: auto;
-    max-height: calc(100vh - 12 * $baseDistance - 57px - 65px);
-    padding: 3 * $baseDistance;
-  }
-  .el-dialog__footer {
-    border-top: 1px solid $color-separator;
-    padding: 2 * $baseDistance 3 * $baseDistance;
-  }
-}
-
-// 添加抽屉的基础样式
-.el-drawer {
-  .el-drawer__header {
-    border-bottom: 1px solid $color-separator;
-    margin: 0;
-    padding: 2 * $baseDistance 3 * $baseDistance;
-    @include fontCategory(3);
-    font-weight: 500;
-    color: $color-titletext;
-  }
-  .el-drawer__body {
-    padding: 3 * $baseDistance;
-  }
-  .el-drawer__footer {
-    border-top: 1px solid $color-separator;
-    padding: 2 * $baseDistance 3 * $baseDistance;
-  }
-}
-
-// 带单位输入框必填是告警的红色外框样式
-.el-form-item.is-error .el-input-group--append .el-input-group__append {
-  box-shadow:
-    0 1px 0 0 $color-error inset,
-    0 -1px 0 0 $color-error inset,
-    -1px 0 0 0 $color-error inset;
-}
-
-.el-descriptions .el-descriptions__label:not(.is-bordered-label) {
-  margin-right: 0;
 }
