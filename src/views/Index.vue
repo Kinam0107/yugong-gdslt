@@ -14,7 +14,15 @@
                 <img src="@/assets/images/robot.png" alt="" />
                 <div class="dialogue_item">
                   <div class="role">水利智能机器人</div>
-                  <div class="content" :class="{ loading: item.loading }" v-html="marked(item.content)"></div>
+                  <div class="content" :class="{ loading: item.loading }">
+                    <div v-html="marked(item.content)"></div>
+                    <ul class="refs">
+                      <li v-for="refs_item in item.refs" :key="refs_item.document_id" :title="refs_item.content">
+                        <span class="index">[{{ refs_item.id }}]</span>
+                        <span class="name">{{ refs_item.document_name }}</span>
+                      </li>
+                    </ul>
+                  </div>
                   <div class="other">
                     <span class="time">{{ item.content_time }}</span>
                     <span class="zan_btn" @click="zan(item.content_id)">
@@ -107,7 +115,9 @@
         </ul>
         <div class="input--inner">
           <el-input ref="inputRef" v-model="inputContent" type="textarea" :placeholder="inputPlaceholder || '请输入您的问题，按Ctrl+Enter 换行'" resize="none" @keydown="handleKeyCode" />
-          <div class="send_btn" :disabled="sendBtnDisabled" v-loading="sending" @click="send"></div>
+          <div class="send_btn" :class="{ loading: sending }" :disabled="sendBtnDisabled" @click="send">
+            <img v-if="sending" :src="LoadingIcon" alt="" />
+          </div>
         </div>
       </div>
     </div>
@@ -117,6 +127,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick, onBeforeMount } from 'vue'
 import { Search } from '@element-plus/icons-vue'
+import LoadingIcon from '@/assets/images/loading.png'
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
 import { marked } from 'marked'
@@ -682,10 +693,25 @@ const download = (id) => {
             width: 20px;
           }
         }
-
         @-webkit-keyframes ellipsis {
           to {
             width: 20px;
+          }
+        }
+        .refs {
+          li {
+            font-size: 12px;
+            font-style: italic;
+            + li {
+              margin-top: 8px;
+            }
+          }
+          .index {
+            margin-right: 4px;
+          }
+          .name:hover {
+            color: #0058ff;
+            cursor: pointer;
           }
         }
         &.loading::after {
@@ -894,6 +920,16 @@ ul.history_list > li {
     background-image: url('@/assets/images/sendBtn.png');
     background-size: 100% 100%;
     cursor: pointer;
+    &.loading {
+      background-image: url('@/assets/images/sendBtnEmpty.png');
+      cursor: not-allowed;
+      > img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
     &[disabled='true'] {
       filter: grayscale(100%);
       cursor: not-allowed;
