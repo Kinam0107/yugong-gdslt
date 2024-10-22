@@ -88,8 +88,11 @@ import Index from './Index.vue'
     .input--inner {
       height: 56px;
       border-color: #1c5271;
-      .el-textarea .el-textarea__inner::placeholder {
-        color: rgba(255, 255, 255, 0.6);
+      .el-textarea .el-textarea__inner {
+        color: #ffffff;
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.6);
+        }
       }
       .send_btn {
         right: 12px;

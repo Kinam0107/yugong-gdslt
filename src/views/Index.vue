@@ -877,7 +877,6 @@ ul.history_list > li {
       background-color: transparent;
       padding: 0;
       box-shadow: none;
-      color: #ffffff;
       &::placeholder {
         font-size: 14px;
         color: #758198;
