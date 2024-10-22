@@ -12,6 +12,11 @@ const defaultRoutes = [
     path: '/screen-mode',
     name: 'ScreenQ&A',
     component: () => import('@/views/ScreenMode.vue')
+  },
+  {
+    path: '/mobile-mode',
+    name: 'MobileQ&A',
+    component: () => import('@/views/MobileMode.vue')
   }
 ]
 
