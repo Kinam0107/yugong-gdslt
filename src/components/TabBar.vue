@@ -1,6 +1,10 @@
 <template>
   <ul class="tab_bar" :class="props.type">
-    <li v-for="tab in props.tabs" :key="tab" :class="{ active: props.modelValue === tab, disabled: props.disabled.includes(tab) }" @click="change(tab, props.disabled.includes(tab))">
+    <li
+      v-for="tab in props.tabs"
+      :key="tab"
+      :class="{ active: props.modelValue === tab, clickable: props.tabs.length > 1, disabled: props.disabled.includes(tab) }"
+      @click="change(tab, props.disabled.includes(tab))">
       {{ tab }}
       <el-icon v-if="enableOperation && props.tabs.length > 1" class="close_icon" @click.stop="closeTag(tab)">
         <Close />
@@ -52,7 +56,7 @@ const props = defineProps({
     default: false
   }
 })
-const emits = defineEmits(['update:modelValue', 'update:tabs'])
+const emits = defineEmits(['update:modelValue', 'change', 'update:tabs'])
 
 const enableOperation = computed(() => {
   return props.type === 'card' && props.deletable
@@ -61,6 +65,7 @@ const enableOperation = computed(() => {
 function change(tab, disabled) {
   if (!disabled) {
     emits('update:modelValue', tab)
+    emits('change', tab)
   }
 }
 
@@ -72,6 +77,7 @@ function closeTag(tab) {
     const tab_ = tabs_[index]
     emits('update:tabs', tabs_)
     emits('update:modelValue', tab_)
+    emits('change', tab_)
   } else {
     const tabs_ = props.tabs.filter((e) => e !== tab)
     emits('update:tabs', tabs_)
@@ -104,7 +110,6 @@ ul.tab_bar {
     color: $color-titletext;
     font-size: 14px;
     line-height: 48px;
-    cursor: pointer;
     &:hover {
       color: $color-primary;
     }
@@ -121,6 +126,9 @@ ul.tab_bar {
         bottom: 0;
         background-color: $color-primary;
       }
+    }
+    &.clickable {
+      cursor: pointer;
     }
     &.disabled {
       color: $color-disabletext !important;
@@ -198,5 +206,63 @@ ul.tab_bar.fill li.active {
 .tab_input {
   width: 136px;
   margin-right: $baseDistance;
+}
+ul.tab_bar.title {
+  align-items: center;
+  gap: 0;
+  &::before {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 22px;
+    margin-right: $baseDistance;
+    background-image: url('@/assets/images/subtitleIcon.png');
+  }
+  &::after {
+    content: '';
+    display: block;
+    flex: 1;
+    height: 1px;
+    margin-left: 1.5 * $baseDistance;
+    background-color: #d8d8d8;
+  }
+  li {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+    + li {
+      margin-left: 2 * $baseDistance;
+    }
+    &:hover {
+      color: $color-primary;
+    }
+    &.active {
+      color: $color-primary;
+      &::before {
+        display: none;
+      }
+    }
+  }
+}
+ul.tab_bar.brick {
+  gap: 1.5 * $baseDistance;
+  li {
+    line-height: 32px;
+    padding: 0 12px;
+    border: 1px solid rgba(155, 166, 183, 0.4);
+    border-radius: 4px;
+    &:hover {
+      color: $color-primary;
+      border-color: $color-primary;
+    }
+    &.active {
+      font-weight: 500;
+      color: $color-primary;
+      border-color: $color-primary;
+      &::before {
+        display: none;
+      }
+    }
+  }
 }
 </style>

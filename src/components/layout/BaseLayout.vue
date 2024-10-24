@@ -2,11 +2,11 @@
 <template>
   <div class="base--layout">
     <div class="head--contanier">
-      <TopNav show-datetime show-config show-notice>
+      <TopNav>
         <template #systemIcon>
-          <img src="@/assets/images/login/system-icon.png" width="30" />
+          <img src="@/assets/images/logo.png" width="39" />
         </template>
-        <TopMenu />
+        <TopMenu selectedStyle="deepbackground" />
       </TopNav>
     </div>
     <div class="body--container">
@@ -22,7 +22,7 @@ import TopMenu from '@/components/menu/TopMenu.vue'
 </script>
 
 <style scoped lang="scss">
-$headHight: 7 * $baseDistance;
+$headHight: 10 * $baseDistance;
 .base--layout {
   height: 100%;
 }
@@ -33,6 +33,6 @@ $headHight: 7 * $baseDistance;
   position: relative;
   overflow: auto;
   height: calc(100% - $headHight);
-  background-color: $color-graybg;
+  background-color: #e8ecf3;
 }
 </style>

@@ -176,7 +176,7 @@ $loginBoxHeight: 640px;
     display: flex;
     flex-wrap: wrap;
     > span {
-      font-family: 'YouSheBiaoTiHei-2';
+      font-family: 'YouSheBiaoTiHei';
       font-size: 48px;
       color: #ffffff;
     }
@@ -203,7 +203,7 @@ $loginBoxHeight: 640px;
     backdrop-filter: blur(8px);
     padding: 10 * $baseDistance 8 * $baseDistance 0;
     .subtitle {
-      font-family: 'YouSheBiaoTiHei-2';
+      font-family: 'YouSheBiaoTiHei';
       font-size: 32px;
       color: #ffffff;
       line-height: 40px;

@@ -575,7 +575,7 @@ defineExpose({ form, formValidate })
   height: 400px;
   margin-top: 16px;
   &.active {
-    box-shadow: 0px 0px 3px 3px #36b29e;
+    box-shadow: 0px 0px 3px 3px #0052d9;
   }
 }
 </style>

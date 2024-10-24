@@ -27,7 +27,7 @@
         </div>
         <div style="margin-top: 24px">
           <div class="item_label">进度圈</div>
-          <el-progress type="circle" :percentage="70" color="#36b29e" />
+          <el-progress type="circle" :percentage="70" color="#0052d9" />
           <el-progress type="circle" :percentage="70" status="exception" />
           <el-progress type="circle" :percentage="100" status="success" />
         </div>

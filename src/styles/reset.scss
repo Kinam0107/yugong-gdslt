@@ -113,3 +113,15 @@ div.el-dialog {
 .el-descriptions .el-descriptions__label:not(.is-bordered-label) {
   margin-right: 0;
 }
+
+.el-table {
+  border: 1px solid #d7dbe0 !important;
+  border-radius: 3px;
+  thead tr th .cell {
+    font-size: 14px;
+    font-weight: normal;
+  }
+  thead tr th:not(:first-child) .cell {
+    border-left: 1px solid #e6e7e9;
+  }
+}

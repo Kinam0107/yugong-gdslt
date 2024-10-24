@@ -1,6 +1,6 @@
 <template>
   <el-timeline>
-    <el-timeline-item v-for="(activity, index) in activities" :key="index" hide-timestamp color="#36b29e">
+    <el-timeline-item v-for="(activity, index) in activities" :key="index" hide-timestamp color="#0052d9">
       <div class="node">{{ activity.node }}</div>
       <div class="info">
         <span>{{ activity.person }}</span>
@@ -10,7 +10,7 @@
       <div class="file" v-if="activity.file">
         <SvgIcon style="font-size: 16px; color: #f13939" icon="pdf-fill" />
         {{ activity.file }}
-        <el-icon style="cursor: pointer; color: #36b29e"><Download /></el-icon>
+        <el-icon style="cursor: pointer; color: #0052d9"><Download /></el-icon>
       </div>
     </el-timeline-item>
   </el-timeline>

@@ -10,7 +10,7 @@
       <div class="file" v-if="activity.file">
         <SvgIcon style="font-size: 16px; color: #f13939" icon="pdf-fill" />
         {{ activity.file }}
-        <el-icon style="cursor: pointer; color: #36b29e"><Download /></el-icon>
+        <el-icon style="cursor: pointer; color: #0052d9"><Download /></el-icon>
       </div>
     </el-timeline-item>
   </el-timeline>

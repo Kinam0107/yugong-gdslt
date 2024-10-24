@@ -20,11 +20,11 @@
     <el-popover placement="bottom" :width="320" trigger="click" @show="showMore = true" @hide="showMore = false">
       <template #reference>
         <div class="user">
-          <el-avatar :src="userInfo.avatarPath || ''" :size="24">
+          <el-avatar :src="userInfo.avatarPath || ''" :size="36">
             <img src="@/assets/images/empty/avatar-icon.png" />
           </el-avatar>
           <span class="name">{{ userInfo.nickName || userInfo.username || '-' }}</span>
-          <el-icon class="arrow" :size="14" color="#fff">
+          <el-icon class="arrow" :size="20" color="#fff">
             <ArrowUp v-if="showMore" />
             <ArrowDown v-else />
           </el-icon>
@@ -75,12 +75,12 @@ const props = defineProps({
   // 系统名称
   systemName: {
     type: String,
-    default: '智慧水利水工程运行管理'
+    default: '义乌市水库运行管理矩阵'
   },
   // 背景色
   bgType: {
     type: String,
-    default: 'gradient'
+    default: ''
   },
   // 是否展示日期时间
   showDatetime: {
@@ -144,10 +144,22 @@ function quit() {
 
 <style scoped lang="scss">
 .top_nav {
+  position: relative;
   display: flex;
   align-items: center;
   height: 100%;
   padding: 0 3 * $baseDistance;
+  background-image: url('@/assets/images/headBg.png');
+  &::after {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 30 * $baseDistance;
+    position: absolute;
+    right: 0;
+    background-image: url('@/assets/images/headBgImg.png');
+    z-index: 0;
+  }
   &.gradient {
     background-image: $color-gradient;
   }
@@ -179,9 +191,10 @@ function quit() {
   flex: none;
   height: 100%;
   margin-right: 3 * $baseDistance;
+  z-index: 1;
   > span {
-    font-family: 'YouSheBiaoTiHei-2';
-    font-size: 28px;
+    font-family: Lantinghei SC;
+    font-size: 26px;
     color: #ffffff;
   }
 }
@@ -189,17 +202,20 @@ function quit() {
   flex-grow: 1;
   flex-shrink: 0;
   height: 100%;
+  z-index: 1;
 }
 .time {
   font-size: 14px;
   color: #ffffff;
   padding: 0 3 * $baseDistance;
+  z-index: 1;
 }
 .config,
 .notice {
   width: 4 * $baseDistance;
   height: 100%;
   cursor: pointer;
+  z-index: 1;
   &:hover {
     background-color: rgba(246, 246, 246, 0.25);
   }
@@ -208,11 +224,16 @@ function quit() {
   display: flex;
   align-items: center;
   height: 100%;
-  margin-left: 2 * $baseDistance;
   cursor: pointer;
+  z-index: 1;
+  .el-avatar {
+    background-color: transparent;
+  }
   .name {
     margin: 0 8px;
-    font-size: 12px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
     color: $color-whitebg;
   }
 }

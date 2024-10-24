@@ -1,2 +1,2 @@
-import axios from './gd.js'
+import axios from './rscp.js'
 export default axios
