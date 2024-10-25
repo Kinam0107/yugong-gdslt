@@ -5,6 +5,8 @@
       <slot name="systemIcon"></slot>
       <span>{{ props.systemName }}</span>
     </div>
+    <div class="line"></div>
+    <SvgIcon style="cursor: pointer" icon="screen" :size="28" color="#ffffff" @click="jumpScreen" />
     <div class="menu">
       <slot></slot>
     </div>
@@ -140,6 +142,10 @@ function quit() {
     router.push('/login')
   })
 }
+
+const jumpScreen = () => {
+  window.open('https://swzg.slt.zj.gov.cn/matrix-screen')
+}
 </script>
 
 <style scoped lang="scss">
@@ -190,13 +196,18 @@ function quit() {
   gap: $baseDistance;
   flex: none;
   height: 100%;
-  margin-right: 3 * $baseDistance;
   z-index: 1;
   > span {
     font-family: Lantinghei SC;
     font-size: 26px;
     color: #ffffff;
   }
+}
+.line {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.4);
+  margin: 0 3 * $baseDistance;
 }
 .menu {
   flex-grow: 1;
