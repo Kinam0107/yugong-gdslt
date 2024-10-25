@@ -1,6 +1,6 @@
 // import sidebar from '@/components/layout/SidebarLayout.vue'
 // import endbar from '@/components/layout/EndbarLayout.vue'
-import developing from '@/components/layout/DevelopingLayout.vue'
+// import developing from '@/components/layout/DevelopingLayout.vue'
 // import placeholder from '@/components/layout/PlaceholderLayout.vue'
 // import single from '@/components/layout/SingleProjectLayout.vue'
 
@@ -34,7 +34,7 @@ export default [
   },
   {
     path: 'siguan',
-    component: developing,
+    component: () => import('@/views/siguan/IndexView.vue'),
     meta: { title: '四管工作' }
   }
 ]

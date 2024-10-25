@@ -69,7 +69,7 @@ const initChart = () => {
       {
         type: 'pie',
         center: ['50%', '50%'],
-        radius: ['70%', '85'],
+        radius: ['55%', '85%'],
         label: {
           show: false
         },

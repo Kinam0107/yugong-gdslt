@@ -2486,7 +2486,8 @@ const jumpScreen = (prcd) => {
 }
 .bar_chart-wrap {
   width: 100%;
-  height: calc(100% - 188px);
+  height: calc(100% - 200px);
+  margin-bottom: 12px;
 }
 .state-wrap {
   display: flex;
