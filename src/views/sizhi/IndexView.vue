@@ -198,37 +198,37 @@
         <div class="item">
           <span class="tag">职责</span>
           <span class="label">政府负责人</span>
-          <span class="value">{{ 2 }}</span>
+          <span class="value">{{ responsibilityData.zffzr }}</span>
           <span class="unit">人</span>
         </div>
         <div class="item">
           <span class="tag">职责</span>
           <span class="label">水行政主管部门责任人</span>
-          <span class="value">{{ 2 }}</span>
+          <span class="value">{{ responsibilityData.sxzzgbmzrr }}</span>
           <span class="unit">人</span>
         </div>
         <div class="item">
           <span class="tag">职责</span>
           <span class="label">主管部门（产权人）责任人</span>
-          <span class="value">{{ 16 }}</span>
+          <span class="value">{{ responsibilityData.zgbmcqrzrr }}</span>
           <span class="unit">人</span>
         </div>
         <div class="item">
           <span class="tag">职责</span>
           <span class="label">管理单位责任人</span>
-          <span class="value">{{ 79 }}</span>
+          <span class="value">{{ responsibilityData.gldwzrr }}</span>
           <span class="unit">人</span>
         </div>
         <div class="item">
           <span class="tag">职责</span>
           <span class="label">技术责任人</span>
-          <span class="value">{{ 23 }}</span>
+          <span class="value">{{ responsibilityData.jszrr }}</span>
           <span class="unit">人</span>
         </div>
         <div class="item">
           <span class="tag">职责</span>
           <span class="label">巡查责任人</span>
-          <span class="value">{{ 101 }}</span>
+          <span class="value">{{ responsibilityData.xczrr }}</span>
           <span class="unit">人</span>
         </div>
       </div>

@@ -52,7 +52,7 @@ defaultRoutes.find((e) => e.name === 'root').redirect = defaultRoutes.find((e) =
 console.log('All routes: ', defaultRoutes)
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory('/plat'),
   routes: defaultRoutes
 })
 

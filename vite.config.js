@@ -9,6 +9,7 @@ const __dirname = path.dirname(filename)
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  publicPath: '/plat',
   plugins: [
     vue(),
     createSvgIconsPlugin({
@@ -39,6 +40,11 @@ export default defineConfig({
         target: globalConfig.proxyTarget,
         changeOrigin: true,
         rewrite: (path) => path.replace(RegExp(`^${globalConfig.baseUrl}`), '')
+      },
+      '/prod-api': {
+        target: 'http://192.168.2.173:1008',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(RegExp(`^/prod-api`), '')
       }
     }
   }

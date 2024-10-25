@@ -29,7 +29,7 @@ export default [
   },
   {
     path: 'siyu',
-    component: developing,
+    component: () => import('@/views/siyu/IndexView.vue'),
     meta: { title: '四预措施' }
   },
   {
