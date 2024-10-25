@@ -255,8 +255,8 @@
           </el-select>
         </div>
         <div class="btns">
-          <el-button>重置</el-button>
-          <el-button type="primary">导出</el-button>
+          <el-button @click="reset">重置</el-button>
+          <el-button type="primary" @click="exported">导出</el-button>
         </div>
       </div>
       <div class="tabler" ref="tabler">
@@ -1307,6 +1307,12 @@ const search = () => {
     }
   }
 }
+const reset = () => {
+  name.value = ''
+  scale.value = ''
+  adcd.value = '330782000000'
+  search()
+}
 onBeforeMount(() => {
   search()
 })
@@ -1325,9 +1331,14 @@ onBeforeUnmount(() => {
 
 const jumpProject = (prcd) => {
   console.log('jumpProject', prcd)
+  window.open('http://192.168.2.173:1008')
 }
 const jumpScreen = (prcd) => {
   console.log('jumpScreen', prcd)
+}
+
+const exported = () => {
+  console.log('导出')
 }
 </script>
 
