@@ -587,7 +587,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted, reactive, ref } from 'vue'
+import { onBeforeMount, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import SvgIcon from '@/components/SvgIcon.vue'
 import RingChart from '@/components/chart/RingChart.vue'
@@ -1845,7 +1845,7 @@ onMounted(() => {
   getTableHeight()
   window.addEventListener('resize', getTableHeight)
 })
-onBeforeMount(() => {
+onBeforeUnmount(() => {
   window.removeEventListener('resize', getTableHeight)
 })
 

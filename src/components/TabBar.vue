@@ -3,7 +3,7 @@
     <li
       v-for="tab in props.tabs"
       :key="tab"
-      :class="{ active: props.modelValue === tab, clickable: props.tabs.length > 1, disabled: props.disabled.includes(tab) }"
+      :class="{ active: props.modelValue === tab && props.tabs.length > 1, clickable: props.tabs.length > 1, disabled: props.disabled.includes(tab) }"
       @click="change(tab, props.disabled.includes(tab))">
       {{ tab }}
       <el-icon v-if="enableOperation && props.tabs.length > 1" class="close_icon" @click.stop="closeTag(tab)">
@@ -110,9 +110,6 @@ ul.tab_bar {
     color: $color-titletext;
     font-size: 14px;
     line-height: 48px;
-    &:hover {
-      color: $color-primary;
-    }
     &.active {
       position: relative;
       color: $color-primary;
@@ -129,6 +126,9 @@ ul.tab_bar {
     }
     &.clickable {
       cursor: pointer;
+      &:hover {
+        color: $color-primary;
+      }
     }
     &.disabled {
       color: $color-disabletext !important;
@@ -232,9 +232,6 @@ ul.tab_bar.title {
     font-weight: 500;
     + li {
       margin-left: 2 * $baseDistance;
-    }
-    &:hover {
-      color: $color-primary;
     }
     &.active {
       color: $color-primary;

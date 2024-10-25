@@ -24,7 +24,7 @@ export default [
   },
   {
     path: 'sizhi',
-    component: developing,
+    component: () => import('@/views/sizhi/IndexView.vue'),
     meta: { title: '四制体系' }
   },
   {
