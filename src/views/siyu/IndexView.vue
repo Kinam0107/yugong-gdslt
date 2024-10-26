@@ -97,6 +97,18 @@
               <span class="value">{{ retainWaterStatistic.total }}</span>
               <span class="unit">亿m³</span>
             </div>
+            <div class="ladder-diagram">
+              <div
+                class="item"
+                v-for="(item, index) in retainWaterData"
+                :style="{
+                  height: (item / retainWaterData.sum()) * 100 + '%',
+                  background: ['#ff4d4f', '#ffcb27', '#276af0', '#0cbf5b'][index]
+                }"
+                :key="index">
+                <span>{{ item }}</span>
+              </div>
+            </div>
           </div>
           <div class="legend-wrap">
             <div class="data">
@@ -308,8 +320,8 @@
       </div>
       <div class="tabler" ref="tabler">
         <el-table :key="activeTab + 'table'" :data="tableData" style="width: 100%" stripe :max-height="tableHeight">
-          <el-table-column type="index" label="序号" width="60" />
-          <el-table-column label="工程名称">
+          <el-table-column fixed="left" type="index" label="序号" width="60" />
+          <el-table-column label="工程名称" min-width="150">
             <template #default="scope">
               <el-button v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'" type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
                 {{ scope.row.NAME }}
@@ -318,67 +330,67 @@
               <span v-if="['330782022000521', '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'].includes(scope.row.PRCD)" class="pilot-marking">试点水库</span>
             </template>
           </el-table-column>
-          <el-table-column label="所在市">
+          <el-table-column label="所在市" min-width="80">
             <template #default="scope">{{ scope.row.cityADNM }}</template>
           </el-table-column>
-          <el-table-column label="所在县">
+          <el-table-column label="所在县" min-width="80">
             <template #default="scope">{{ scope.row.countryADNM }}</template>
           </el-table-column>
-          <el-table-column label="工程规模">
+          <el-table-column label="工程规模" min-width="100">
             <template #default="scope">{{ scope.row.scale || dataEcho('SKGM', scope.row.project_scale) }}</template>
           </el-table-column>
           <template v-if="activeTab === '精准预报'">
-            <el-table-column label="限制水位(m)">
+            <el-table-column label="限制水位(m)" min-width="110">
               <template #default="scope">{{ scope.row.limitWaterLevel }}</template>
             </el-table-column>
-            <el-table-column label="设计洪水位(m)">
+            <el-table-column label="设计洪水位(m)" min-width="120">
               <template #default="scope">{{ scope.row.DSFLZ }}</template>
             </el-table-column>
             <el-table-column label="洪水预报(未来72h)" align="center">
-              <el-table-column label="最高水位(m)">
+              <el-table-column label="最高水位(m)" min-width="110">
                 <template #default="scope">{{ scope.row.fctWater }}</template>
               </el-table-column>
-              <el-table-column label="出现时间">
+              <el-table-column label="出现时间" min-width="110">
                 <template #default="scope">{{ scope.row.ftm }}</template>
               </el-table-column>
-              <el-table-column label="最大下泄流量(m³/s)">
+              <el-table-column label="最大下泄流量(m³/s)" min-width="150">
                 <template #default="scope">{{ scope.row.outFlow }}</template>
               </el-table-column>
-              <el-table-column label="出现时间">
+              <el-table-column label="出现时间" min-width="110">
                 <template #default="scope">{{ scope.row.wtm }}</template>
               </el-table-column>
             </el-table-column>
-            <el-table-column label="总库容(万m³)">
+            <el-table-column label="总库容(万m³)" min-width="110">
               <template #default="scope">{{ scope.row.tcp }}</template>
             </el-table-column>
-            <el-table-column label="当前库容(万m³)">
+            <el-table-column label="当前库容(万m³)" min-width="130">
               <template #default="scope">{{ scope.row.currenty }}</template>
             </el-table-column>
             <el-table-column label="可纳雨量(mm)" align="center">
-              <el-table-column label="至限制水位">
+              <el-table-column label="至限制水位" min-width="110">
                 <template #default="scope">{{ scope.row.limitRainfall }}</template>
               </el-table-column>
-              <el-table-column label="至正常蓄水位">
+              <el-table-column label="至正常蓄水位" min-width="110">
                 <template #default="scope">{{ scope.row.cscRainfall }}</template>
               </el-table-column>
-              <el-table-column label="至设计洪水位">
+              <el-table-column label="至设计洪水位" min-width="110">
                 <template #default="scope">{{ scope.row.desRainfall }}</template>
               </el-table-column>
             </el-table-column>
           </template>
           <template v-else-if="activeTab === '统一预警'"></template>
           <template v-else-if="activeTab === '在线预案'">
-            <el-table-column label="调度方案">
+            <el-table-column label="调度方案" min-width="180">
               <template #default="scope">{{ scope.row.ddfa }}</template>
             </el-table-column>
-            <el-table-column label="应急预案">
+            <el-table-column label="应急预案" min-width="180">
               <template #default="scope">{{ scope.row.yjya }}</template>
             </el-table-column>
-            <el-table-column label="实战演练（本年度）/次">
+            <el-table-column label="实战演练（本年度）/次" min-width="180">
               <template #default="scope">{{ scope.row.szylNum }}</template>
             </el-table-column>
           </template>
-          <el-table-column label="操作" width="60">
+          <el-table-column fixed="right" label="操作" width="60">
             <template #default="scope">
               <img
                 :style="{
@@ -935,7 +947,7 @@ const exported = () => {
   padding: 20px;
 }
 .card {
-  flex: 1;
+  width: calc(25% - 15px);
   height: 420px;
   background: #ffffff;
   border: 2px solid #ffffff;
@@ -1177,6 +1189,42 @@ const exported = () => {
   }
   .chart-wrap {
     width: 55%;
+    .ladder-diagram {
+      position: relative;
+      display: flex;
+      flex-direction: column-reverse;
+      width: 158px;
+      height: calc(100% - 30px);
+      padding: 2 * $baseDistance 0 0 0;
+      .item {
+        position: relative;
+        color: #ffffff;
+        > span {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 55px;
+        height: 100%;
+        background-image: linear-gradient(65deg, #fff 0%, #fff 49.99%, transparent 50.01%, transparent 100%);
+        z-index: 1;
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        width: 55px;
+        height: 100%;
+        background-image: linear-gradient(-65deg, #fff 0%, #fff 49.99%, transparent 50.01%, transparent 100%);
+        z-index: 1;
+      }
+    }
   }
   .legend-wrap {
     width: 45%;

@@ -1,12 +1,22 @@
-import axios from './axios'
-const pre = '/auth-center'
+import axios from './axios/yw.js'
 
 // 用户登录
 export function login(username, password) {
   return axios({
     method: 'post',
-    url: pre + '/login',
-    data: { username, password }
+    url: '/login',
+    data: { username, password },
+    headers: {
+      'content-type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+// 获取省运管用户token
+export function loginRscp() {
+  return axios({
+    method: 'get',
+    url: '/system/user/rscpAuthToken'
   })
 }
 
@@ -14,7 +24,7 @@ export function login(username, password) {
 export function getUserInfo() {
   return axios({
     method: 'get',
-    url: pre + '/getUserInfo'
+    url: '/getUserInfo'
   })
 }
 
@@ -22,7 +32,7 @@ export function getUserInfo() {
 export function logout() {
   return axios({
     method: 'post',
-    url: pre + '/logout'
+    url: '/logout'
   })
 }
 
@@ -30,6 +40,6 @@ export function logout() {
 export function getPubKey() {
   return axios({
     method: 'get',
-    url: pre + '/getPubKey'
+    url: '/rdspwd'
   })
 }

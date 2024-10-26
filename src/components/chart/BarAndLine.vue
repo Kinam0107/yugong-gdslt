@@ -47,7 +47,7 @@ const initChart = () => {
   myChart = echarts.init(chart.value)
   const option = {
     grid: {
-      left: 20,
+      left: 0,
       top: 40,
       right: 0,
       bottom: 0,
@@ -81,7 +81,8 @@ const initChart = () => {
           color: '#333333',
           fontFamily: 'Source Han Sans',
           fontSize: 14,
-          lineHeight: 11
+          lineHeight: 11,
+          align: 'left'
         },
         axisLine: {
           show: false

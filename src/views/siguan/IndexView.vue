@@ -261,8 +261,8 @@
       </div>
       <div class="tabler" ref="tabler">
         <el-table :key="activeTab + 'table'" :data="tableData" style="width: 100%" stripe :max-height="tableHeight">
-          <el-table-column type="index" label="序号" width="60" />
-          <el-table-column label="工程名称">
+          <el-table-column fixed="left" type="index" label="序号" width="60" />
+          <el-table-column label="工程名称" min-width="150">
             <template #default="scope">
               <el-button v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'" type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
                 {{ scope.row.NAME }}
@@ -271,63 +271,63 @@
               <span v-if="['330782022000521', '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'].includes(scope.row.PRCD)" class="pilot-marking">试点水库</span>
             </template>
           </el-table-column>
-          <el-table-column label="所在市">
+          <el-table-column label="所在市" min-width="80">
             <template #default="scope">{{ scope.row.cityADNM }}</template>
           </el-table-column>
-          <el-table-column label="所在县">
+          <el-table-column label="所在县" min-width="80">
             <template #default="scope">{{ scope.row.countryADNM }}</template>
           </el-table-column>
-          <el-table-column label="工程规模">
+          <el-table-column label="工程规模" min-width="100">
             <template #default="scope">{{ scope.row.scale || dataEcho('SKGM', scope.row.project_scale) }}</template>
           </el-table-column>
           <template v-if="activeTab === '及时除险' && activeType === '除险加固'">
-            <el-table-column label="安全管理状态">
+            <el-table-column label="安全管理状态" min-width="110">
               <template #default="scope">{{ scope.row.status_str }}</template>
             </el-table-column>
             <el-table-column label="工程检查" align="center">
-              <el-table-column label="发现问题">
+              <el-table-column label="发现问题" min-width="90">
                 <template #default="scope">{{ scope.row.wtNum }}</template>
               </el-table-column>
-              <el-table-column label="处置中">
+              <el-table-column label="处置中" min-width="90">
                 <template #default="scope">{{ scope.row.czzNum }}</template>
               </el-table-column>
-              <el-table-column label="已整改">
+              <el-table-column label="已整改" min-width="90">
                 <template #default="scope">{{ scope.row.yzgNum }}</template>
               </el-table-column>
             </el-table-column>
           </template>
           <template v-if="activeTab === '及时除险' && activeType === '问题处置'">
-            <el-table-column label="检查类型">
+            <el-table-column label="检查类型" min-width="120">
               <template #default="scope">{{ scope.row.CHECKMAIN }}</template>
             </el-table-column>
-            <el-table-column label="检查主体">
+            <el-table-column label="检查主体" min-width="120">
               <template #default="scope">{{ scope.row.ctype }}</template>
             </el-table-column>
-            <el-table-column label="发生时间">
+            <el-table-column label="发生时间" min-width="120">
               <template #default="scope">{{ scope.row.tm }}</template>
             </el-table-column>
-            <el-table-column label="问题描述">
+            <el-table-column label="问题描述" min-width="200">
               <template #default="scope">{{ scope.row.pname }}</template>
             </el-table-column>
-            <el-table-column label="问题级别">
+            <el-table-column label="问题级别" min-width="90">
               <template #default="scope">{{ scope.row.lev }}</template>
             </el-table-column>
-            <el-table-column label="整改进展">
+            <el-table-column label="整改进展" min-width="90">
               <template #default="scope">{{ scope.row.type }}</template>
             </el-table-column>
           </template>
           <template v-else-if="activeTab === '水库体检'">
             <el-table-column label="安全鉴定（最近一次）" align="center">
-              <el-table-column label="鉴定时间">
+              <el-table-column label="鉴定时间" min-width="120">
                 <template #default="scope">{{ scope.row.satm }}</template>
               </el-table-column>
-              <el-table-column label="鉴定结论">
+              <el-table-column label="鉴定结论" min-width="120">
                 <template #default="scope">{{ scope.row.saAppRst }}</template>
               </el-table-column>
-              <el-table-column label="到期时间">
+              <el-table-column label="到期时间" min-width="120">
                 <template #default="scope">{{ scope.row.dueTm }}</template>
               </el-table-column>
-              <el-table-column label="安全鉴定报告">
+              <el-table-column label="安全鉴定报告" min-width="120">
                 <template #default="scope">
                   <el-icon v-if="scope.row.idtret"><Search /></el-icon>
                 </template>
@@ -336,43 +336,43 @@
           </template>
           <template v-else-if="activeTab === '工程维护'">
             <el-table-column label="维养计划" align="center">
-              <el-table-column label="已编制">
+              <el-table-column label="已编制" min-width="90">
                 <template #default="scope">{{ scope.row.ybz }}</template>
               </el-table-column>
-              <el-table-column label="已落实">
+              <el-table-column label="已落实" min-width="90">
                 <template #default="scope">{{ scope.row.yls }}</template>
               </el-table-column>
             </el-table-column>
-            <el-table-column label="日常喂养（本地年度）/次">
+            <el-table-column label="日常喂养（本地年度）/次" width="190">
               <template #default="scope">{{ scope.row.wyzc }}</template>
             </el-table-column>
             <el-table-column label="白蚁防治" align="center">
-              <el-table-column label="排查情况">
+              <el-table-column label="排查情况" min-width="90">
                 <template #default="scope">{{ scope.row.pcqk }}</template>
               </el-table-column>
-              <el-table-column label="发现蚁患">
+              <el-table-column label="发现蚁患" width="90">
                 <template #default="scope">{{ scope.row.fxwt }}</template>
               </el-table-column>
-              <el-table-column label="治理情况">
+              <el-table-column label="治理情况" min-min-width="120">
                 <template #default="scope">{{ scope.row.zlqk }}</template>
               </el-table-column>
             </el-table-column>
           </template>
           <template v-else-if="activeTab === '安全管控'">
-            <el-table-column label="管理评价（最高等级）">
+            <el-table-column label="管理评价（最高等级）" min-width="180">
               <template #default="scope">{{ scope.row.lev }}</template>
             </el-table-column>
-            <el-table-column label="管保范围">
+            <el-table-column label="管保范围" min-width="90">
               <template #default="scope">{{ scope.row.delimit }}</template>
             </el-table-column>
-            <el-table-column label="六项机制">
+            <el-table-column label="六项机制" min-width="90">
               <template #default="scope">{{ scope.row.lxjz }}</template>
             </el-table-column>
-            <el-table-column label="物资总数">
+            <el-table-column label="物资总数" min-width="90">
               <template #default="scope">{{ scope.row.wzNum }}</template>
             </el-table-column>
           </template>
-          <el-table-column label="操作" width="60">
+          <el-table-column fixed="right" label="操作" width="60">
             <template #default="scope">
               <img
                 :style="{
@@ -1351,7 +1351,7 @@ const exported = () => {
   padding: 20px;
 }
 .card {
-  flex: 1;
+  width: calc(25% - 15px);
   height: 420px;
   background: #ffffff;
   border: 2px solid #ffffff;

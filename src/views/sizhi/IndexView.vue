@@ -258,8 +258,8 @@
       </div>
       <div class="tabler" ref="tabler">
         <el-table :key="activeTab + 'table'" :data="tableData" style="width: 100%" stripe :max-height="tableHeight">
-          <el-table-column type="index" label="序号" width="60" />
-          <el-table-column label="工程名称">
+          <el-table-column fixed="left" type="index" label="序号" width="60" />
+          <el-table-column label="工程名称" min-width="150">
             <template #default="scope">
               <el-button v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'" type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
                 {{ scope.row.NAME }}
@@ -268,166 +268,166 @@
               <span v-if="['330782022000521', '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'].includes(scope.row.PRCD)" class="pilot-marking">试点水库</span>
             </template>
           </el-table-column>
-          <el-table-column label="所在市">
+          <el-table-column label="所在市" min-width="80">
             <template #default="scope">{{ scope.row.cityADNM }}</template>
           </el-table-column>
-          <el-table-column label="所在县">
+          <el-table-column label="所在县" min-width="80">
             <template #default="scope">{{ scope.row.countryADNM }}</template>
           </el-table-column>
-          <el-table-column label="工程规模">
+          <el-table-column label="工程规模" min-width="100">
             <template #default="scope">{{ scope.row.scale || dataEcho('SKGM', scope.row.project_scale) }}</template>
           </el-table-column>
           <template v-if="activeTab === '体制管理'">
-            <el-table-column label="管理层级">
+            <el-table-column label="管理层级" min-width="90">
               <template #default="scope">{{ scope.row.superLev }}</template>
             </el-table-column>
-            <el-table-column label="所属行业部门">
+            <el-table-column label="所属行业部门" min-width="110">
               <template #default="scope">{{ scope.row.belong }}</template>
             </el-table-column>
-            <el-table-column label="明确产权">
+            <el-table-column label="明确产权" min-width="90">
               <template #default="scope">{{ scope.row.qq }}</template>
             </el-table-column>
-            <el-table-column label="证书类型">
+            <el-table-column label="证书类型" min-width="170">
               <template #default="scope">{{ scope.row.property_type }}</template>
             </el-table-column>
-            <el-table-column label="颁证部门">
+            <el-table-column label="颁证部门" width="140">
               <template #default="scope">{{ scope.row.certificate_unit }}</template>
             </el-table-column>
-            <el-table-column label="颁证时间">
+            <el-table-column label="颁证时间" min-min-width="100">
               <template #default="scope">{{ scope.row.tm }}</template>
             </el-table-column>
-            <el-table-column label="证书查看">
+            <el-table-column label="证书查看" min-width="90">
               <template #default="scope">
                 <el-icon v-if="scope.row.authorization_file"><Search /></el-icon>
               </template>
             </el-table-column>
           </template>
           <template v-if="activeTab === '机制运行'">
-            <el-table-column label="管护主体">
+            <el-table-column label="管护主体" min-width="140">
               <template #default="scope">{{ scope.row.ghzt }}</template>
             </el-table-column>
-            <el-table-column label="管理经费(万元)">
+            <el-table-column label="管理经费(万元)" min-width="140">
               <template #default="scope">{{ scope.row.gljf }}</template>
             </el-table-column>
-            <el-table-column label="养护经费(万元)">
+            <el-table-column label="养护经费(万元)" min-width="140">
               <template #default="scope">{{ scope.row.wyjf }}</template>
             </el-table-column>
-            <el-table-column label="物业单位(个)">
+            <el-table-column label="物业单位(个)" min-width="140">
               <template #default="scope">{{ scope.row.wydwNum }}</template>
             </el-table-column>
-            <el-table-column label="委托合同(份)">
+            <el-table-column label="委托合同(份)" min-width="140">
               <template #default="scope">{{ scope.row.wthtNum }}</template>
             </el-table-column>
-            <el-table-column label="合同金额(万元)">
+            <el-table-column label="合同金额(万元)" min-width="140">
               <template #default="scope">{{ scope.row.htje }}</template>
             </el-table-column>
           </template>
           <template v-if="activeTab === '法制支撑'">
-            <el-table-column label="事件名称">
+            <el-table-column label="事件名称" min-width="200">
               <template #default="scope">{{ scope.row.event_name }}</template>
             </el-table-column>
-            <el-table-column label="发生时间">
+            <el-table-column label="发生时间" min-width="120">
               <template #default="scope">{{ scope.row.occur_time }}</template>
             </el-table-column>
-            <el-table-column label="事件内容">
+            <el-table-column label="事件内容" min-width="500">
               <template #default="scope">{{ scope.row.event_content }}</template>
             </el-table-column>
-            <el-table-column label="相关附件">
+            <el-table-column label="相关附件" min-width="90">
               <template #default="scope">
                 <el-icon v-if="scope.row.fileId"><Search /></el-icon>
               </template>
             </el-table-column>
           </template>
           <template v-if="activeTab === '责任制落实'">
-            <el-table-column label="是否有管理单位">
+            <el-table-column label="是否有管理单位" min-width="130">
               <template #default="scope">{{ scope.row.if_department }}</template>
             </el-table-column>
-            <el-table-column label="行政责任人">
-              <el-table-column label="姓名">
+            <el-table-column label="行政责任人" align="center">
+              <el-table-column label="姓名" min-width="100">
                 <template #default="scope">{{ scope.row.executive_gov_name }}</template>
               </el-table-column>
-              <el-table-column label="单位">
+              <el-table-column label="单位" min-width="150">
                 <template #default="scope">{{ scope.row.executive_gov_unit }}</template>
               </el-table-column>
-              <el-table-column label="职务">
+              <el-table-column label="职务" min-width="100">
                 <template #default="scope">{{ scope.row.executive_gov_position }}</template>
               </el-table-column>
-              <el-table-column label="联系方式">
+              <el-table-column label="联系方式" min-width="120">
                 <template #default="scope">{{ scope.row.executive_gov_phone }}</template>
               </el-table-column>
             </el-table-column>
-            <el-table-column label="水行政主管单位责任人">
-              <el-table-column label="姓名">
+            <el-table-column label="水行政主管单位责任人" align="center">
+              <el-table-column label="姓名" min-width="100">
                 <template #default="scope">{{ scope.row.executive_water_name }}</template>
               </el-table-column>
-              <el-table-column label="单位">
+              <el-table-column label="单位" min-width="150">
                 <template #default="scope">{{ scope.row.executive_water_unit }}</template>
               </el-table-column>
-              <el-table-column label="职务">
+              <el-table-column label="职务" min-width="100">
                 <template #default="scope">{{ scope.row.executive_water_position }}</template>
               </el-table-column>
-              <el-table-column label="联系方式">
+              <el-table-column label="联系方式" min-width="120">
                 <template #default="scope">{{ scope.row.executive_water_phone }}</template>
               </el-table-column>
             </el-table-column>
-            <el-table-column label="产权责任人">
-              <el-table-column label="姓名">
+            <el-table-column label="产权责任人" align="center">
+              <el-table-column label="姓名" min-width="100">
                 <template #default="scope">{{ scope.row.executive_depart_name }}</template>
               </el-table-column>
-              <el-table-column label="单位">
+              <el-table-column label="单位" min-width="150">
                 <template #default="scope">{{ scope.row.executive_depart_unit }}</template>
               </el-table-column>
-              <el-table-column label="职务">
+              <el-table-column label="职务" min-width="100">
                 <template #default="scope">{{ scope.row.executive_depart_position }}</template>
               </el-table-column>
-              <el-table-column label="联系方式">
+              <el-table-column label="联系方式" min-width="120">
                 <template #default="scope">{{ scope.row.executive_depart_phone }}</template>
               </el-table-column>
             </el-table-column>
-            <el-table-column label="管理单位责任人">
-              <el-table-column label="姓名">
+            <el-table-column label="管理单位责任人" align="center">
+              <el-table-column label="姓名" min-width="100">
                 <template #default="scope">{{ scope.row.executive_manage_name }}</template>
               </el-table-column>
-              <el-table-column label="单位">
+              <el-table-column label="单位" min-width="150">
                 <template #default="scope">{{ scope.row.executive_manage_name }}</template>
               </el-table-column>
-              <el-table-column label="职务">
+              <el-table-column label="职务" min-width="100">
                 <template #default="scope">{{ scope.row.executive_manage_position }}</template>
               </el-table-column>
-              <el-table-column label="联系方式">
+              <el-table-column label="联系方式" min-width="120">
                 <template #default="scope">{{ scope.row.executive_manage_phone }}</template>
               </el-table-column>
             </el-table-column>
-            <el-table-column label="技术责任人">
-              <el-table-column label="姓名">
+            <el-table-column label="技术责任人" align="center">
+              <el-table-column label="姓名" min-width="100">
                 <template #default="scope">{{ scope.row.technical_name }}</template>
               </el-table-column>
-              <el-table-column label="单位">
+              <el-table-column label="单位" min-width="150">
                 <template #default="scope">{{ scope.row.techinical_unit }}</template>
               </el-table-column>
-              <el-table-column label="职务">
+              <el-table-column label="职务" min-width="100">
                 <template #default="scope">{{ scope.row.techinical_position }}</template>
               </el-table-column>
-              <el-table-column label="联系方式">
+              <el-table-column label="联系方式" min-width="120">
                 <template #default="scope">{{ scope.row.techinical_phone }}</template>
               </el-table-column>
             </el-table-column>
-            <el-table-column label="巡查责任人">
-              <el-table-column label="姓名">
+            <el-table-column label="巡查责任人" align="center">
+              <el-table-column label="姓名" min-width="100">
                 <template #default="scope">{{ scope.row.patrol_name }}</template>
               </el-table-column>
-              <el-table-column label="单位">
+              <el-table-column label="单位" min-width="150">
                 <template #default="scope">{{ scope.row.patrol_unit }}</template>
               </el-table-column>
-              <el-table-column label="职务">
+              <el-table-column label="职务" min-width="100">
                 <template #default="scope">{{ scope.row.patrol_position }}</template>
               </el-table-column>
-              <el-table-column label="联系方式">
+              <el-table-column label="联系方式" min-width="120">
                 <template #default="scope">{{ scope.row.patrol_phone }}</template>
               </el-table-column>
             </el-table-column>
           </template>
-          <el-table-column label="操作" width="60">
+          <el-table-column fixed="right" label="操作" width="60">
             <template #default="scope">
               <img
                 :style="{
@@ -1216,7 +1216,7 @@ const exported = () => {
   padding: 20px;
 }
 .card {
-  flex: 1;
+  width: calc(25% - 15px);
   height: 420px;
   background: #ffffff;
   border: 2px solid #ffffff;

@@ -41,10 +41,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(RegExp(`^${globalConfig.baseUrl}`), '')
       },
-      '/prod-api': {
+      '/plat-api': {
         target: 'http://192.168.2.173:1008',
         changeOrigin: true,
-        rewrite: (path) => path.replace(RegExp(`^/prod-api`), '')
+        rewrite: (path) => path.replace(RegExp(`^/plat-api`), '')
       }
     }
   }

@@ -72,6 +72,7 @@ import { useRouter } from 'vue-router'
 import { Setting, Bell, ArrowUp, ArrowDown } from '@element-plus/icons-vue'
 import { getUserInfo } from '@/utils/userInfo'
 import { logout } from '@/api/authCenterApi'
+import { getToken } from '@/utils/userToken'
 
 const props = defineProps({
   // 系统名称
@@ -144,7 +145,7 @@ function quit() {
 }
 
 const jumpScreen = () => {
-  window.open('https://swzg.slt.zj.gov.cn/matrix-screen')
+  window.open('https://swzg.slt.zj.gov.cn/matrix-screen?token=' + getToken())
 }
 </script>
 

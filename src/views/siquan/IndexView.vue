@@ -447,8 +447,8 @@
       </div>
       <div class="tabler" ref="tabler">
         <el-table :key="activeTab + 'table'" :data="tableData" style="width: 100%" stripe :max-height="tableHeight">
-          <el-table-column type="index" label="序号" width="60" />
-          <el-table-column label="工程名称">
+          <el-table-column fixed="left" type="index" label="序号" width="60" />
+          <el-table-column label="工程名称" min-width="150">
             <template #default="scope">
               <el-button v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'" type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
                 {{ scope.row.NAME }}
@@ -457,118 +457,118 @@
               <span v-if="['330782022000521', '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'].includes(scope.row.PRCD)" class="pilot-marking">试点水库</span>
             </template>
           </el-table-column>
-          <el-table-column label="所在市">
+          <el-table-column label="所在市" min-width="80">
             <template #default="scope">{{ scope.row.cityADNM }}</template>
           </el-table-column>
-          <el-table-column label="所在县">
+          <el-table-column label="所在县" min-width="80">
             <template #default="scope">{{ scope.row.countryADNM }}</template>
           </el-table-column>
-          <el-table-column label="工程规模">
+          <el-table-column label="工程规模" min-width="100">
             <template #default="scope">{{ scope.row.scale || dataEcho('SKGM', scope.row.project_scale) }}</template>
           </el-table-column>
           <template v-if="activeTab === '监管全覆盖'">
-            <el-table-column label="注册部门">
+            <el-table-column label="注册部门" min-width="100">
               <template #default="scope">{{ scope.row.registration }}</template>
             </el-table-column>
-            <el-table-column label="注册登记号">
+            <el-table-column label="注册登记号" min-width="140">
               <template #default="scope">{{ scope.row.RECORDID }}</template>
             </el-table-column>
-            <el-table-column label="所属行业">
+            <el-table-column label="所属行业" min-width="100">
               <template #default="scope">{{ scope.row.belong }}</template>
             </el-table-column>
           </template>
           <template v-else-if="activeTab === '全要素掌控'">
-            <el-table-column label="总库容(万m³)">
+            <el-table-column label="总库容(万m³)" min-width="110">
               <template #default="scope">{{ scope.row.tcp }}</template>
             </el-table-column>
-            <el-table-column label="流域面积(万m²)">
+            <el-table-column label="流域面积(万m²)" min-width="130">
               <template #default="scope">{{ scope.row.rca }}</template>
             </el-table-column>
-            <el-table-column label="大坝材料">
+            <el-table-column label="大坝材料" min-width="90">
               <template #default="scope">{{ scope.row.DTBM }}</template>
             </el-table-column>
-            <el-table-column label="主坝坝高(m)">
+            <el-table-column label="主坝坝高(m)" min-width="110">
               <template #default="scope">{{ scope.row.dce }}</template>
             </el-table-column>
-            <el-table-column label="库容曲线">
+            <el-table-column label="库容曲线" min-width="90">
               <template #default="scope">{{ scope.row.krqx }}</template>
             </el-table-column>
-            <el-table-column label="泄流曲线">
+            <el-table-column label="泄流曲线" min-width="90">
               <template #default="scope">{{ scope.row.xlqx }}</template>
             </el-table-column>
-            <el-table-column label="溢洪道侵占">
+            <el-table-column label="溢洪道侵占" min-width="100">
               <template #default="scope">{{ scope.row.yhdqz }}</template>
             </el-table-column>
-            <el-table-column label="正常蓄水位(m)">
+            <el-table-column label="正常蓄水位(m)" min-width="120">
               <template #default="scope">{{ scope.row.nwl }}</template>
             </el-table-column>
             <el-table-column label="影响范围填报情况" align="center">
-              <el-table-column label="正常蓄水位">
+              <el-table-column label="正常蓄水位" min-width="100">
                 <template #default="scope">{{ scope.row.xsw }}</template>
               </el-table-column>
-              <el-table-column label="设计洪水位">
+              <el-table-column label="设计洪水位" min-width="100">
                 <template #default="scope">{{ scope.row.sjsw }}</template>
               </el-table-column>
-              <el-table-column label="校核洪水位">
+              <el-table-column label="校核洪水位" min-width="100">
                 <template #default="scope">{{ scope.row.jhsw }}</template>
               </el-table-column>
-              <el-table-column label="下游要素">
+              <el-table-column label="下游要素" min-width="100">
                 <template #default="scope">{{ scope.row.xyys }}</template>
               </el-table-column>
             </el-table-column>
           </template>
           <template v-else-if="activeTab === '全天候管控'">
             <el-table-column label="天" align="center">
-              <el-table-column label="遥感影像">
+              <el-table-column label="遥感影像" min-width="100">
                 <template #default="scope">{{ scope.row.ygyxNum }}</template>
               </el-table-column>
-              <el-table-column label="InSAR">
+              <el-table-column label="InSAR" min-width="100">
                 <template #default="scope">{{ scope.row.insarNum }}</template>
               </el-table-column>
-              <el-table-column label="气象卫星">
+              <el-table-column label="气象卫星" min-width="100">
                 <template #default="scope">{{ scope.row.qxwxNum }}</template>
               </el-table-column>
             </el-table-column>
             <el-table-column label="空" align="center">
-              <el-table-column label="无人机">
+              <el-table-column label="无人机" min-width="100">
                 <template #default="scope">{{ scope.row.wrjNum }}</template>
               </el-table-column>
-              <el-table-column label="测雨雷达">
+              <el-table-column label="测雨雷达" min-width="100">
                 <template #default="scope">{{ scope.row.cyldNum }}</template>
               </el-table-column>
-              <el-table-column label="其他">
+              <el-table-column label="其他" min-width="100">
                 <template #default="scope">{{ scope.row.qtNum }}</template>
               </el-table-column>
             </el-table-column>
             <el-table-column label="地" align="center">
-              <el-table-column label="视频">
+              <el-table-column label="视频" min-width="100">
                 <template #default="scope">{{ scope.row.spNum }}</template>
               </el-table-column>
-              <el-table-column label="智能巡检">
+              <el-table-column label="智能巡检" min-width="100">
                 <template #default="scope">{{ scope.row.xjNum }}</template>
               </el-table-column>
-              <el-table-column label="雨水情">
+              <el-table-column label="雨水情" min-width="100">
                 <template #default="scope">{{ scope.row.ysqNum }}</template>
               </el-table-column>
-              <el-table-column label="安全监测">
+              <el-table-column label="安全监测" min-width="100">
                 <template #default="scope">{{ scope.row.aqjcNum }}</template>
               </el-table-column>
             </el-table-column>
           </template>
           <template v-else-if="activeTab === '全周期管理'">
             <el-table-column label="始建情况" align="center">
-              <el-table-column label="开工时间">
+              <el-table-column label="开工时间" min-width="140">
                 <template #default="scope">{{ scope.row.stm }}</template>
               </el-table-column>
-              <el-table-column label="完工时间">
+              <el-table-column label="完工时间" min-width="140">
                 <template #default="scope">{{ scope.row.ctm }}</template>
               </el-table-column>
-              <el-table-column label="竣工时间">
+              <el-table-column label="竣工时间" min-width="140">
                 <template #default="scope">{{ scope.row.ftm }}</template>
               </el-table-column>
             </el-table-column>
           </template>
-          <el-table-column label="操作" width="60">
+          <el-table-column fixed="right" label="操作" width="60">
             <template #default="scope">
               <img
                 :style="{
@@ -1877,7 +1877,7 @@ const exported = () => {
   padding: 20px;
 }
 .card {
-  flex: 1;
+  width: calc(25% - 15px);
   height: 420px;
   background: #ffffff;
   border: 2px solid #ffffff;
