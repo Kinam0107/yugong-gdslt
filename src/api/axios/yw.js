@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 const instance = axios.create({
-  baseURL: '/plat-api/prod-api',
+  baseURL: '/prod-api',
   timeout: globalConfig.timeout
 })
 

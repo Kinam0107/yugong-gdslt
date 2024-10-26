@@ -17,7 +17,7 @@ const router = useRouter()
 const loading = ref(true)
 const username = ref('liuchen')
 const password = ref('ygkj0818')
-const TokenKey = 'Authorization'
+const TokenKey = 'authorization'
 
 onBeforeMount(() => {
   Cookies.remove(TokenKey)

@@ -7,7 +7,8 @@ import { ElMessage } from 'element-plus'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 const instance = axios.create({
-  baseURL: globalConfig.baseUrl,
+  // baseURL: globalConfig.baseUrl,
+  baseURL: 'https://swzg.slt.zj.gov.cn/dingrscp-api',
   timeout: globalConfig.timeout
 })
 

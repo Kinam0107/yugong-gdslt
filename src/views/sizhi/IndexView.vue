@@ -257,15 +257,21 @@
         </div>
       </div>
       <div class="tabler" ref="tabler">
-        <el-table :key="activeTab + 'table'" :data="tableData" style="width: 100%" stripe :max-height="tableHeight">
+        <el-table :key="activeTab + 'table'" :data="tableDataSort" style="width: 100%" stripe :max-height="tableHeight">
           <el-table-column fixed="left" type="index" label="序号" width="60" />
           <el-table-column label="工程名称" min-width="150">
             <template #default="scope">
-              <el-button v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'" type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
+              <template v-if="scope.row.prcd === '330782022000521' || scope.row.PRCD === '330782022000521'">
+                <el-button type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
+                  {{ scope.row.NAME }}
+                </el-button>
+                <span class="pilot-marking">试点水库</span>
+              </template>
+              <template v-else-if="scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'">
                 {{ scope.row.NAME }}
-              </el-button>
-              <span v-else>{{ scope.row.NAME }}</span>
-              <span v-if="['330782022000521', '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'].includes(scope.row.PRCD)" class="pilot-marking">试点水库</span>
+                <span class="pilot-marking">试点水库</span>
+              </template>
+              <template v-else>{{ scope.row.NAME }}</template>
             </template>
           </el-table-column>
           <el-table-column label="所在市" min-width="80">
@@ -446,7 +452,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onBeforeMount, onMounted, onBeforeUnmount } from 'vue'
+import { ref, reactive, onBeforeMount, onMounted, onBeforeUnmount, computed } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import RingChart from '@/components/chart/RingChart.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
@@ -819,6 +825,15 @@ const name = ref('')
 const scale = ref('')
 const adcd = ref('330782000000')
 const tableData = ref([])
+const tableDataSort = computed(() => {
+  const item1 = tableData.value.find((item) => item.prcd === '330782022000521' || item.PRCD === '330782022000521')
+  const item2 = tableData.value.find((item) => item.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || item.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e')
+  const tableData_ = tableData.value.filter((item) => item.prcd !== '330782022000521' && item.PRCD !== '330782022000521')
+  console.log(tableData_)
+  if (item2) tableData_.unshift(item2)
+  if (item1) tableData_.unshift(item1)
+  return tableData_
+})
 const search = () => {
   if (activeTab.value === '体制管理') {
     if (activeType.value === '' && activeItem.value === '') {
