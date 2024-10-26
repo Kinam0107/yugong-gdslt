@@ -775,8 +775,9 @@ const tableData = ref([])
 const tableDataSort = computed(() => {
   const item1 = tableData.value.find((item) => item.prcd === '330782022000521' || item.PRCD === '330782022000521')
   const item2 = tableData.value.find((item) => item.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || item.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e')
-  const tableData_ = tableData.value.filter((item) => item.prcd !== '330782022000521' && item.PRCD !== '330782022000521')
-  console.log(tableData_)
+  const tableData_ = tableData.value.filter(
+    (item) => item.prcd !== '330782022000521' && item.PRCD !== '330782022000521' && item.prcd !== '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' && item.PRCD !== '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'
+  )
   if (item2) tableData_.unshift(item2)
   if (item1) tableData_.unshift(item1)
   return tableData_
