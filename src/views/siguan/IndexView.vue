@@ -265,25 +265,25 @@
           <el-table-column label="工程名称" min-width="150">
             <template #default="scope">
               <el-button v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'" type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
-                {{ scope.row.NAME }}
+                {{ scope.row.NAME || scope.row.proName }}
               </el-button>
-              <span v-else>{{ scope.row.NAME }}</span>
+              <span v-else>{{ scope.row.NAME || scope.row.proName }}</span>
               <span v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'" class="pilot-marking">试点水库</span>
               <span v-if="scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'" class="pilot-marking">试点水库</span>
             </template>
           </el-table-column>
           <el-table-column label="所在市" min-width="80">
-            <template #default="scope">{{ scope.row.cityADNM }}</template>
+            <template #default="scope">{{ scope.row.cityADNM || scope.row.adcdctiy }}</template>
           </el-table-column>
           <el-table-column label="所在县" min-width="80">
-            <template #default="scope">{{ scope.row.countryADNM }}</template>
+            <template #default="scope">{{ scope.row.countryADNM || scope.row.adcdcountry }}</template>
           </el-table-column>
           <el-table-column label="工程规模" min-width="100">
             <template #default="scope">{{ scope.row.scale || dataEcho('SKGM', scope.row.project_scale) }}</template>
           </el-table-column>
           <template v-if="activeTab === '及时除险' && activeType === '除险加固'">
             <el-table-column label="安全管理状态" min-width="110">
-              <template #default="scope">{{ scope.row.status_str }}</template>
+              <template #default="scope">{{ scope.row.status_str || scope.row.statusw }}</template>
             </el-table-column>
             <el-table-column label="工程检查" align="center">
               <el-table-column label="发现问题" min-width="90">
@@ -320,17 +320,17 @@
           <template v-else-if="activeTab === '水库体检'">
             <el-table-column label="安全鉴定（最近一次）" align="center">
               <el-table-column label="鉴定时间" min-width="120">
-                <template #default="scope">{{ scope.row.satm }}</template>
+                <template #default="scope">{{ scope.row.satm || scope.row.SA_APP_TM }}</template>
               </el-table-column>
               <el-table-column label="鉴定结论" min-width="120">
-                <template #default="scope">{{ scope.row.saAppRst }}</template>
+                <template #default="scope">{{ scope.row.saAppRst || scope.row.SA_APP_RST }}</template>
               </el-table-column>
               <el-table-column label="到期时间" min-width="120">
-                <template #default="scope">{{ scope.row.dueTm }}</template>
+                <template #default="scope">{{ scope.row.dueTm || scope.row.R_REF_ST_TM }}</template>
               </el-table-column>
               <el-table-column label="安全鉴定报告" min-width="120">
                 <template #default="scope">
-                  <el-icon v-if="scope.row.idtret"><Search /></el-icon>
+                  <el-icon v-if="scope.row.idtret || scope.row.RECORDID"><Search /></el-icon>
                 </template>
               </el-table-column>
             </el-table-column>
