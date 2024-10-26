@@ -996,7 +996,7 @@ const search = () => {
           name: name.value,
           projectScale: scale.value,
           gpType: '1',
-          screen: '19'
+          screen: '17'
         }
       })
         .then((res) => {
@@ -1032,7 +1032,7 @@ const search = () => {
           name: name.value,
           projectScale: scale.value,
           gpType: '1',
-          screen: '17'
+          screen: '19'
         }
       })
         .then((res) => {
