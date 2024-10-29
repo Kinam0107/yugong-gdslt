@@ -19,7 +19,8 @@
           <RingChart ref="smallChart" :color="colors" :data="departmentData" />
         </div>
         <ul class="legend-wrap">
-          <li v-for="(item, index) in departmentData" :key="index" :class="{ active: activeFlag('体制管理', '', item.name) }" @click="changeActive('体制管理', '', item.name)">
+          <li v-for="(item, index) in departmentData" :key="index"
+            :class="{ active: activeFlag('体制管理', '', item.name) }" @click="changeActive('体制管理', '', item.name)">
             <i class="round_dot" :style="{ background: colors[index] }"></i>
             <span class="label">{{ item.name }}</span>
             <span class="value">{{ item.value }}</span>
@@ -28,7 +29,8 @@
         </ul>
       </div>
       <TabBar class="mqcq-name" modelValue="明确产权" :tabs="['明确产权']" type="title" />
-      <div class="mqcq-wrap" :class="{ active: activeFlag('体制管理', '明确产权', '完成数') }" @click="changeActive('体制管理', '明确产权', '完成数')">
+      <div class="mqcq-wrap" :class="{ active: activeFlag('体制管理', '明确产权', '完成数') }"
+        @click="changeActive('体制管理', '明确产权', '完成数')">
         <span class="label">完成数</span>
         <span class="value">{{ completedData.num }}</span>
         <span class="unit">座</span>
@@ -38,41 +40,49 @@
     </div>
     <div :class="['card', { active: activeTab === '机制运行' }]">
       <span class="name" @click="changeActive('机制运行', '', '')">机制运行</span>
-      <TabBar class="manage-name" v-model="manageCategroy" :tabs="['管护主体', '管护模式']" type="title" @change="(e) => changeActive('机制运行', e, '')" />
+      <TabBar class="manage-name" v-model="manageCategroy" :tabs="['管护主体', '管护模式']" type="title"
+        @change="(e) => changeActive('机制运行', e, '')" />
       <div v-if="manageCategroy === '管护主体'" class="unit-wrap">
-        <div class="item" :class="{ active: activeFlag('机制运行', '管护主体', '事业单位') }" @click="changeActive('机制运行', '管护主体', '事业单位')">
+        <div class="item" :class="{ active: activeFlag('机制运行', '管护主体', '事业单位') }"
+          @click="changeActive('机制运行', '管护主体', '事业单位')">
           <span class="label">事业单位</span>
           <span class="value">{{ manageMain.sydw }}</span>
           <span class="unit">座</span>
         </div>
-        <div class="item" :class="{ active: activeFlag('机制运行', '管护主体', '国有企业') }" @click="changeActive('机制运行', '管护主体', '国有企业')">
+        <div class="item" :class="{ active: activeFlag('机制运行', '管护主体', '国有企业') }"
+          @click="changeActive('机制运行', '管护主体', '国有企业')">
           <span class="label">国有企业</span>
           <span class="value">{{ manageMain.gyqy }}</span>
           <span class="unit">座</span>
         </div>
-        <div class="item" :class="{ active: activeFlag('机制运行', '管护主体', '集体单位') }" @click="changeActive('机制运行', '管护主体', '集体单位')">
+        <div class="item" :class="{ active: activeFlag('机制运行', '管护主体', '集体单位') }"
+          @click="changeActive('机制运行', '管护主体', '集体单位')">
           <span class="label">集体单位</span>
           <span class="value">{{ manageMain.jtdw }}</span>
           <span class="unit">座</span>
         </div>
-        <div class="item" :class="{ active: activeFlag('机制运行', '管护主体', '其他') }" @click="changeActive('机制运行', '管护主体', '其他')">
+        <div class="item" :class="{ active: activeFlag('机制运行', '管护主体', '其他') }"
+          @click="changeActive('机制运行', '管护主体', '其他')">
           <span class="label">其&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;他</span>
           <span class="value">{{ manageMain.qt }}</span>
           <span class="unit">座</span>
         </div>
       </div>
       <div v-if="manageCategroy === '管护模式'" class="unit-wrap">
-        <div class="item" :class="{ active: activeFlag('机制运行', '管护模式', '有管理单位') }" @click="changeActive('机制运行', '管护模式', '有管理单位')">
+        <div class="item" :class="{ active: activeFlag('机制运行', '管护模式', '有管理单位') }"
+          @click="changeActive('机制运行', '管护模式', '有管理单位')">
           <span class="label">有管理单位</span>
           <span class="value">{{ manageMode.ygldw }}</span>
           <span class="unit">座</span>
         </div>
-        <div class="item" :class="{ active: activeFlag('机制运行', '管护模式', '无管理单位') }" @click="changeActive('机制运行', '管护模式', '无管理单位')">
+        <div class="item" :class="{ active: activeFlag('机制运行', '管护模式', '无管理单位') }"
+          @click="changeActive('机制运行', '管护模式', '无管理单位')">
           <span class="label">无管理单位</span>
           <span class="value">{{ manageMode.wgldw }}</span>
           <span class="unit">座</span>
         </div>
-        <div class="item hole" :class="{ active: activeFlag('机制运行', '管护模式', '委托物业化') }" @click="changeActive('机制运行', '管护模式', '委托物业化')">
+        <div class="item hole" :class="{ active: activeFlag('机制运行', '管护模式', '委托物业化') }"
+          @click="changeActive('机制运行', '管护模式', '委托物业化')">
           <span class="label">委托物业化</span>
           <span class="value">{{ manageMode.wtwyh_num }}</span>
           <span class="unit">座</span>
@@ -163,7 +173,8 @@
           </div>
         </div>
       </div>
-      <TabBar class="file-name" v-model="fileCategroy" :tabs="['法规制度', '规章制度', '技术标准']" type="title" @change="getFileList" />
+      <TabBar class="file-name" v-model="fileCategroy" :tabs="['法规制度', '规章制度', '技术标准']" type="title"
+        @change="getFileList" />
       <ul class="file-wrap">
         <li>
           <span>标准名称</span>
@@ -187,7 +198,8 @@
     </div>
     <div :class="['card', { active: activeTab === '责任制落实' }]">
       <span class="name" @click="changeActive('责任制落实', '', '')">责任制落实</span>
-      <div class="lszs-wrap" :class="{ active: activeFlag('责任制落实', '', '落实座数') }" @click="changeActive('责任制落实', '', '落实座数')">
+      <div class="lszs-wrap" :class="{ active: activeFlag('责任制落实', '', '落实座数') }"
+        @click="changeActive('责任制落实', '', '落实座数')">
         <span class="label">落实座数</span>
         <span class="value">{{ implementData.num }}</span>
         <span class="unit">座</span>
@@ -242,13 +254,15 @@
         <div class="item">
           <span class="label">工程规模：</span>
           <el-select v-model="scale" placeholder="请选择" style="width: 240px" clearable @change="search">
-            <el-option v-for="item in getOptions('SKGM')" :key="'scale' + item.value" :label="item.label" :value="item.value" />
+            <el-option v-for="item in getOptions('SKGM')" :key="'scale' + item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </div>
         <div class="item">
           <span class="label">行政区划：</span>
           <el-select v-model="adcd" placeholder="请选择" style="width: 240px" @change="search">
-            <el-option v-for="item in getOptions('XZQH')" :key="'adcd' + item.value" :label="item.label" :value="item.value" />
+            <el-option v-for="item in getOptions('XZQH')" :key="'adcd' + item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </div>
         <div class="btns">
@@ -261,17 +275,17 @@
           <el-table-column fixed="left" type="index" label="序号" width="60" />
           <el-table-column label="工程名称" min-width="150">
             <template #default="scope">
-              <template v-if="scope.row.prcd === '330782022000521' || scope.row.PRCD === '330782022000521'">
-                <el-button type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
-                  {{ scope.row.NAME }}
-                </el-button>
-                <span class="pilot-marking">试点水库</span>
-              </template>
-              <template v-else-if="scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'">
-                {{ scope.row.NAME }}
-                <span class="pilot-marking">试点水库</span>
-              </template>
-              <template v-else>{{ scope.row.NAME }}</template>
+              <el-button
+                v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' || scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'"
+                type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
+                {{ scope.row.NAME || scope.row.proName }}
+              </el-button>
+              <span v-else>{{ scope.row.NAME || scope.row.proName }}</span>
+              <span v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'"
+                class="pilot-marking">试点水库</span>
+              <span
+                v-if="scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'"
+                class="pilot-marking">试点水库</span>
             </template>
           </el-table-column>
           <el-table-column label="所在市" min-width="80">
@@ -304,7 +318,9 @@
             </el-table-column>
             <el-table-column label="证书查看" min-width="90">
               <template #default="scope">
-                <el-icon v-if="scope.row.authorization_file"><Search /></el-icon>
+                <el-icon v-if="scope.row.authorization_file">
+                  <Search />
+                </el-icon>
               </template>
             </el-table-column>
           </template>
@@ -340,7 +356,9 @@
             </el-table-column>
             <el-table-column label="相关附件" min-width="90">
               <template #default="scope">
-                <el-icon v-if="scope.row.fileId"><Search /></el-icon>
+                <el-icon v-if="scope.row.fileId">
+                  <Search />
+                </el-icon>
               </template>
             </el-table-column>
           </template>
@@ -435,14 +453,10 @@
           </template>
           <el-table-column fixed="right" label="操作" width="60">
             <template #default="scope">
-              <img
-                :style="{
-                  cursor: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'pointer' : 'not-allowed',
-                  filter: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'none' : 'grayscale(1)'
-                }"
-                src="@/assets/images/screenIcon.png"
-                @click="jumpScreen(scope.row.PRCD || scope.row.prcd)"
-                alt="" />
+              <img :style="{
+                cursor: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'pointer' : 'not-allowed',
+                filter: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'none' : 'grayscale(1)'
+              }" src="@/assets/images/screenIcon.png" @click="jumpScreen(scope.row.PRCD || scope.row.prcd)" alt="" />
             </template>
           </el-table-column>
         </el-table>
@@ -1212,7 +1226,8 @@ onBeforeUnmount(() => {
 
 const jumpProject = (prcd) => {
   console.log('jumpProject', prcd)
-  window.open('http://192.168.2.173:1008')
+  if (prcd === '330782022000521') window.open('http://192.168.2.173:1008')
+  if (prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e') window.open('http://192.168.2.173:1008/v2')
 }
 const jumpScreen = (prcd) => {
   console.log('jumpScreen', prcd)
@@ -1231,6 +1246,7 @@ const exported = () => {
   height: 100%;
   padding: 20px;
 }
+
 .card {
   width: calc(25% - 15px);
   height: 420px;
@@ -1241,9 +1257,11 @@ const exported = () => {
     4px 4px 20px 0px rgba(55, 99, 170, 0.05),
     -4px -4px 20px 0px rgba(55, 99, 170, 0.05);
   padding: 18px;
+
   &.active {
     border-color: $color-primary;
   }
+
   .name {
     display: inline-block;
     font-size: 20px;
@@ -1254,9 +1272,11 @@ const exported = () => {
     cursor: pointer;
   }
 }
+
 .large-wrap {
   display: flex;
   gap: 2 * $baseDistance;
+
   .item {
     display: flex;
     justify-content: center;
@@ -1270,21 +1290,25 @@ const exported = () => {
       8px 8px 20px 0px rgba(55, 99, 170, 0.1),
       -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
     cursor: pointer;
+
     &.active {
       border-color: $color-primary;
     }
+
     .label {
       font-family: Source Han Sans;
       font-size: 16px;
       font-weight: 500;
       color: $color-titletext;
     }
+
     .value {
       margin: 0 0.5 * $baseDistance 0 $baseDistance;
       font-family: YouSheBiaoTiHei;
       font-size: 24px;
       color: $color-primary;
     }
+
     .unit {
       font-family: Source Han Sans;
       font-size: 14px;
@@ -1293,25 +1317,31 @@ const exported = () => {
     }
   }
 }
+
 .small-wrap {
   display: flex;
   width: 100%;
   height: calc(100% - 152px);
+
   .chart-wrap {
     width: 50%;
     height: 100%;
   }
+
   .legend-wrap {
     width: 50%;
     height: 100%;
     padding: 6 * $baseDistance 3 * $baseDistance 7 * $baseDistance $baseDistance;
+
     li {
       display: flex;
       align-items: center;
       color: $color-titletext;
       cursor: pointer;
+
       &.active {
         position: relative;
+
         &::after {
           content: '';
           position: absolute;
@@ -1323,19 +1353,23 @@ const exported = () => {
           background: transparentize($color-primary, 0.9);
         }
       }
-      + li {
+
+      +li {
         margin-top: $baseDistance;
       }
+
       .round_dot {
         width: 10px;
         height: 10px;
         border-radius: 50%;
         margin-right: $baseDistance;
       }
+
       .label {
         font-size: 16px;
         line-height: 24px;
       }
+
       .value {
         flex: 1;
         font-family: YouSheBiaoTiHei;
@@ -1343,6 +1377,7 @@ const exported = () => {
         line-height: 26px;
         text-align: right;
       }
+
       .unit {
         font-size: 16px;
         line-height: 24px;
@@ -1351,9 +1386,11 @@ const exported = () => {
     }
   }
 }
+
 .mqcq-name {
   margin-bottom: 2 * $baseDistance;
 }
+
 .mqcq-wrap {
   display: flex;
   justify-content: center;
@@ -1367,24 +1404,29 @@ const exported = () => {
     8px 8px 20px 0px rgba(55, 99, 170, 0.1),
     -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
   cursor: pointer;
+
   &.active {
     border-color: $color-primary;
   }
+
   .label {
     font-family: Source Han Sans;
     font-size: 16px;
     font-weight: 500;
     color: $color-titletext;
   }
+
   .value {
     margin: 0 0.5 * $baseDistance 0 $baseDistance;
     font-family: YouSheBiaoTiHei;
     font-size: 24px;
     color: $color-primary;
+
     &:nth-of-type(4) {
       margin-left: 3 * $baseDistance;
     }
   }
+
   .unit {
     font-family: Source Han Sans;
     font-size: 14px;
@@ -1392,14 +1434,17 @@ const exported = () => {
     color: $color-titletext;
   }
 }
+
 .manage-name {
   margin-bottom: $baseDistance;
 }
+
 .unit-wrap {
   display: flex;
   flex-wrap: wrap;
   gap: $baseDistance 2 * $baseDistance;
   margin-bottom: 2 * $baseDistance;
+
   .item {
     display: flex;
     align-items: center;
@@ -1413,25 +1458,31 @@ const exported = () => {
       8px 8px 20px 0px rgba(55, 99, 170, 0.1),
       -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
     cursor: pointer;
+
     &.hole {
       width: 100%;
       justify-content: center;
+
       .value {
         flex: none;
+
         &:nth-of-type(4) {
           margin-left: $baseDistance;
         }
       }
     }
+
     &.active {
       border-color: $color-primary;
     }
+
     .label {
       font-family: Source Han Sans;
       font-size: 16px;
       font-weight: 500;
       color: $color-titletext;
     }
+
     .value {
       flex: 1;
       margin: 0 0.5 * $baseDistance 0 $baseDistance;
@@ -1440,6 +1491,7 @@ const exported = () => {
       color: $color-primary;
       text-align: right;
     }
+
     .unit {
       font-family: Source Han Sans;
       font-size: 14px;
@@ -1448,13 +1500,16 @@ const exported = () => {
     }
   }
 }
+
 .jfbz-name {
   margin-bottom: $baseDistance;
 }
+
 .jfbz-wrap {
   position: relative;
   margin-bottom: $baseDistance;
   height: 88px;
+
   .item {
     position: absolute;
     width: calc(50% - $baseDistance);
@@ -1464,30 +1519,36 @@ const exported = () => {
     box-shadow:
       8px 8px 20px 0px rgba(55, 99, 170, 0.1),
       -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
+
     &:nth-child(1) {
       top: 0;
       bottom: 0;
       left: 0;
       padding: 0 2 * $baseDistance;
+
       .subtitle {
         display: flex;
         align-items: center;
         gap: 0.5 * $baseDistance;
         margin-top: 6px;
-        > span {
+
+        >span {
           font-size: 14px;
           line-height: 22px;
           color: $color-titletext;
         }
       }
+
       .child {
         display: flex;
         align-items: center;
+
         .cube {
           width: 8px;
           height: 8px;
           margin-right: 5px;
         }
+
         .text {
           flex: 1;
           font-family: Source Han Sans;
@@ -1495,6 +1556,7 @@ const exported = () => {
           line-height: 16px;
           color: $color-titletext;
         }
+
         .num {
           font-family: YouSheBiaoTiHei;
           font-size: 18px;
@@ -1503,12 +1565,15 @@ const exported = () => {
         }
       }
     }
+
     &:nth-child(2) {
       top: 0;
     }
+
     &:nth-child(3) {
       bottom: 0;
     }
+
     &:nth-child(2),
     &:nth-child(3) {
       right: 0;
@@ -1516,12 +1581,14 @@ const exported = () => {
       align-items: center;
       height: 36px;
       padding: 0 0.5 * $baseDistance;
+
       .label {
         font-family: Source Han Sans;
         font-size: 16px;
         font-weight: 500;
         color: $color-titletext;
       }
+
       .value {
         flex: 1;
         margin: 0 0.5 * $baseDistance 0 $baseDistance;
@@ -1530,6 +1597,7 @@ const exported = () => {
         color: $color-primary;
         text-align: right;
       }
+
       .unit {
         font-family: Source Han Sans;
         font-size: 14px;
@@ -1539,13 +1607,16 @@ const exported = () => {
     }
   }
 }
+
 .wygl-name {
   margin-bottom: $baseDistance;
 }
+
 .wygl-wrap {
   display: flex;
   width: 100%;
   height: 56px;
+
   .item {
     display: flex;
     flex-direction: column;
@@ -1554,20 +1625,24 @@ const exported = () => {
     gap: $baseDistance;
     flex: 1;
     height: 100%;
+
     .label {
       font-family: Source Han Sans;
       font-size: 16px;
       font-weight: 500;
       color: $color-titletext;
     }
+
     .data {
       display: flex;
       align-items: center;
+
       .value {
         font-family: YouSheBiaoTiHei;
         font-size: 24px;
         color: $color-titletext;
       }
+
       .unit {
         font-family: Source Han Sans;
         font-size: 16px;
@@ -1577,17 +1652,20 @@ const exported = () => {
       }
     }
   }
+
   .line {
     width: 2px;
     height: 100%;
     background: linear-gradient(180deg, rgba(0, 82, 217, 0) 0%, #0052d9 52%, rgba(0, 82, 217, 0) 100%);
   }
 }
+
 .fzzc-wrap {
   display: flex;
   width: 100%;
   height: 44px;
   margin-bottom: 2.5 * $baseDistance;
+
   .item {
     display: flex;
     flex-direction: column;
@@ -1595,20 +1673,24 @@ const exported = () => {
     align-items: center;
     flex: 1;
     height: 100%;
+
     .label {
       font-family: Source Han Sans;
       font-size: 16px;
       font-weight: 500;
       color: $color-titletext;
     }
+
     .data {
       display: flex;
       align-items: center;
+
       .value {
         font-family: YouSheBiaoTiHei;
         font-size: 24px;
         color: $color-titletext;
       }
+
       .unit {
         font-family: Source Han Sans;
         font-size: 16px;
@@ -1618,37 +1700,46 @@ const exported = () => {
       }
     }
   }
+
   .line {
     width: 2px;
     height: 100%;
     background: linear-gradient(180deg, rgba(0, 82, 217, 0) 0%, #0052d9 52%, rgba(0, 82, 217, 0) 100%);
   }
 }
+
 .file-name {
   margin-bottom: $baseDistance;
 }
+
 .file-wrap {
   overflow: auto;
   width: 100%;
   height: calc(100% - 172px);
+
   li {
     display: flex;
     align-items: center;
     width: 100%;
     height: 40px;
+
     &:nth-child(even) {
       background: rgba(239, 241, 244, 0.6);
     }
-    > span:nth-child(1) {
+
+    >span:nth-child(1) {
       width: 250px;
     }
-    > span:nth-child(2) {
+
+    >span:nth-child(2) {
       width: calc((100% - 250px) / 2);
     }
-    > span:nth-child(3) {
+
+    >span:nth-child(3) {
       width: calc((100% - 250px) / 2);
     }
-    > span {
+
+    >span {
       display: block;
       font-size: 14px;
       font-weight: 500;
@@ -1660,6 +1751,7 @@ const exported = () => {
     }
   }
 }
+
 .xtzf-wrap {
   display: flex;
   justify-content: center;
@@ -1673,17 +1765,20 @@ const exported = () => {
   box-shadow:
     8px 8px 20px 0px rgba(55, 99, 170, 0.1),
     -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
+
   .label {
     font-family: Source Han Sans;
     font-size: 16px;
     font-weight: 500;
     color: $color-titletext;
   }
+
   .value {
     font-family: YouSheBiaoTiHei;
     font-size: 24px;
     color: $color-primary;
   }
+
   .unit {
     font-family: Source Han Sans;
     font-size: 16px;
@@ -1691,6 +1786,7 @@ const exported = () => {
     color: $color-titletext;
   }
 }
+
 .lszs-wrap {
   display: flex;
   justify-content: center;
@@ -1704,24 +1800,29 @@ const exported = () => {
     8px 8px 20px 0px rgba(55, 99, 170, 0.1),
     -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
   cursor: pointer;
+
   &.active {
     border-color: $color-primary;
   }
+
   .label {
     font-family: Source Han Sans;
     font-size: 16px;
     font-weight: 500;
     color: $color-titletext;
   }
+
   .value {
     margin: 0 0.5 * $baseDistance 0 $baseDistance;
     font-family: YouSheBiaoTiHei;
     font-size: 24px;
     color: $color-primary;
+
     &:nth-of-type(4) {
       margin-left: 3 * $baseDistance;
     }
   }
+
   .unit {
     font-family: Source Han Sans;
     font-size: 14px;
@@ -1729,16 +1830,19 @@ const exported = () => {
     color: $color-titletext;
   }
 }
+
 .lszs-list {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   height: calc(100% - 104px);
+
   .item {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+
     .tag {
       width: 44px;
       height: 24px;
@@ -1751,12 +1855,14 @@ const exported = () => {
       text-align: center;
       margin-right: 10px;
     }
+
     .label {
       font-family: Source Han Sans;
       font-size: 16px;
       font-weight: 500;
       color: $color-titletext;
     }
+
     .value {
       flex: 1;
       font-family: YouSheBiaoTiHei;
@@ -1764,6 +1870,7 @@ const exported = () => {
       text-align: right;
       color: $color-primary;
     }
+
     .unit {
       font-family: Source Han Sans;
       font-size: 14px;
@@ -1773,6 +1880,7 @@ const exported = () => {
     }
   }
 }
+
 .list {
   width: 100%;
   height: calc(100% - 440px);
@@ -1782,32 +1890,38 @@ const exported = () => {
   box-shadow:
     4px 4px 20px 0px rgba(55, 99, 170, 0.05),
     -4px -4px 20px 0px rgba(55, 99, 170, 0.05);
+
   .filter {
     display: flex;
     align-items: center;
     padding: 20px;
     border-bottom: 1px solid #d7dbe0;
+
     .item {
       display: flex;
       align-items: center;
       margin-right: 4 * $baseDistance;
+
       .label {
         font-size: 14px;
         color: $color-titletext;
       }
     }
+
     .btns {
       display: flex;
       flex: 1;
       justify-content: flex-end;
     }
   }
+
   .tabler {
     width: 100%;
     height: calc(100% - 73px);
     padding: 20px;
   }
 }
+
 .pilot-marking {
   display: inline-block;
   height: 20px;

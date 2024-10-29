@@ -17,7 +17,8 @@
           <span class="label">台风路径</span>
         </div>
       </div>
-      <TabBar class="yc-name" v-model="forecastCategroy" :tabs="['洪水预报', '纳蓄能力']" type="title" @change="(e) => changeActive('精准预报', e, '')" />
+      <TabBar class="yc-name" v-model="forecastCategroy" :tabs="['洪水预报', '纳蓄能力']" type="title"
+        @change="(e) => changeActive('精准预报', e, '')" />
       <template v-if="forecastCategroy === '洪水预报'">
         <div class="rainfall_selection">
           <span class="label">假定雨量：</span>
@@ -98,14 +99,10 @@
               <span class="unit">亿m³</span>
             </div>
             <div class="ladder-diagram">
-              <div
-                class="item"
-                v-for="(item, index) in retainWaterData"
-                :style="{
-                  height: (item / retainWaterData.sum()) * 100 + '%',
-                  background: ['#ff4d4f', '#ffcb27', '#276af0', '#0cbf5b'][index]
-                }"
-                :key="index">
+              <div class="item" v-for="(item, index) in retainWaterData" :style="{
+                height: (item / retainWaterData.sum()) * 100 + '%',
+                background: ['#ff4d4f', '#ffcb27', '#276af0', '#0cbf5b'][index]
+              }" :key="index">
                 <span>{{ item }}</span>
               </div>
             </div>
@@ -142,7 +139,8 @@
     <div :class="['card', { active: activeTab === '统一预警' }]">
       <span class="name" @click="changeActive('统一预警', '', '水情预警')">统一预警</span>
       <div class="early_warning">
-        <div class="item" style="cursor: pointer" :class="{ active: activeFlag('统一预警', '', '水情预警') }" @click="changeActive('统一预警', '', '水情预警')">
+        <div class="item" style="cursor: pointer" :class="{ active: activeFlag('统一预警', '', '水情预警') }"
+          @click="changeActive('统一预警', '', '水情预警')">
           <div class="info">
             <div class="label">水情预警</div>
             <div class="data">
@@ -168,7 +166,8 @@
           <RingChart ref="waterLevelChart" :color="colors" :data="waterLevelData" />
         </div>
         <ul class="legend-wrap">
-          <li v-for="(item, index) in waterLevelData" :key="index" :class="{ active: activeFlag('统一预警', '', item.name) }" @click="changeActive('统一预警', '', item.name)">
+          <li v-for="(item, index) in waterLevelData" :key="index"
+            :class="{ active: activeFlag('统一预警', '', item.name) }" @click="changeActive('统一预警', '', item.name)">
             <i class="round_dot" :style="{ background: colors[index] }"></i>
             <span class="label">{{ item.name }}</span>
             <span class="value">{{ item.value }}</span>
@@ -287,7 +286,8 @@
         </div>
       </div>
       <TabBar class="szyl-name" modelValue="实战演练" :tabs="['实战演练']" type="title" />
-      <div class="ndkz-wrap" :class="{ active: activeFlag('在线预案', '实战演练', '年度开展') }" @click="changeActive('在线预案', '实战演练', '年度开展')">
+      <div class="ndkz-wrap" :class="{ active: activeFlag('在线预案', '实战演练', '年度开展') }"
+        @click="changeActive('在线预案', '实战演练', '年度开展')">
         <span class="label">年度开展</span>
         <span class="value">{{ szyl.num }}</span>
         <span class="unit">座</span>
@@ -304,13 +304,15 @@
         <div class="item">
           <span class="label">工程规模：</span>
           <el-select v-model="scale" placeholder="请选择" style="width: 240px" clearable @change="search">
-            <el-option v-for="item in getOptions('SKGM')" :key="'scale' + item.value" :label="item.label" :value="item.value" />
+            <el-option v-for="item in getOptions('SKGM')" :key="'scale' + item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </div>
         <div class="item">
           <span class="label">行政区划：</span>
           <el-select v-model="adcd" placeholder="请选择" style="width: 240px" @change="search">
-            <el-option v-for="item in getOptions('XZQH')" :key="'adcd' + item.value" :label="item.label" :value="item.value" />
+            <el-option v-for="item in getOptions('XZQH')" :key="'adcd' + item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </div>
         <div class="btns">
@@ -323,17 +325,17 @@
           <el-table-column fixed="left" type="index" label="序号" width="60" />
           <el-table-column label="工程名称" min-width="150">
             <template #default="scope">
-              <template v-if="scope.row.prcd === '330782022000521' || scope.row.PRCD === '330782022000521'">
-                <el-button type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
-                  {{ scope.row.NAME }}
-                </el-button>
-                <span class="pilot-marking">试点水库</span>
-              </template>
-              <template v-else-if="scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'">
-                {{ scope.row.NAME }}
-                <span class="pilot-marking">试点水库</span>
-              </template>
-              <template v-else>{{ scope.row.NAME }}</template>
+              <el-button
+                v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' || scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'"
+                type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
+                {{ scope.row.NAME || scope.row.proName }}
+              </el-button>
+              <span v-else>{{ scope.row.NAME || scope.row.proName }}</span>
+              <span v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'"
+                class="pilot-marking">试点水库</span>
+              <span
+                v-if="scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'"
+                class="pilot-marking">试点水库</span>
             </template>
           </el-table-column>
           <el-table-column label="所在市" min-width="80">
@@ -398,14 +400,10 @@
           </template>
           <el-table-column fixed="right" label="操作" width="60">
             <template #default="scope">
-              <img
-                :style="{
-                  cursor: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'pointer' : 'not-allowed',
-                  filter: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'none' : 'grayscale(1)'
-                }"
-                src="@/assets/images/screenIcon.png"
-                @click="jumpScreen(scope.row.PRCD || scope.row.prcd)"
-                alt="" />
+              <img :style="{
+                cursor: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'pointer' : 'not-allowed',
+                filter: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'none' : 'grayscale(1)'
+              }" src="@/assets/images/screenIcon.png" @click="jumpScreen(scope.row.PRCD || scope.row.prcd)" alt="" />
             </template>
           </el-table-column>
         </el-table>
@@ -943,7 +941,8 @@ const jumpTarget = (web) => {
 }
 const jumpProject = (prcd) => {
   console.log('jumpProject', prcd)
-  window.open('http://192.168.2.173:1008')
+  if (prcd === '330782022000521') window.open('http://192.168.2.173:1008')
+  if (prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e') window.open('http://192.168.2.173:1008/v2')
 }
 const jumpScreen = (prcd) => {
   console.log('jumpScreen', prcd)
@@ -962,6 +961,7 @@ const exported = () => {
   height: 100%;
   padding: 20px;
 }
+
 .card {
   width: calc(25% - 15px);
   height: 420px;
@@ -972,9 +972,11 @@ const exported = () => {
     4px 4px 20px 0px rgba(55, 99, 170, 0.05),
     -4px -4px 20px 0px rgba(55, 99, 170, 0.05);
   padding: 18px;
+
   &.active {
     border-color: $color-primary;
   }
+
   .name {
     display: inline-block;
     font-size: 20px;
@@ -985,13 +987,16 @@ const exported = () => {
     cursor: pointer;
   }
 }
+
 .defense_line {
   margin-bottom: $baseDistance;
 }
+
 .external_link {
   display: flex;
   gap: 2 * $baseDistance;
   margin-bottom: 2 * $baseDistance;
+
   .item {
     display: flex;
     justify-content: center;
@@ -1008,18 +1013,22 @@ const exported = () => {
     cursor: pointer;
   }
 }
+
 .yc-name {
   margin-bottom: 2 * $baseDistance;
 }
+
 .rainfall_selection {
   display: flex;
   align-items: center;
   margin-bottom: 2.5 * $baseDistance;
+
   .label {
     font-size: 14px;
     line-height: 22px;
     color: #181818;
   }
+
   .item {
     width: 60px;
     height: 20px;
@@ -1031,14 +1040,17 @@ const exported = () => {
     text-align: center;
     color: $color-titletext;
     cursor: pointer;
-    + .item {
+
+    +.item {
       margin-left: $baseDistance;
     }
+
     &.active {
       color: $color-primary;
       border-color: $color-primary;
     }
   }
+
   .el-input {
     width: 60px;
     height: 20px;
@@ -1046,17 +1058,21 @@ const exported = () => {
     line-height: 18px;
   }
 }
+
 .water_level {
   display: flex;
   gap: 12 * $baseDistance;
   margin-bottom: 2.25 * $baseDistance;
+
   .item {
     display: flex;
     gap: 1.5 * $baseDistance;
+
     .info {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+
       .label {
         font-family: Source Han Sans;
         font-size: 16px;
@@ -1064,15 +1080,18 @@ const exported = () => {
         line-height: 16px;
         color: $color-titletext;
       }
+
       .data {
         display: flex;
         align-items: center;
         gap: $baseDistance;
+
         .value {
           font-family: YouSheBiaoTiHei;
           font-size: 24px;
           line-height: 16px;
         }
+
         .unit {
           font-family: Source Han Sans;
           font-size: 16px;
@@ -1084,9 +1103,11 @@ const exported = () => {
     }
   }
 }
+
 .achievement {
   display: flex;
   gap: 2 * $baseDistance;
+
   .item {
     display: flex;
     justify-content: space-between;
@@ -1099,12 +1120,14 @@ const exported = () => {
       8px 8px 20px 0px rgba(55, 99, 170, 0.1),
       -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
     padding: 0 $baseDistance 0 2 * $baseDistance;
+
     .info {
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
       height: 100%;
       padding: $baseDistance 0;
+
       .label {
         font-family: Source Han Sans;
         font-size: 16px;
@@ -1112,22 +1135,26 @@ const exported = () => {
         line-height: 16px;
         color: $color-titletext;
       }
+
       .tip {
         font-family: Source Han Sans;
         font-size: 12px;
         line-height: 16px;
         color: $color-titletext;
       }
+
       .data {
         display: flex;
         align-items: center;
         gap: 0.5 * $baseDistance;
+
         .value {
           font-family: YouSheBiaoTiHei;
           font-size: 24px;
           line-height: 16px;
           color: $color-primary;
         }
+
         .unit {
           font-family: Source Han Sans;
           font-size: 14px;
@@ -1139,9 +1166,11 @@ const exported = () => {
     }
   }
 }
+
 .filters-wrap {
   display: flex;
   margin-bottom: $baseDistance;
+
   .item {
     height: 20px;
     border-radius: 4px;
@@ -1153,48 +1182,59 @@ const exported = () => {
     line-height: 18px;
     color: $color-titletext;
     cursor: pointer;
-    + .item {
+
+    +.item {
       margin-left: $baseDistance;
     }
+
     &.active {
       border-color: $color-primary;
       color: $color-primary;
     }
   }
+
   .el-radio-group {
     margin-left: $baseDistance;
+
     :deep(.el-radio) {
       margin-right: $baseDistance;
       height: 20px;
     }
   }
+
   .el-input {
     width: 70px;
     height: 20px;
     line-height: 18px;
   }
 }
+
 .retain_water-wrap {
   display: flex;
   height: calc(100% - 232px);
+
   .chart-wrap,
   .legend-wrap {
     height: 100%;
+
     .data {
       display: flex;
       align-items: center;
+
       .label {
         font-family: Source Han Sans;
         font-size: 16px;
         font-weight: 500;
         color: $color-titletext;
       }
+
       .value {
         font-family: YouSheBiaoTiHei;
         font-size: 24px;
         color: $color-titletext;
         margin: 0 5px;
       }
+
       .unit {
         font-family: Source Han Sans;
         font-size: 14px;
@@ -1203,8 +1243,10 @@ const exported = () => {
       }
     }
   }
+
   .chart-wrap {
     width: 55%;
+
     .ladder-diagram {
       position: relative;
       display: flex;
@@ -1212,16 +1254,19 @@ const exported = () => {
       width: 158px;
       height: calc(100% - 30px);
       padding: 2 * $baseDistance 0 0 0;
+
       .item {
         position: relative;
         color: #ffffff;
-        > span {
+
+        >span {
           position: absolute;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
         }
       }
+
       &::before {
         content: '';
         position: absolute;
@@ -1231,6 +1276,7 @@ const exported = () => {
         background-image: linear-gradient(65deg, #fff 0%, #fff 49.99%, transparent 50.01%, transparent 100%);
         z-index: 1;
       }
+
       &::after {
         content: '';
         position: absolute;
@@ -1242,8 +1288,10 @@ const exported = () => {
       }
     }
   }
+
   .legend-wrap {
     width: 45%;
+
     .legend-name {
       font-family: Source Han Sans;
       font-size: 16px;
@@ -1251,18 +1299,21 @@ const exported = () => {
       color: $color-titletext;
       margin-top: 10px;
     }
+
     ul.legend {
       li {
         display: flex;
         align-items: center;
-        > i {
+
+        >i {
           display: inline-block;
           width: 10px;
           height: 10px;
           border-radius: 50%;
           margin-right: $baseDistance;
         }
-        > span {
+
+        >span {
           font-size: 16px;
           line-height: 24px;
           color: $color-titletext;
@@ -1271,9 +1322,11 @@ const exported = () => {
     }
   }
 }
+
 .early_warning {
   display: flex;
   gap: 2 * $baseDistance;
+
   .item {
     display: flex;
     justify-content: space-between;
@@ -1287,15 +1340,18 @@ const exported = () => {
       8px 8px 20px 0px rgba(55, 99, 170, 0.1),
       -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
     padding: 0 $baseDistance 0 2 * $baseDistance;
+
     &.active {
       border-color: $color-primary;
     }
+
     .info {
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
       height: 100%;
       padding: $baseDistance 0;
+
       .label {
         font-family: Source Han Sans;
         font-size: 16px;
@@ -1303,22 +1359,26 @@ const exported = () => {
         line-height: 16px;
         color: $color-titletext;
       }
+
       .tip {
         font-family: Source Han Sans;
         font-size: 12px;
         line-height: 16px;
         color: $color-titletext;
       }
+
       .data {
         display: flex;
         align-items: center;
         gap: 0.5 * $baseDistance;
+
         .value {
           font-family: YouSheBiaoTiHei;
           font-size: 24px;
           line-height: 16px;
           color: $color-warning;
         }
+
         .unit {
           font-family: Source Han Sans;
           font-size: 14px;
@@ -1330,25 +1390,31 @@ const exported = () => {
     }
   }
 }
+
 .water_level-chart {
   display: flex;
   width: 100%;
   height: calc(100% - 140px);
+
   .chart-wrap {
     width: 50%;
     height: 100%;
   }
+
   .legend-wrap {
     width: 50%;
     height: 100%;
     padding: 10 * $baseDistance 3 * $baseDistance 9 * $baseDistance $baseDistance;
+
     li {
       display: flex;
       align-items: center;
       color: $color-titletext;
       cursor: pointer;
+
       &.active {
         position: relative;
+
         &::after {
           content: '';
           position: absolute;
@@ -1360,19 +1426,23 @@ const exported = () => {
           background: transparentize($color-primary, 0.9);
         }
       }
-      + li {
+
+      +li {
         margin-top: $baseDistance;
       }
+
       .round_dot {
         width: 10px;
         height: 10px;
         border-radius: 50%;
         margin-right: $baseDistance;
       }
+
       .label {
         font-size: 16px;
         line-height: 24px;
       }
+
       .value {
         flex: 1;
         font-family: YouSheBiaoTiHei;
@@ -1380,6 +1450,7 @@ const exported = () => {
         line-height: 26px;
         text-align: right;
       }
+
       .unit {
         font-size: 16px;
         line-height: 24px;
@@ -1388,6 +1459,7 @@ const exported = () => {
     }
   }
 }
+
 .risk_total {
   display: flex;
   flex-direction: column;
@@ -1401,12 +1473,14 @@ const exported = () => {
     8px 8px 20px 0px rgba(55, 99, 170, 0.1),
     -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
   margin-bottom: $baseDistance;
+
   .row {
     display: flex;
     align-items: center;
     font-size: 14px;
     line-height: 16px;
     color: #999999;
+
     .label {
       font-family: Source Han Sans;
       font-size: 16px;
@@ -1414,6 +1488,7 @@ const exported = () => {
       line-height: 16px;
       color: $color-titletext;
     }
+
     .value {
       font-family: YouSheBiaoTiHei;
       font-size: 24px;
@@ -1421,6 +1496,7 @@ const exported = () => {
       color: #0052d9;
       margin: 0 0.5 * $baseDistance 0 $baseDistance;
     }
+
     .unit {
       font-family: Source Han Sans;
       font-size: 14px;
@@ -1430,12 +1506,15 @@ const exported = () => {
     }
   }
 }
+
 .syfx-name {
   margin-bottom: $baseDistance;
 }
+
 .xyfx-name {
   margin-bottom: $baseDistance;
 }
+
 .ymfw-wrap {
   display: flex;
   align-items: center;
@@ -1448,6 +1527,7 @@ const exported = () => {
     8px 8px 20px 0px rgba(55, 99, 170, 0.1),
     -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
   margin-bottom: $baseDistance;
+
   .label {
     font-family: Source Han Sans;
     font-size: 16px;
@@ -1455,6 +1535,7 @@ const exported = () => {
     line-height: 16px;
     color: $color-titletext;
   }
+
   .value {
     font-family: YouSheBiaoTiHei;
     font-size: 24px;
@@ -1462,6 +1543,7 @@ const exported = () => {
     color: $color-primary;
     margin: 0 5px 0 7px;
   }
+
   .unit {
     font-family: Source Han Sans;
     font-size: 14px;
@@ -1470,11 +1552,13 @@ const exported = () => {
     color: $color-titletext;
   }
 }
+
 .effect-wrap {
   display: flex;
   width: 100%;
   height: 56px;
   margin-bottom: $baseDistance;
+
   .item {
     display: flex;
     flex-direction: column;
@@ -1482,20 +1566,24 @@ const exported = () => {
     align-items: center;
     flex: 1;
     height: 100%;
+
     .label {
       font-family: Source Han Sans;
       font-size: 16px;
       font-weight: 500;
       color: $color-titletext;
     }
+
     .data {
       display: flex;
       align-items: center;
+
       .value {
         font-family: YouSheBiaoTiHei;
         font-size: 24px;
         color: $color-titletext;
       }
+
       .unit {
         font-family: Source Han Sans;
         font-size: 16px;
@@ -1505,36 +1593,45 @@ const exported = () => {
       }
     }
   }
+
   .line {
     width: 2px;
     height: 100%;
     background: linear-gradient(180deg, rgba(0, 82, 217, 0) 0%, #0052d9 52%, rgba(0, 82, 217, 0) 100%);
   }
 }
+
 .ddfa-name {
   margin-bottom: 2 * $baseDistance;
 }
+
 .scheduling_scheme {
   display: flex;
   gap: 3 * $baseDistance;
   margin-bottom: 5 * $baseDistance;
+
   .item {
     position: relative;
     flex: 1;
     height: 54px;
     background-size: 100% 100%;
+
     &:nth-child(1) {
       background-image: url('@/assets/images/schedulingSchemeBg.png');
+
       .data .value {
         color: $color-primary;
       }
     }
+
     &:nth-child(2) {
       background-image: url('@/assets/images/schedulingSchemeOrangeBg.png');
+
       .data .value {
         color: $color-warning;
       }
     }
+
     .data {
       display: flex;
       align-items: center;
@@ -1542,15 +1639,18 @@ const exported = () => {
       left: 50%;
       top: 50%;
       transform: translateY(-100%);
+
       .value {
         font-family: YouSheBiaoTiHei;
         font-size: 18px;
         margin-right: 0.5 * $baseDistance;
       }
+
       .unit {
         font-size: 14px;
       }
     }
+
     .label {
       position: absolute;
       left: 50%;
@@ -1560,30 +1660,38 @@ const exported = () => {
     }
   }
 }
+
 .yjya-name {
   margin-bottom: 2 * $baseDistance;
 }
+
 .emergency_plan {
   display: flex;
   gap: 3 * $baseDistance;
   margin-bottom: 5 * $baseDistance;
+
   .item {
     position: relative;
     flex: 1;
     height: 54px;
     background-size: 100% 100%;
+
     &:nth-child(1) {
       background-image: url('@/assets/images/emergencyPlanBg.png');
+
       .data .value {
         color: $color-primary;
       }
     }
+
     &:nth-child(2) {
       background-image: url('@/assets/images/emergencyPlanOrangeBg.png');
+
       .data .value {
         color: $color-warning;
       }
     }
+
     .data {
       display: flex;
       align-items: center;
@@ -1591,15 +1699,18 @@ const exported = () => {
       left: 50%;
       top: 50%;
       transform: translateY(-100%);
+
       .value {
         font-family: YouSheBiaoTiHei;
         font-size: 18px;
         margin-right: 0.5 * $baseDistance;
       }
+
       .unit {
         font-size: 14px;
       }
     }
+
     .label {
       position: absolute;
       left: 50%;
@@ -1609,9 +1720,11 @@ const exported = () => {
     }
   }
 }
+
 .szyl-name {
   margin-bottom: $baseDistance;
 }
+
 .ndkz-wrap {
   display: flex;
   justify-content: center;
@@ -1624,21 +1737,25 @@ const exported = () => {
     8px 8px 20px 0px rgba(55, 99, 170, 0.1),
     -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
   cursor: pointer;
+
   &.active {
     border-color: $color-primary;
   }
+
   .label {
     font-family: Source Han Sans;
     font-size: 16px;
     font-weight: 500;
     color: $color-titletext;
   }
+
   .value {
     font-family: YouSheBiaoTiHei;
     font-size: 24px;
     color: $color-primary;
     margin: 0 5px 0 8px;
   }
+
   .unit {
     font-family: Source Han Sans;
     font-size: 14px;
@@ -1646,6 +1763,7 @@ const exported = () => {
     color: $color-titletext;
   }
 }
+
 .list {
   width: 100%;
   height: calc(100% - 440px);
@@ -1655,32 +1773,38 @@ const exported = () => {
   box-shadow:
     4px 4px 20px 0px rgba(55, 99, 170, 0.05),
     -4px -4px 20px 0px rgba(55, 99, 170, 0.05);
+
   .filter {
     display: flex;
     align-items: center;
     padding: 20px;
     border-bottom: 1px solid #d7dbe0;
+
     .item {
       display: flex;
       align-items: center;
       margin-right: 4 * $baseDistance;
+
       .label {
         font-size: 14px;
         color: $color-titletext;
       }
     }
+
     .btns {
       display: flex;
       flex: 1;
       justify-content: flex-end;
     }
   }
+
   .tabler {
     width: 100%;
     height: calc(100% - 73px);
     padding: 20px;
   }
 }
+
 .pilot-marking {
   display: inline-block;
   height: 20px;

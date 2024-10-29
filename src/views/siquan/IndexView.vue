@@ -4,17 +4,20 @@
       <span class="name" @click="changeActive('监管全覆盖', '', '')">监管全覆盖</span>
       <TabBar class="skzl-name" modelValue="水库总览" :tabs="['水库总览']" type="title" />
       <div class="skzl-wrap">
-        <div :class="['item', { active: activeTab === '监管全覆盖' && activeType === '水库总览' && activeItem === '在册总数' }]" @click="changeActive('监管全覆盖', '水库总览', '在册总数')">
+        <div :class="['item', { active: activeTab === '监管全覆盖' && activeType === '水库总览' && activeItem === '在册总数' }]"
+          @click="changeActive('监管全覆盖', '水库总览', '在册总数')">
           <span class="label">在册总数</span>
           <span class="value">{{ reservoirsNum.total }}</span>
           <span class="unit">座</span>
         </div>
-        <div :class="['item', { active: activeTab === '监管全覆盖' && activeType === '水库总览' && activeItem === '注册' }]" @click="changeActive('监管全覆盖', '水库总览', '注册')">
+        <div :class="['item', { active: activeTab === '监管全覆盖' && activeType === '水库总览' && activeItem === '注册' }]"
+          @click="changeActive('监管全覆盖', '水库总览', '注册')">
           <span class="label">注册</span>
           <span class="value">{{ reservoirsNum.register }}</span>
           <span class="unit">座</span>
         </div>
-        <div :class="['item', { active: activeTab === '监管全覆盖' && activeType === '水库总览' && activeItem === '备案' }]" @click="changeActive('监管全覆盖', '水库总览', '备案')">
+        <div :class="['item', { active: activeTab === '监管全覆盖' && activeType === '水库总览' && activeItem === '备案' }]"
+          @click="changeActive('监管全覆盖', '水库总览', '备案')">
           <span class="label">备案</span>
           <span class="value">{{ reservoirsNum.record }}</span>
           <span class="unit">座</span>
@@ -26,9 +29,7 @@
           <RingChart ref="sectorChart" :color="colors" :data="sectorStocksData" />
         </div>
         <ul class="legend-wrap">
-          <li
-            v-for="(item, index) in sectorStocksData"
-            :key="index"
+          <li v-for="(item, index) in sectorStocksData" :key="index"
             :class="{ active: activeTab === '监管全覆盖' && activeType === '所属行业' && activeItem === item.name }"
             @click="changeActive('监管全覆盖', '所属行业', item.name)">
             <i class="round_dot" :style="{ background: colors[index] }"></i>
@@ -41,7 +42,8 @@
     </div>
     <div :class="['card', { active: activeTab === '全要素掌控' }]">
       <span class="name" @click="changeActive('全要素掌控', '', '')">全要素掌控</span>
-      <TabBar v-model="featureType" :tabs="['库区要素', '工程要素', '下游要素']" type="title" @change="(e) => changeActive('全要素掌控', e, '')" />
+      <TabBar v-model="featureType" :tabs="['库区要素', '工程要素', '下游要素']" type="title"
+        @change="(e) => changeActive('全要素掌控', e, '')" />
       <div v-if="featureType === '库区要素'" class="kqys-wrap">
         <div class="res-data">
           <div class="item">
@@ -59,7 +61,8 @@
             <div class="label">流域面积</div>
           </div>
         </div>
-        <TabBar v-model="waterLevelType" :tabs="['正常蓄水位', '设计洪水位', '校核洪水位']" type="brick" @change="getWaterLevelInfluence" />
+        <TabBar v-model="waterLevelType" :tabs="['正常蓄水位', '设计洪水位', '校核洪水位']" type="brick"
+          @change="getWaterLevelInfluence" />
         <div class="water_level-wrap">
           <div class="item-wrap">
             <div class="item">
@@ -119,9 +122,7 @@
             <RingChart :color="colors" :data="damTypeData" />
           </div>
           <ul class="legend-wrap">
-            <li
-              v-for="(item, index) in damTypeData"
-              :key="index"
+            <li v-for="(item, index) in damTypeData" :key="index"
               :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === item.name }"
               @click="changeActive('全要素掌控', '工程要素', item.name)">
               <i class="round_dot" :style="{ background: colors[index] }"></i>
@@ -132,29 +133,38 @@
           </ul>
         </div>
         <div class="dam_height-wrap">
-          <div class="item" :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '坝高15m以下' }" @click="changeActive('全要素掌控', '工程要素', '坝高15m以下')">
+          <div class="item"
+            :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '坝高15m以下' }"
+            @click="changeActive('全要素掌控', '工程要素', '坝高15m以下')">
             <span class="label">坝高15m以下</span>
             <span class="value">{{ projectStatisticByDamHeight.below15Meters }}</span>
             <span class="unit">座</span>
           </div>
-          <div class="item" :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '坝高15-30m' }" @click="changeActive('全要素掌控', '工程要素', '坝高15-30m')">
+          <div class="item"
+            :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '坝高15-30m' }"
+            @click="changeActive('全要素掌控', '工程要素', '坝高15-30m')">
             <span class="label">坝高15-30m</span>
             <span class="value">{{ projectStatisticByDamHeight.below30Meters }}</span>
             <span class="unit">座</span>
           </div>
-          <div class="item" :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '坝高30-70m' }" @click="changeActive('全要素掌控', '工程要素', '坝高30-70m')">
+          <div class="item"
+            :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '坝高30-70m' }"
+            @click="changeActive('全要素掌控', '工程要素', '坝高30-70m')">
             <span class="label">坝高30-70m</span>
             <span class="value">{{ projectStatisticByDamHeight.below70Meters }}</span>
             <span class="unit">座</span>
           </div>
-          <div class="item" :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '坝高70m以上' }" @click="changeActive('全要素掌控', '工程要素', '坝高70m以上')">
+          <div class="item"
+            :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '坝高70m以上' }"
+            @click="changeActive('全要素掌控', '工程要素', '坝高70m以上')">
             <span class="label">坝高70m以上</span>
             <span class="value">{{ projectStatisticByDamHeight.over70Meters }}</span>
             <span class="unit">座</span>
           </div>
         </div>
         <div class="curve-wrap">
-          <div class="item" :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '库容曲线' }" @click="changeActive('全要素掌控', '工程要素', '库容曲线')">
+          <div class="item" :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '库容曲线' }"
+            @click="changeActive('全要素掌控', '工程要素', '库容曲线')">
             <div class="label">库容曲线</div>
             <div class="data">
               <span class="value">{{ curveData.storageCapacity }}</span>
@@ -162,7 +172,8 @@
             </div>
           </div>
           <div class="line"></div>
-          <div class="item" :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '泄洪曲线' }" @click="changeActive('全要素掌控', '工程要素', '泄洪曲线')">
+          <div class="item" :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '泄洪曲线' }"
+            @click="changeActive('全要素掌控', '工程要素', '泄洪曲线')">
             <div class="label">泄洪曲线</div>
             <div class="data">
               <span class="value">{{ curveData.floodDischarge }}</span>
@@ -170,7 +181,9 @@
             </div>
           </div>
           <div class="line"></div>
-          <div class="item" :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '溢洪道侵占' }" @click="changeActive('全要素掌控', '工程要素', '溢洪道侵占')">
+          <div class="item"
+            :class="{ active: activeTab === '全要素掌控' && activeType === '工程要素' && activeItem === '溢洪道侵占' }"
+            @click="changeActive('全要素掌控', '工程要素', '溢洪道侵占')">
             <div class="label">溢洪道侵占</div>
             <div class="data">
               <span class="value">{{ curveData.spillwayEncroachment }}</span>
@@ -234,14 +247,16 @@
     </div>
     <div :class="['card', { active: activeTab === '全天候管控' }]">
       <span class="name" @click="changeActive('全天候管控', '', '')">全天候管控</span>
-      <div class="category-item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '天' }" @click="changeActive('全天候管控', '', '天')">
+      <div class="category-item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '天' }"
+        @click="changeActive('全天候管控', '', '天')">
         <SvgIcon :size="20" icon="satellite" color="#0052d9" />
         <span class="label">天</span>
         <span class="value">{{ controlData.space }}</span>
         <span class="unit">座</span>
       </div>
       <div class="category-wrap">
-        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '遥感影像' }" @click="changeActive('全天候管控', '', '遥感影像')">
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '遥感影像' }"
+          @click="changeActive('全天候管控', '', '遥感影像')">
           <div class="label">遥感影像</div>
           <div class="data">
             <span class="value">{{ controlData.quickbird }}</span>
@@ -249,7 +264,8 @@
           </div>
         </div>
         <div class="line"></div>
-        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === 'InSAR' }" @click="changeActive('全天候管控', '', 'InSAR')">
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === 'InSAR' }"
+          @click="changeActive('全天候管控', '', 'InSAR')">
           <div class="label">InSAR</div>
           <div class="data">
             <span class="value">{{ controlData.insar }}</span>
@@ -257,7 +273,8 @@
           </div>
         </div>
         <div class="line"></div>
-        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '气象卫星' }" @click="changeActive('全天候管控', '', '气象卫星')">
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '气象卫星' }"
+          @click="changeActive('全天候管控', '', '气象卫星')">
           <div class="label">气象卫星</div>
           <div class="data">
             <span class="value">{{ controlData.weatherSatellite }}</span>
@@ -265,14 +282,16 @@
           </div>
         </div>
       </div>
-      <div class="category-item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '空' }" @click="changeActive('全天候管控', '', '空')">
+      <div class="category-item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '空' }"
+        @click="changeActive('全天候管控', '', '空')">
         <SvgIcon :size="20" icon="UAV" color="#0052d9" />
         <span class="label">空</span>
         <span class="value">{{ controlData.sky }}</span>
         <span class="unit">座</span>
       </div>
       <div class="category-wrap">
-        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '无人机' }" @click="changeActive('全天候管控', '', '无人机')">
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '无人机' }"
+          @click="changeActive('全天候管控', '', '无人机')">
           <div class="label">无人机</div>
           <div class="data">
             <span class="value">{{ controlData.uav }}</span>
@@ -280,7 +299,8 @@
           </div>
         </div>
         <div class="line"></div>
-        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '测雨雷达' }" @click="changeActive('全天候管控', '', '测雨雷达')">
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '测雨雷达' }"
+          @click="changeActive('全天候管控', '', '测雨雷达')">
           <div class="label">测雨雷达</div>
           <div class="data">
             <span class="value">{{ controlData.rainRadar }}</span>
@@ -288,7 +308,8 @@
           </div>
         </div>
         <div class="line"></div>
-        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '其他' }" @click="changeActive('全天候管控', '', '其他')">
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '其他' }"
+          @click="changeActive('全天候管控', '', '其他')">
           <div class="label">其他</div>
           <div class="data">
             <span class="value">{{ controlData.other }}</span>
@@ -296,14 +317,16 @@
           </div>
         </div>
       </div>
-      <div class="category-item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '地' }" @click="changeActive('全天候管控', '', '地')">
+      <div class="category-item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '地' }"
+        @click="changeActive('全天候管控', '', '地')">
         <SvgIcon :size="20" icon="signal" color="#0052d9" />
         <span class="label">地</span>
         <span class="value">{{ controlData.ground }}</span>
         <span class="unit">座</span>
       </div>
       <div class="category-exam">
-        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '视频' }" @click="changeActive('全天候管控', '', '视频')">
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '视频' }"
+          @click="changeActive('全天候管控', '', '视频')">
           <img class="icon" src="@/assets/images/circleCamera.png" alt="" />
           <div class="info">
             <div class="label">视频</div>
@@ -313,7 +336,8 @@
             </div>
           </div>
         </div>
-        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '智能巡检' }" @click="changeActive('全天候管控', '', '智能巡检')">
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '智能巡检' }"
+          @click="changeActive('全天候管控', '', '智能巡检')">
           <img class="icon" src="@/assets/images/circleRoute.png" alt="" />
           <div class="info">
             <div class="label">智能巡检</div>
@@ -323,7 +347,8 @@
             </div>
           </div>
         </div>
-        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '雨水情' }" @click="changeActive('全天候管控', '', '雨水情')">
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '雨水情' }"
+          @click="changeActive('全天候管控', '', '雨水情')">
           <img class="icon" src="@/assets/images/circleRain.png" alt="" />
           <div class="info">
             <div class="label">雨水情</div>
@@ -333,7 +358,8 @@
             </div>
           </div>
         </div>
-        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '安全监测' }" @click="changeActive('全天候管控', '', '安全监测')">
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '安全监测' }"
+          @click="changeActive('全天候管控', '', '安全监测')">
           <img class="icon" src="@/assets/images/circleSafety.png" alt="" />
           <div class="info">
             <div class="label">安全监测</div>
@@ -348,7 +374,8 @@
     <div :class="['card', { active: activeTab === '全周期管理' }]">
       <span class="name" @click="changeActive('全周期管理', '', '')">全周期管理</span>
       <div class="year-wrap">
-        <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '10年以内' }" @click="changeActive('全周期管理', '', '10年以内')">
+        <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '10年以内' }"
+          @click="changeActive('全周期管理', '', '10年以内')">
           <div class="label">10年以内</div>
           <div class="data">
             <span class="value">{{ yearStatistics.blow10Year }}</span>
@@ -356,7 +383,8 @@
           </div>
         </div>
         <div class="line"></div>
-        <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '10-50年' }" @click="changeActive('全周期管理', '', '10-50年')">
+        <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '10-50年' }"
+          @click="changeActive('全周期管理', '', '10-50年')">
           <div class="label">10-50年</div>
           <div class="data">
             <span class="value">{{ yearStatistics.blow50Year }}</span>
@@ -364,7 +392,8 @@
           </div>
         </div>
         <div class="line"></div>
-        <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '50年以上' }" @click="changeActive('全周期管理', '', '50年以上')">
+        <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '50年以上' }"
+          @click="changeActive('全周期管理', '', '50年以上')">
           <div class="label">50年以上</div>
           <div class="data">
             <span class="value">{{ yearStatistics.over50Year }}</span>
@@ -373,11 +402,13 @@
         </div>
       </div>
       <div class="bar_chart-wrap">
-        <BarAndLine ref="yearChart" :color="['#0052D9', '#FF9936']" :xAxisValue="yearChartData.xAxisValue" yAxisUnit="座" :barData="yearChartData.barData" :lineData="yearChartData.lineData" />
+        <BarAndLine ref="yearChart" :color="['#0052D9', '#FF9936']" :xAxisValue="yearChartData.xAxisValue" yAxisUnit="座"
+          :barData="yearChartData.barData" :lineData="yearChartData.lineData" />
       </div>
       <div class="state-wrap">
         <div class="item-wrap">
-          <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '竣工验收' }" @click="changeActive('全周期管理', '', '竣工验收')">
+          <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '竣工验收' }"
+            @click="changeActive('全周期管理', '', '竣工验收')">
             <div class="label">竣工验收</div>
             <div class="data">
               <span class="value">{{ periodicData.acceptance }}</span>
@@ -385,7 +416,8 @@
             </div>
           </div>
           <div class="line"></div>
-          <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '注册登记' }" @click="changeActive('全周期管理', '', '注册登记')">
+          <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '注册登记' }"
+            @click="changeActive('全周期管理', '', '注册登记')">
             <div class="label">注册登记</div>
             <div class="data">
               <span class="value">{{ periodicData.registration }}</span>
@@ -393,7 +425,8 @@
             </div>
           </div>
           <div class="line"></div>
-          <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '安全鉴定' }" @click="changeActive('全周期管理', '', '安全鉴定')">
+          <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '安全鉴定' }"
+            @click="changeActive('全周期管理', '', '安全鉴定')">
             <div class="label">安全鉴定</div>
             <div class="data">
               <span class="value">{{ periodicData.appraisal }}</span>
@@ -402,7 +435,8 @@
           </div>
         </div>
         <div class="item-wrap">
-          <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '控运计划' }" @click="changeActive('全周期管理', '', '控运计划')">
+          <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '控运计划' }"
+            @click="changeActive('全周期管理', '', '控运计划')">
             <div class="label">控运计划</div>
             <div class="data">
               <span class="value">{{ periodicData.plan }}</span>
@@ -410,7 +444,8 @@
             </div>
           </div>
           <div class="line"></div>
-          <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '除险加固' }" @click="changeActive('全周期管理', '', '除险加固')">
+          <div class="item" :class="{ active: activeTab === '全周期管理' && activeType === '' && activeItem === '除险加固' }"
+            @click="changeActive('全周期管理', '', '除险加固')">
             <div class="label">除险加固</div>
             <div class="data">
               <span class="value">{{ periodicData.reinforcement }}</span>
@@ -431,13 +466,15 @@
         <div class="item">
           <span class="label">工程规模：</span>
           <el-select v-model="scale" placeholder="请选择" style="width: 240px" clearable @change="search">
-            <el-option v-for="item in getOptions('SKGM')" :key="'scale' + item.value" :label="item.label" :value="item.value" />
+            <el-option v-for="item in getOptions('SKGM')" :key="'scale' + item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </div>
         <div class="item">
           <span class="label">行政区划：</span>
           <el-select v-model="adcd" placeholder="请选择" style="width: 240px" @change="search">
-            <el-option v-for="item in getOptions('XZQH')" :key="'adcd' + item.value" :label="item.label" :value="item.value" />
+            <el-option v-for="item in getOptions('XZQH')" :key="'adcd' + item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </div>
         <div class="btns">
@@ -450,17 +487,17 @@
           <el-table-column fixed="left" type="index" label="序号" width="60" />
           <el-table-column label="工程名称" min-width="150">
             <template #default="scope">
-              <template v-if="scope.row.prcd === '330782022000521' || scope.row.PRCD === '330782022000521'">
-                <el-button type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
-                  {{ scope.row.NAME }}
-                </el-button>
-                <span class="pilot-marking">试点水库</span>
-              </template>
-              <template v-else-if="scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'">
-                {{ scope.row.NAME }}
-                <span class="pilot-marking">试点水库</span>
-              </template>
-              <template v-else>{{ scope.row.NAME }}</template>
+              <el-button
+                v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' || scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'"
+                type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
+                {{ scope.row.NAME || scope.row.proName }}
+              </el-button>
+              <span v-else>{{ scope.row.NAME || scope.row.proName }}</span>
+              <span v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'"
+                class="pilot-marking">试点水库</span>
+              <span
+                v-if="scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'"
+                class="pilot-marking">试点水库</span>
             </template>
           </el-table-column>
           <el-table-column label="所在市" min-width="80">
@@ -576,14 +613,10 @@
           </template>
           <el-table-column fixed="right" label="操作" width="60">
             <template #default="scope">
-              <img
-                :style="{
-                  cursor: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'pointer' : 'not-allowed',
-                  filter: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'none' : 'grayscale(1)'
-                }"
-                src="@/assets/images/screenIcon.png"
-                @click="jumpScreen(scope.row.PRCD || scope.row.prcd)"
-                alt="" />
+              <img :style="{
+                cursor: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'pointer' : 'not-allowed',
+                filter: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'none' : 'grayscale(1)'
+              }" src="@/assets/images/screenIcon.png" @click="jumpScreen(scope.row.PRCD || scope.row.prcd)" alt="" />
             </template>
           </el-table-column>
         </el-table>
@@ -1873,7 +1906,8 @@ onBeforeUnmount(() => {
 
 const jumpProject = (prcd) => {
   console.log('jumpProject', prcd)
-  window.open('http://192.168.2.173:1008')
+  if (prcd === '330782022000521') window.open('http://192.168.2.173:1008')
+  if (prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e') window.open('http://192.168.2.173:1008/v2')
 }
 const jumpScreen = (prcd) => {
   console.log('jumpScreen', prcd)
@@ -1892,6 +1926,7 @@ const exported = () => {
   height: 100%;
   padding: 20px;
 }
+
 .card {
   width: calc(25% - 15px);
   height: 420px;
@@ -1902,9 +1937,11 @@ const exported = () => {
     4px 4px 20px 0px rgba(55, 99, 170, 0.05),
     -4px -4px 20px 0px rgba(55, 99, 170, 0.05);
   padding: 18px;
+
   &.active {
     border-color: $color-primary;
   }
+
   .name {
     display: inline-block;
     font-size: 20px;
@@ -1915,14 +1952,17 @@ const exported = () => {
     cursor: pointer;
   }
 }
+
 .skzl-name {
   margin-bottom: $baseDistance;
 }
+
 .skzl-wrap {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5 * $baseDistance 2 * $baseDistance;
   margin-bottom: 3 * $baseDistance;
+
   .item {
     display: flex;
     justify-content: center;
@@ -1937,18 +1977,22 @@ const exported = () => {
       8px 8px 20px 0px rgba(55, 99, 170, 0.1),
       -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
     cursor: pointer;
+
     &.active {
       border-color: $color-primary;
     }
+
     &:first-child {
       flex-basis: 100%;
     }
-    > span {
+
+    >span {
       font-family: Source Han Sans;
       font-size: 16px;
       font-weight: 500;
       color: $color-titletext;
     }
+
     .value {
       font-family: YouSheBiaoTiHei;
       font-size: 24px;
@@ -1956,28 +2000,35 @@ const exported = () => {
     }
   }
 }
+
 .sshy-name {
   margin-bottom: $baseDistance;
 }
+
 .sshy-wrap {
   display: flex;
   width: 100%;
   height: calc(100% - 212px);
+
   .chart-wrap {
     width: 50%;
     height: 100%;
   }
+
   .legend-wrap {
     width: 50%;
     height: 100%;
     padding: $baseDistance 3 * $baseDistance $baseDistance $baseDistance;
+
     li {
       display: flex;
       align-items: center;
       color: $color-titletext;
       cursor: pointer;
+
       &.active {
         position: relative;
+
         &::after {
           content: '';
           position: absolute;
@@ -1989,19 +2040,23 @@ const exported = () => {
           background: transparentize($color-primary, 0.9);
         }
       }
-      + li {
+
+      +li {
         margin-top: $baseDistance;
       }
+
       .round_dot {
         width: 10px;
         height: 10px;
         border-radius: 50%;
         margin-right: $baseDistance;
       }
+
       .label {
         font-size: 16px;
         line-height: 24px;
       }
+
       .value {
         flex: 1;
         font-family: YouSheBiaoTiHei;
@@ -2009,6 +2064,7 @@ const exported = () => {
         line-height: 26px;
         text-align: right;
       }
+
       .unit {
         font-size: 16px;
         line-height: 24px;
@@ -2017,24 +2073,30 @@ const exported = () => {
     }
   }
 }
+
 .kqys-wrap {
   height: calc(100% - 64px);
   padding-top: 2.5 * $baseDistance;
+
   .res-data {
     display: flex;
     gap: 3 * $baseDistance;
     margin-bottom: 3 * $baseDistance;
+
     .item {
       position: relative;
       flex: 1;
       height: 54px;
       background-size: 100% 100%;
+
       &:nth-child(1) {
         background-image: url('@/assets/images/storageCapacityBg.png');
       }
+
       &:nth-child(2) {
         background-image: url('@/assets/images/drainageAreaBg.png');
       }
+
       .data {
         display: flex;
         align-items: center;
@@ -2042,16 +2104,19 @@ const exported = () => {
         left: 50%;
         top: 50%;
         transform: translateY(-100%);
+
         .value {
           font-family: YouSheBiaoTiHei;
           font-size: 18px;
           color: $color-primary;
           margin-right: 0.5 * $baseDistance;
         }
+
         .unit {
           font-size: 14px;
         }
       }
+
       .label {
         position: absolute;
         left: 50%;
@@ -2061,16 +2126,19 @@ const exported = () => {
       }
     }
   }
+
   .water_level-wrap {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: calc(100% - 112px);
     padding: 3 * $baseDistance 0 2 * $baseDistance;
+
     .item-wrap {
       display: flex;
       width: 100%;
       height: 56px;
+
       .item {
         display: flex;
         flex-direction: column;
@@ -2079,20 +2147,24 @@ const exported = () => {
         gap: 14px;
         flex: 1;
         height: 100%;
+
         .label {
           font-family: Source Han Sans;
           font-size: 16px;
           font-weight: 500;
           color: $color-titletext;
         }
+
         .data {
           display: flex;
           align-items: center;
+
           .value {
             font-family: YouSheBiaoTiHei;
             font-size: 24px;
             color: $color-titletext;
           }
+
           .unit {
             font-family: Source Han Sans;
             font-size: 16px;
@@ -2102,6 +2174,7 @@ const exported = () => {
           }
         }
       }
+
       .line {
         width: 2px;
         height: 100%;
@@ -2110,26 +2183,33 @@ const exported = () => {
     }
   }
 }
+
 .gcys-wrap {
   height: calc(100% - 64px);
+
   .pro_type-wrap {
     display: flex;
     height: calc(100% - 137px);
+
     .chart-wrap {
       width: 50%;
       height: 100%;
     }
+
     .legend-wrap {
       width: 50%;
       height: 100%;
       padding: $baseDistance 3 * $baseDistance $baseDistance $baseDistance;
+
       li {
         display: flex;
         align-items: center;
         color: $color-titletext;
         cursor: pointer;
+
         &.active {
           position: relative;
+
           &::after {
             content: '';
             position: absolute;
@@ -2141,19 +2221,23 @@ const exported = () => {
             background: transparentize($color-primary, 0.9);
           }
         }
-        + li {
+
+        +li {
           margin-top: $baseDistance;
         }
+
         .round_dot {
           width: 10px;
           height: 10px;
           border-radius: 50%;
           margin-right: $baseDistance;
         }
+
         .label {
           font-size: 16px;
           line-height: 24px;
         }
+
         .value {
           flex: 1;
           font-family: YouSheBiaoTiHei;
@@ -2161,6 +2245,7 @@ const exported = () => {
           line-height: 26px;
           text-align: right;
         }
+
         .unit {
           font-size: 16px;
           line-height: 24px;
@@ -2169,12 +2254,14 @@ const exported = () => {
       }
     }
   }
+
   .dam_height-wrap {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: $baseDistance 2 * $baseDistance;
     margin-bottom: $baseDistance;
+
     .item {
       display: flex;
       align-items: center;
@@ -2188,15 +2275,18 @@ const exported = () => {
         8px 8px 20px 0px rgba(55, 99, 170, 0.1),
         -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
       cursor: pointer;
+
       &.active {
         border-color: $color-primary;
       }
+
       .label {
         font-family: Source Han Sans;
         font-size: 16px;
         font-weight: 500;
         color: $color-titletext;
       }
+
       .value {
         flex: 1;
         text-align: right;
@@ -2204,6 +2294,7 @@ const exported = () => {
         font-size: 24px;
         color: $color-primary;
       }
+
       .unit {
         font-family: Source Han Sans;
         font-size: 14px;
@@ -2213,10 +2304,12 @@ const exported = () => {
       }
     }
   }
+
   .curve-wrap {
     display: flex;
     width: 100%;
     height: 49px;
+
     .item {
       display: flex;
       flex-direction: column;
@@ -2226,8 +2319,10 @@ const exported = () => {
       gap: 4px;
       height: 100%;
       cursor: pointer;
+
       &.active {
         position: relative;
+
         &::after {
           content: '';
           position: absolute;
@@ -2239,20 +2334,24 @@ const exported = () => {
           background: transparentize($color-primary, 0.9);
         }
       }
+
       .label {
         font-family: Source Han Sans;
         font-size: 16px;
         font-weight: 500;
         color: $color-titletext;
       }
+
       .data {
         display: flex;
         align-items: center;
+
         .value {
           font-family: YouSheBiaoTiHei;
           font-size: 24px;
           color: $color-titletext;
         }
+
         .unit {
           font-family: Source Han Sans;
           font-size: 16px;
@@ -2262,6 +2361,7 @@ const exported = () => {
         }
       }
     }
+
     .line {
       width: 2px;
       height: 100%;
@@ -2269,15 +2369,18 @@ const exported = () => {
     }
   }
 }
+
 .xyys-wrap {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   height: calc(100% - 64px);
+
   .item-wrap {
     display: flex;
     width: 100%;
     height: 56px;
+
     .item {
       display: flex;
       flex-direction: column;
@@ -2286,20 +2389,24 @@ const exported = () => {
       gap: 14px;
       flex: 1;
       height: 100%;
+
       .label {
         font-family: Source Han Sans;
         font-size: 16px;
         font-weight: 500;
         color: $color-titletext;
       }
+
       .data {
         display: flex;
         align-items: center;
+
         .value {
           font-family: YouSheBiaoTiHei;
           font-size: 24px;
           color: $color-titletext;
         }
+
         .unit {
           font-family: Source Han Sans;
           font-size: 16px;
@@ -2309,6 +2416,7 @@ const exported = () => {
         }
       }
     }
+
     .line {
       width: 2px;
       height: 100%;
@@ -2316,6 +2424,7 @@ const exported = () => {
     }
   }
 }
+
 .category-item {
   display: flex;
   justify-content: center;
@@ -2329,9 +2438,11 @@ const exported = () => {
     8px 8px 20px 0px rgba(55, 99, 170, 0.1),
     -8px -8px 20px 0px rgba(255, 255, 255, 0.5);
   cursor: pointer;
+
   &.active {
     border-color: $color-primary;
   }
+
   .label,
   .unit {
     font-family: Source Han Sans;
@@ -2339,16 +2450,19 @@ const exported = () => {
     font-weight: 500;
     color: $color-titletext;
   }
+
   .value {
     font-family: YouSheBiaoTiHei;
     font-size: 24px;
     color: $color-primary;
   }
 }
+
 .category-wrap {
   display: flex;
   width: 100%;
   height: 62px;
+
   .item {
     display: flex;
     flex-direction: column;
@@ -2358,8 +2472,10 @@ const exported = () => {
     flex: 1;
     height: 100%;
     cursor: pointer;
+
     &.active {
       position: relative;
+
       &::after {
         content: '';
         position: absolute;
@@ -2371,20 +2487,24 @@ const exported = () => {
         background: transparentize($color-primary, 0.9);
       }
     }
+
     .label {
       font-family: Source Han Sans;
       font-size: 16px;
       font-weight: 500;
       color: $color-titletext;
     }
+
     .data {
       display: flex;
       align-items: center;
+
       .value {
         font-family: YouSheBiaoTiHei;
         font-size: 24px;
         color: $color-titletext;
       }
+
       .unit {
         font-family: Source Han Sans;
         font-size: 16px;
@@ -2394,6 +2514,7 @@ const exported = () => {
       }
     }
   }
+
   .line {
     width: 2px;
     height: 44px;
@@ -2401,18 +2522,22 @@ const exported = () => {
     background: linear-gradient(180deg, rgba(0, 82, 217, 0) 0%, #0052d9 52%, rgba(0, 82, 217, 0) 100%);
   }
 }
+
 .category-exam {
   display: flex;
   flex-wrap: wrap;
   margin-top: $baseDistance;
   gap: 10px 60px;
+
   .item {
     display: flex;
     gap: 10px;
     width: calc(50% - 30px);
     cursor: pointer;
+
     &.active {
       position: relative;
+
       &::after {
         content: '';
         position: absolute;
@@ -2424,29 +2549,35 @@ const exported = () => {
         background: transparentize($color-primary, 0.9);
       }
     }
+
     .icon {
       width: 42px;
       height: 43px;
     }
+
     .info {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+
       .label {
         font-family: Source Han Sans;
         font-size: 16px;
         font-weight: 500;
         color: $color-titletext;
       }
+
       .data {
         display: flex;
         align-items: center;
         gap: 5px;
+
         .value {
           font-family: YouSheBiaoTiHei;
           font-size: 24px;
           color: $color-titletext;
         }
+
         .unit {
           font-family: Source Han Sans;
           font-size: 16px;
@@ -2457,10 +2588,12 @@ const exported = () => {
     }
   }
 }
+
 .year-wrap {
   display: flex;
   width: 100%;
   height: 44px;
+
   .item {
     display: flex;
     flex-direction: column;
@@ -2469,8 +2602,10 @@ const exported = () => {
     flex: 1;
     height: 100%;
     cursor: pointer;
+
     &.active {
       position: relative;
+
       &::after {
         content: '';
         position: absolute;
@@ -2482,20 +2617,24 @@ const exported = () => {
         background: transparentize($color-primary, 0.9);
       }
     }
+
     .label {
       font-family: Source Han Sans;
       font-size: 16px;
       font-weight: 500;
       color: $color-titletext;
     }
+
     .data {
       display: flex;
       align-items: center;
+
       .value {
         font-family: YouSheBiaoTiHei;
         font-size: 24px;
         color: $color-titletext;
       }
+
       .unit {
         font-family: Source Han Sans;
         font-size: 16px;
@@ -2505,26 +2644,31 @@ const exported = () => {
       }
     }
   }
+
   .line {
     width: 2px;
     height: 100%;
     background: linear-gradient(180deg, rgba(0, 82, 217, 0) 0%, #0052d9 52%, rgba(0, 82, 217, 0) 100%);
   }
 }
+
 .bar_chart-wrap {
   width: 100%;
   height: calc(100% - 200px);
   margin-bottom: 12px;
 }
+
 .state-wrap {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 2 * $baseDistance;
+
   .item-wrap {
     display: flex;
     width: 100%;
     height: 44px;
+
     .item {
       display: flex;
       flex-direction: column;
@@ -2533,8 +2677,10 @@ const exported = () => {
       flex: 1;
       height: 100%;
       cursor: pointer;
+
       &.active {
         position: relative;
+
         &::after {
           content: '';
           position: absolute;
@@ -2546,20 +2692,24 @@ const exported = () => {
           background: transparentize($color-primary, 0.9);
         }
       }
+
       .label {
         font-family: Source Han Sans;
         font-size: 16px;
         font-weight: 500;
         color: $color-titletext;
       }
+
       .data {
         display: flex;
         align-items: center;
+
         .value {
           font-family: YouSheBiaoTiHei;
           font-size: 24px;
           color: $color-titletext;
         }
+
         .unit {
           font-family: Source Han Sans;
           font-size: 16px;
@@ -2569,6 +2719,7 @@ const exported = () => {
         }
       }
     }
+
     .line {
       width: 2px;
       height: 100%;
@@ -2576,6 +2727,7 @@ const exported = () => {
     }
   }
 }
+
 .list {
   width: 100%;
   height: calc(100% - 440px);
@@ -2585,32 +2737,38 @@ const exported = () => {
   box-shadow:
     4px 4px 20px 0px rgba(55, 99, 170, 0.05),
     -4px -4px 20px 0px rgba(55, 99, 170, 0.05);
+
   .filter {
     display: flex;
     align-items: center;
     padding: 20px;
     border-bottom: 1px solid #d7dbe0;
+
     .item {
       display: flex;
       align-items: center;
       margin-right: 4 * $baseDistance;
+
       .label {
         font-size: 14px;
         color: $color-titletext;
       }
     }
+
     .btns {
       display: flex;
       flex: 1;
       justify-content: flex-end;
     }
   }
+
   .tabler {
     width: 100%;
     height: calc(100% - 73px);
     padding: 20px;
   }
 }
+
 .pilot-marking {
   display: inline-block;
   height: 20px;
