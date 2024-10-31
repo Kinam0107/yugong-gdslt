@@ -58,9 +58,7 @@ function login() {
       ElMessage.error('登录失败！')
     })
     .finally(() => {
-      if (Cookies.get(TokenKey)) {
-        getRscpToken()
-      }
+      getRscpToken()
     })
 }
 

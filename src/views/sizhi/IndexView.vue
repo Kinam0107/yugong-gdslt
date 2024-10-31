@@ -1226,8 +1226,8 @@ onBeforeUnmount(() => {
 
 const jumpProject = (prcd) => {
   console.log('jumpProject', prcd)
-  if (prcd === '330782022000521') window.open('http://192.168.2.173:1008')
-  if (prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e') window.open('http://192.168.2.173:1008/v2')
+  if (prcd === '330782022000521') window.open('/')
+  if (prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e') window.open('/v2')
 }
 const jumpScreen = (prcd) => {
   console.log('jumpScreen', prcd)
