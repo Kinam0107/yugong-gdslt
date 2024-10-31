@@ -1,7 +1,7 @@
 <!-- 基础布局 -->
 <template>
   <div class="base--layout">
-    <div class="head--contanier">
+    <div class="head--contanier" v-if="!isEmbedded">
       <TopNav>
         <template #systemIcon>
           <img src="@/assets/images/logo.png" width="39" />
@@ -19,16 +19,24 @@
 import { RouterView } from 'vue-router'
 import TopNav from '@/components/nav/TopNav.vue'
 import TopMenu from '@/components/menu/TopMenu.vue'
+import { computed, ref } from 'vue';
+const isEmbedded = ref(window.top !== window.self)
+const headHight = computed(() => {
+  return isEmbedded.value ? '0px' : '80px'
+})
 </script>
 
 <style scoped lang="scss">
-$headHight: 10 * $baseDistance;
+$headHight: v-bind(headHight);
+
 .base--layout {
   height: 100%;
 }
+
 .head--contanier {
   height: $headHight;
 }
+
 .body--container {
   position: relative;
   overflow: auto;

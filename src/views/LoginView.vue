@@ -15,8 +15,8 @@ import globalConfig from '@/config'
 
 const router = useRouter()
 const loading = ref(true)
-const username = ref('liuchen')
-const password = ref('ygkj0818')
+const username = ref('') // liuchen
+const password = ref('') // ygkj0818
 const TokenKey = 'authorization'
 
 onBeforeMount(() => {

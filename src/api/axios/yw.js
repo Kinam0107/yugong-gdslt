@@ -28,7 +28,6 @@ instance.interceptors.response.use(
         grouping: true,
         duration: 5 * 1000
       })
-      router.push({ path: '/login' })
     }
     const res = response.data
     if (res instanceof Blob) res.fileName = decodeURI(response.headers['content-disposition'].split('=')[1])

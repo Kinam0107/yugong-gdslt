@@ -37,7 +37,6 @@ instance.interceptors.response.use(
         duration: 5 * 1000
       })
       clearToken()
-      router.push({ path: '/login' })
     }
     const res = response.data
     if (res instanceof Blob) res.fileName = decodeURI(response.headers['content-disposition'].split('=')[1])

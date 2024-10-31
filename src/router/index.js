@@ -8,7 +8,7 @@ import _404View from '@/views/404View.vue'
 import routes from './modules/routes'
 import guides from './modules/guides'
 import embed from './embed'
-import globalConfig from '@/config'
+import { loginRscp as loginRscpApi } from '@/api/authCenterApi'
 
 const defaultRoutes = [
   {
@@ -58,38 +58,14 @@ const router = createRouter({
 
 NProgress.configure({ showSpinner: false })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   NProgress.start()
-  if (to.path === '/') {
-    if (globalConfig.bypassLogin) {
-      if (routes && routes.length > 0 && routes[0].name) {
-        next({ name: routes[0].name })
-      } else {
-        next()
-      }
-    } else {
-      if (getToken()) {
-        if (routes && routes.length > 0 && routes[0].name) {
-          next({ name: routes[0].name })
-        } else {
-          next()
-        }
-      } else {
-        next('/login')
-      }
-    }
-  } else {
-    if (globalConfig.bypassLogin) {
-      next()
-    } else {
-      if (to.query?.token) setToken(to.query.token)
-      if (getToken() || ['login'].includes(String(to.name))) {
-        next()
-      } else {
-        next('/login')
-      }
-    }
+  if (!getToken()) {
+    await loginRscpApi().then((res) => {
+      if (res.code == 1) setToken(res.data)
+    })
   }
+  next()
 })
 
 router.afterEach(() => {
