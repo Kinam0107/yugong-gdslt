@@ -289,16 +289,11 @@
           <el-table-column fixed="left" type="index" label="序号" width="60" />
           <el-table-column label="工程名称" min-width="150">
             <template #default="scope">
-              <el-button
-                v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' || scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'"
-                type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
+              <el-button type="primary" link @click="jumpProject(scope.row.PRCD || scope.row.prcd)">
                 {{ scope.row.NAME || scope.row.proName }}
               </el-button>
-              <span v-else>{{ scope.row.NAME || scope.row.proName }}</span>
-              <span v-if="scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521'"
-                class="pilot-marking">试点水库</span>
               <span
-                v-if="scope.row.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || scope.row.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'"
+                v-if="globalConfig.pilotReservoir.includes(scope.row.PRCD) || globalConfig.pilotReservoir.includes(scope.row.prcd)"
                 class="pilot-marking">试点水库</span>
             </template>
           </el-table-column>
@@ -407,10 +402,7 @@
           </template>
           <el-table-column fixed="right" label="操作" width="60">
             <template #default="scope">
-              <img :style="{
-                cursor: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'pointer' : 'not-allowed',
-                filter: scope.row.PRCD === '330782022000521' || scope.row.prcd === '330782022000521' ? 'none' : 'grayscale(1)'
-              }" src="@/assets/images/screenIcon.png" @click="jumpScreen(scope.row.PRCD || scope.row.prcd)" alt="" />
+              <img src="@/assets/images/screenIcon.png" @click="jumpScreen(scope.row.PRCD || scope.row.prcd)" alt="" />
             </template>
           </el-table-column>
         </el-table>
@@ -426,6 +418,7 @@ import RingChart from '@/components/chart/RingChart.vue'
 import BarAndLine from '@/components/chart/BarAndLine.vue'
 import { dataEcho, getOptions } from '@/utils/enum'
 import axios from '@/api/axios'
+import globalConfig from '@/config'
 
 const colors = ['#0CBF5B', '#FFCB27', '#FF4D4F']
 const activeTab = ref('及时除险')
@@ -454,7 +447,7 @@ const getDangerElimination = () => {
     url: '/mgt/resWisdom/synthesisRes',
     method: 'post',
     data: {
-      adcd: '330782000000',
+      adcd: globalConfig.ywAdcd,
       moduleType: 9
     }
   })
@@ -496,7 +489,7 @@ const getProblemData = () => {
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
-      adcd: '330782000000',
+      adcd: globalConfig.ywAdcd,
       moduleType: 69
     }
   })
@@ -528,7 +521,7 @@ const getRiskAssessmentData = () => {
     url: '/mgt/bm/reservoirWT/threeMalCount',
     method: 'post',
     data: {
-      adcd: '330782000000'
+      adcd: globalConfig.ywAdcd
     }
   })
     .then((res) => {
@@ -567,7 +560,7 @@ const getSafetyAppraisement = () => {
     url: '/mgt/resWisdom/synthesisRes',
     method: 'post',
     data: {
-      adcd: '330782000000',
+      adcd: globalConfig.ywAdcd,
       moduleType: 11
     }
   })
@@ -591,7 +584,7 @@ const getMaintenancePlan = () => {
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
-      adcd: '330782000000',
+      adcd: globalConfig.ywAdcd,
       moduleType: 58
     }
   })
@@ -624,7 +617,7 @@ const getRcwyChartData = () => {
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
-      adcd: '330782000000',
+      adcd: globalConfig.ywAdcd,
       moduleType: 25
     }
   })
@@ -661,7 +654,7 @@ const getByfzData = () => {
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
-      adcd: '330782000000',
+      adcd: globalConfig.ywAdcd,
       moduleType: 56
     }
   })
@@ -703,7 +696,7 @@ const getStandardizationData = () => {
     url: '/mgt/resWisdom/synthesisRes',
     method: 'post',
     data: {
-      adcd: '330782000000',
+      adcd: globalConfig.ywAdcd,
       moduleType: 37
     }
   })
@@ -735,7 +728,7 @@ const getScopeData = () => {
     url: '/mgt/resWisdom/synthesisRes',
     method: 'post',
     data: {
-      adcd: '330782000000',
+      adcd: globalConfig.ywAdcd,
       moduleType: 6
     }
   })
@@ -761,7 +754,7 @@ const getSixMechanisms = () => {
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
-      adcd: '330782000000',
+      adcd: globalConfig.ywAdcd,
       moduleType: 64
     }
   })
@@ -784,7 +777,7 @@ const getWzTotal = () => {
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
-      adcd: '330782000000',
+      adcd: globalConfig.ywAdcd,
       moduleType: 26
     }
   })
@@ -801,17 +794,17 @@ onBeforeMount(() => {
 
 const name = ref('')
 const scale = ref('')
-const adcd = ref('330782000000')
+const adcd = ref(globalConfig.ywAdcd)
 const tableData = ref([])
 const tableDataSort = computed(() => {
-  const item1 = tableData.value.find((item) => item.prcd === '330782022000521' || item.PRCD === '330782022000521')
-  const item2 = tableData.value.find((item) => item.prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' || item.PRCD === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e')
-  const tableData_ = tableData.value.filter(
-    (item) => item.prcd !== '330782022000521' && item.PRCD !== '330782022000521' && item.prcd !== '33d473fd-1c7b-11ea-8760-6c92bf66b1485e' && item.PRCD !== '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'
-  )
-  if (item2) tableData_.unshift(item2)
-  if (item1) tableData_.unshift(item1)
-  return tableData_
+  globalConfig.pilotReservoir.forEach((prcd, index) => {
+    const elementIndex = tableData.value.findIndex(e => prcd === e.prcd || prcd === e.PRCD)
+    if (elementIndex > -1) {
+      const cut = tableData.value.splice(elementIndex, 1)
+      tableData.value.splice(index, 0, ...cut)
+    }
+  })
+  return tableData.value
 })
 const search = () => {
   if (activeTab.value === '及时除险') {
@@ -1349,7 +1342,7 @@ const search = () => {
 const reset = () => {
   name.value = ''
   scale.value = ''
-  adcd.value = '330782000000'
+  adcd.value = globalConfig.ywAdcd
   search()
 }
 onBeforeMount(() => {
@@ -1370,8 +1363,12 @@ onBeforeUnmount(() => {
 
 const jumpProject = (prcd) => {
   console.log('jumpProject', prcd)
-  if (prcd === '330782022000521') window.open('/')
-  if (prcd === '33d473fd-1c7b-11ea-8760-6c92bf66b1485e') window.open('/v2')
+  if (window.top !== window.self) {
+    window.parent.postMessage('jumpProject:' + prcd, "*")
+  } else {
+    localStorage.setItem('reservoirProjectCode', prcd)
+    window.location.href = '/'
+  }
 }
 const jumpScreen = (prcd) => {
   console.log('jumpScreen', prcd)

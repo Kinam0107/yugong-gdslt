@@ -13,6 +13,8 @@ export default {
   timeout: undefined, // 接口请求的超时时间
   disablePermit: false, // 禁用权限（按钮权限、菜单权限、页面访问权限等）
   loginEncryption: true, // 登录加密（jsencrypt）
+  ywAdcd: '330782000000', // 义乌市行政区划编码
+  pilotReservoir: ['330782022000521', '33d473fd-1c7b-11ea-8760-6c92bf66b1485e'], // 试点水库工程编码
   map: {
     secretKey: 'ed01c047277d7afe209a42a4c9ce4eda',
     center: [113.43, 22.87],

@@ -8,7 +8,9 @@ import _404View from '@/views/404View.vue'
 import routes from './modules/routes'
 import guides from './modules/guides'
 import embed from './embed'
-import { loginRscp as loginRscpApi } from '@/api/authCenterApi'
+import Cookies from 'js-cookie'
+import { JSEncrypt } from 'jsencrypt'
+import { login as loginApi, loginRscp as loginRscpApi, getPubKey as getPubKeyApi } from '@/api/authCenterApi'
 
 const defaultRoutes = [
   {
@@ -60,6 +62,18 @@ NProgress.configure({ showSpinner: false })
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
+  if (import.meta.env.DEV) {
+    if (!Cookies.get('authorization')) {
+      await getPubKeyApi().then((res) => {
+        const encrypt = new JSEncrypt()
+        encrypt.setPublicKey(res.data)
+        loginApi(btoa(encodeURI('liuchen')), encrypt.encrypt('ygkj0818'))
+          .then((res) => {
+            if (res.code == 1) Cookies.set('authorization', res.data)
+          })
+      })
+    }
+  }
   if (!getToken()) {
     await loginRscpApi().then((res) => {
       if (res.code == 1) setToken(res.data)
