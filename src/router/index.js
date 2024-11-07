@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { setToken, getToken } from '@/utils/userToken'
+import { setToken } from '@/utils/userToken'
 import LoginView from '@/views/LoginView.vue'
 import BaseLayout from '@/components/layout/BaseLayout.vue'
 import _404View from '@/views/404View.vue'
@@ -74,11 +74,9 @@ router.beforeEach(async (to, from, next) => {
       })
     }
   }
-  if (!getToken()) {
-    await loginRscpApi().then((res) => {
-      if (res.code == 1) setToken(res.data)
-    })
-  }
+  await loginRscpApi().then((res) => {
+    if (res.code == 1) setToken(res.data)
+  })
   next()
 })
 
