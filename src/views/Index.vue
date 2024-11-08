@@ -15,9 +15,9 @@
                 <div class="dialogue_item">
                   <div class="role">水利智能机器人</div>
                   <div class="content" :class="{ loading: item.loading }">
-                    <div v-html="marked(item.content)"></div>
-                    <ul class="refs">
-                      <li v-for="refs_item in item.refs" :key="refs_item.document_id" :title="refs_item.content">
+                    <div v-html="marked(item.content.replaceAll('^[', '<i>[').replaceAll(']^', ']</i>'))"></div>
+                    <ul class="refs" v-if="item.refs && item.refs.length">
+                      <li v-for="refs_item in item.refs" :key="refs_item.document_id" :title="refs_item.content" @click="viewDetail(refs_item.document_name, refs_item.content)">
                         <span class="index">[{{ refs_item.id }}]</span>
                         <span class="name">{{ refs_item.document_name }}</span>
                       </li>
@@ -121,6 +121,9 @@
         </div>
       </div>
     </div>
+    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="600">
+      <div v-html="marked(dialogContent)"></div>
+    </el-dialog>
   </div>
 </template>
 
@@ -517,7 +520,6 @@ const getReply = async () => {
       }
     }
     chatList.value[lastIndex].refs = reflist
-    console.log(chatList.value[lastIndex])
   }
 }
 const zan = (id) => {
@@ -528,6 +530,15 @@ const cai = (id) => {
 }
 const download = (id) => {
   console.log('todo 下载', id)
+}
+
+const dialogVisible = ref(false)
+const dialogTitle = ref('')
+const dialogContent = ref('')
+const viewDetail = (title, content) => {
+  dialogTitle.value= title
+  dialogContent.value = content
+  dialogVisible.value = true
 }
 </script>
 
@@ -688,6 +699,10 @@ const download = (id) => {
         :deep(img) {
           max-width: 100%;
         }
+        :deep(i) {
+          color: #0058ff;
+          margin: 0 4px;
+        }
         @keyframes ellipsis {
           to {
             width: 20px;
@@ -699,9 +714,12 @@ const download = (id) => {
           }
         }
         .refs {
+          background: #F0F5FD;
+          padding: 16px;
+          border-radius: 4px;
+          border: 1px dashed #DEE8F6;
           li {
             font-size: 12px;
-            font-style: italic;
             + li {
               margin-top: 8px;
             }
