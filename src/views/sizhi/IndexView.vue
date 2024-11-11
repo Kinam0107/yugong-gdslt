@@ -40,7 +40,7 @@
     </div>
     <div :class="['card', { active: activeTab === '机制运行' }]">
       <span class="name" @click="changeActive('机制运行', '', '')">机制运行</span>
-      <TabBar class="manage-name" v-model="manageCategroy" :tabs="['管护主体', '管护模式']" type="title"
+      <TabBar class="manage-name" v-model="manageCategroy" :tabs="['管护主体', '管护模式', '物业管理']" type="title"
         @change="(e) => changeActive('机制运行', e, '')" />
       <div v-if="manageCategroy === '管护主体'" class="unit-wrap">
         <div class="item" :class="{ active: activeFlag('机制运行', '管护主体', '事业单位') }"
@@ -90,6 +90,33 @@
           <span class="unit">%</span>
         </div>
       </div>
+      <div v-if="manageCategroy === '物业管理'" class="unit-wrap" style="padding: 12px 0">
+        <div class="wygl-wrap">
+          <div class="item">
+            <div class="label">物业单位</div>
+            <div class="data">
+              <span class="value">{{ estateData.unit }}</span>
+              <span class="unit">个</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="item">
+            <div class="label">委托合同</div>
+            <div class="data">
+              <span class="value">{{ estateData.contract }}</span>
+              <span class="unit">份</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="item">
+            <div class="label">合同金额</div>
+            <div class="data">
+              <span class="value">{{ estateData.amount }}</span>
+              <span class="unit">万元</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <TabBar class="jfbz-name" modelValue="经费保障" :tabs="['经费保障']" type="title" />
       <div class="jfbz-wrap">
         <div class="item">
@@ -119,31 +146,49 @@
           <span class="unit">万元</span>
         </div>
       </div>
-      <TabBar class="wygl-name" modelValue="物业管理" :tabs="['物业管理']" type="title" />
-      <div class="wygl-wrap">
-        <div class="item">
-          <div class="label">物业单位</div>
-          <div class="data">
-            <span class="value">{{ estateData.unit }}</span>
-            <span class="unit">个</span>
+      <TabBar class="zjzc-name" modelValue="村级水务员资金支撑" :tabs="['村级水务员资金支撑']" type="title" />
+      <div class="zjzc-wrap">
+        <div class="items">
+          <div class="item">
+            <span class="label">村级水务员</span>
+            <span class="value" @click="openDetail">{{ financialSupport.people }}</span>
+            <span class="unit">人</span>
           </div>
-        </div>
-        <div class="line"></div>
-        <div class="item">
-          <div class="label">委托合同</div>
-          <div class="data">
-            <span class="value">{{ estateData.contract }}</span>
-            <span class="unit">份</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="item">
-          <div class="label">合同金额</div>
-          <div class="data">
-            <span class="value">{{ estateData.amount }}</span>
+          <div class="item">
+            <span class="label">每年费用</span>
+            <span class="value" @click="openDetail">{{ financialSupport.cost }}</span>
             <span class="unit">万元</span>
           </div>
         </div>
+        <div class="line"></div>
+        <div class="items">
+          <div class="item">
+            <span class="label">市级支持</span>
+            <span class="value" @click="openDetail">{{ financialSupport.city }}</span>
+            <span class="unit">人</span>
+          </div>
+          <div class="item">
+            <span class="label">乡镇街道</span>
+            <span class="value" @click="openDetail">{{ financialSupport.town }}</span>
+            <span class="unit">万元</span>
+          </div>
+        </div>
+        <el-dialog v-model="dialogVisible" title="义乌市村级水务员资金支撑" width="1200">
+          <el-table :data="dialogData" style="width: 100%">
+            <el-table-column type="index" label="序号" width="55" fixed />
+            <el-table-column prop="street" label="镇街" min-width="95" fixed />
+            <el-table-column prop="smallOne" label="小(一)型水库(座)" min-width="130" />
+            <el-table-column prop="smallTwo" label="小(二)型水库(座)" min-width="130" />
+            <el-table-column prop="moutainPond" label="山塘(座)" min-width="80" />
+            <el-table-column prop="riverLine" label="县级以上河道长度(公里)" min-width="175" />
+            <el-table-column prop="positionsNumber" label="配备职数" min-width="90" />
+            <el-table-column prop="yearCost" label="每人每年费用(万元)" min-width="150" />
+            <el-table-column prop="citySupportRate" label="市级支持比例" min-width="110" />
+            <el-table-column prop="citySupport" label="市级支持(万元)" min-width="120" />
+            <el-table-column prop="villageSupportRate" label="乡镇街道支持比例" min-width="140" />
+            <el-table-column prop="villageSupport" label="乡镇街道支持(万元)" min-width="150" />
+          </el-table>
+        </el-dialog>
       </div>
     </div>
     <div :class="['card', { active: activeTab === '法制支撑' }]">
@@ -464,6 +509,7 @@ import RingChart from '@/components/chart/RingChart.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
 import { dataEcho, getOptions } from '@/utils/enum'
 import axios from '@/api/axios'
+import axios_yw from '@/api/axios/yw.js'
 import globalConfig from '@/config'
 
 const colors = ref(['#276AF0', '#0CBF5B', '#FFCB27', '#FF4D4F'])
@@ -494,8 +540,8 @@ const getDzxData = () => {
     }
   })
     .then((res) => {
-      dzxData.xian = res.data?.dzxXian + res.data?.xxXian ?? '-'
-      dzxData.jiedao = 0
+      dzxData.xian = (res.data?.dzxXian ?? 0 + res.data?.xxXian ?? 0) || '-'
+      dzxData.jiedao = (res.data?.dzxJd ?? 0 + res.data?.xxJd ?? 0) || '-'
     })
     .catch(() => {
       dzxData.xian = '-'
@@ -828,6 +874,32 @@ onBeforeMount(() => {
   getImplementData()
 })
 
+const financialSupport = reactive({
+  people: 0,
+  cost: 0,
+  city: 0,
+  town: 0,
+})
+const getFinancialSupport = () => {
+  axios_yw({
+    url: '/water-fund-support/count',
+    method: 'get'
+  }).then(res => {
+    financialSupport.people = res.data?.oneNum ?? '-'
+    financialSupport.cost = res.data?.twoNum ?? '-'
+    financialSupport.city = res.data?.threeNum ?? '-'
+    financialSupport.town = res.data?.fourNum ?? '-'
+  }).catch(() => {
+    financialSupport.people = '-'
+    financialSupport.cost = '-'
+    financialSupport.city = '-'
+    financialSupport.town = '-'
+  })
+}
+onBeforeMount(() => {
+  getFinancialSupport()
+})
+
 const name = ref('')
 const scale = ref('')
 const adcd = ref(globalConfig.ywAdcd)
@@ -871,7 +943,7 @@ const search = () => {
           name: name.value,
           projectScale: scale.value,
           moduleType: 47,
-          pointType: 57
+          pointType: 61
         }
       })
         .then((res) => {
@@ -889,7 +961,7 @@ const search = () => {
           name: name.value,
           projectScale: scale.value,
           moduleType: 47,
-          pointType: 58
+          pointType: 62
         }
       })
         .then((res) => {
@@ -1233,6 +1305,26 @@ const jumpScreen = (prcd) => {
 const exported = () => {
   console.log('导出')
 }
+
+const dialogVisible = ref(false)
+const dialogData = ref([])
+const openDetail = () => {
+  dialogVisible.value = true
+  axios_yw({
+    url: '/water-fund-support/page',
+    method: 'get'
+  }).then(res => {
+    const dataObj = res.data
+    dialogData.value = dataObj.outVOS
+    delete dataObj.outVOS
+    dialogData.value.push({
+      ...dataObj,
+      street: '合计',
+    })
+  }).catch(() => {
+    dialogData.value = []
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -1442,7 +1534,7 @@ const exported = () => {
   gap: $baseDistance 2 * $baseDistance;
   margin-bottom: 2 * $baseDistance;
 
-  .item {
+  >.item {
     display: flex;
     align-items: center;
     width: calc(50% - $baseDistance);
@@ -1601,6 +1693,45 @@ const exported = () => {
         font-weight: 500;
         color: $color-titletext;
       }
+    }
+  }
+}
+
+.zjzc-name {
+  margin-bottom: $baseDistance;
+}
+
+.zjzc-wrap {
+  display: flex;
+
+  .line {
+    width: 2px;
+    background: linear-gradient(180deg, rgba(0, 82, 217, 0) 0%, #0052d9 52%, rgba(0, 82, 217, 0) 100%);
+    margin: 0 20px;
+  }
+
+  .items {
+    width: calc(50% - 11px);
+
+    .item {
+      display: flex;
+      align-items: center;
+    }
+
+    .label,
+    .unit {
+      font-family: Source Han Sans;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333333;
+    }
+
+    .value {
+      font-family: YouSheBiaoTiHei;
+      font-size: 24px;
+      color: #0052D9;
+      margin: 0 4px;
+      cursor: pointer;
     }
   }
 }

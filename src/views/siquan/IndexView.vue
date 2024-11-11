@@ -263,7 +263,7 @@
             <span class="unit">座</span>
           </div>
         </div>
-        <div class="line"></div>
+        <!-- <div class="line"></div>
         <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === 'InSAR' }"
           @click="changeActive('全天候管控', '', 'InSAR')">
           <div class="label">InSAR</div>
@@ -271,7 +271,7 @@
             <span class="value">{{ controlData.insar }}</span>
             <span class="unit">座</span>
           </div>
-        </div>
+        </div> -->
         <div class="line"></div>
         <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '气象卫星' }"
           @click="changeActive('全天候管控', '', '气象卫星')">
@@ -307,7 +307,7 @@
             <span class="unit">座</span>
           </div>
         </div>
-        <div class="line"></div>
+        <!-- <div class="line"></div>
         <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '其他' }"
           @click="changeActive('全天候管控', '', '其他')">
           <div class="label">其他</div>
@@ -315,7 +315,7 @@
             <span class="value">{{ controlData.other }}</span>
             <span class="unit">座</span>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="category-item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '地' }"
         @click="changeActive('全天候管控', '', '地')">
@@ -324,51 +324,54 @@
         <span class="value">{{ controlData.ground }}</span>
         <span class="unit">座</span>
       </div>
-      <div class="category-exam">
+      <div class="category-wrap">
         <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '视频' }"
           @click="changeActive('全天候管控', '', '视频')">
-          <img class="icon" src="@/assets/images/circleCamera.png" alt="" />
-          <div class="info">
-            <div class="label">视频</div>
-            <div class="data">
-              <span class="value">{{ controlData.video }}</span>
-              <span class="unit">座</span>
-            </div>
+          <div class="label">视频</div>
+          <div class="data">
+            <span class="value">{{ controlData.video }}</span>
+            <span class="unit">座</span>
           </div>
         </div>
+        <div class="line"></div>
         <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '智能巡检' }"
           @click="changeActive('全天候管控', '', '智能巡检')">
-          <img class="icon" src="@/assets/images/circleRoute.png" alt="" />
-          <div class="info">
-            <div class="label">智能巡检</div>
-            <div class="data">
-              <span class="value">{{ controlData.inspection }}</span>
-              <span class="unit">座</span>
-            </div>
+          <div class="label">智能巡检</div>
+          <div class="data">
+            <span class="value">{{ controlData.inspection }}</span>
+            <span class="unit">座</span>
           </div>
         </div>
+        <div class="line"></div>
         <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '雨水情' }"
           @click="changeActive('全天候管控', '', '雨水情')">
-          <img class="icon" src="@/assets/images/circleRain.png" alt="" />
-          <div class="info">
-            <div class="label">雨水情</div>
-            <div class="data">
-              <span class="value">{{ controlData.rainwaterSituation }}</span>
-              <span class="unit">座</span>
-            </div>
+          <div class="label">雨水情</div>
+          <div class="data">
+            <span class="value">{{ controlData.rainwaterSituation }}</span>
+            <span class="unit">座</span>
           </div>
         </div>
+      </div>
+      <div class="category-wrap">
         <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '安全监测' }"
           @click="changeActive('全天候管控', '', '安全监测')">
-          <img class="icon" src="@/assets/images/circleSafety.png" alt="" />
-          <div class="info">
-            <div class="label">安全监测</div>
-            <div class="data">
-              <span class="value">{{ controlData.safetyMonitoring }}</span>
-              <span class="unit">座</span>
-            </div>
+          <div class="label">安全监测</div>
+          <div class="data">
+            <span class="value">{{ controlData.safetyMonitoring }}</span>
+            <span class="unit">座</span>
           </div>
         </div>
+        <div class="line"></div>
+        <div class="item" :class="{ active: activeTab === '全天候管控' && activeType === '' && activeItem === '无人船' }"
+          @click="changeActive('全天候管控', '', '无人船')">
+          <div class="label">无人船</div>
+          <div class="data">
+            <span class="value">{{ controlData.unmannedShip }}</span>
+            <span class="unit">座</span>
+          </div>
+        </div>
+        <div class="line" style="visibility: hidden"></div>
+        <div class="item" style="visibility: hidden"></div>
       </div>
     </div>
     <div :class="['card', { active: activeTab === '全周期管理' }]">
@@ -560,9 +563,9 @@
               <el-table-column label="遥感影像" min-width="100">
                 <template #default="scope">{{ scope.row.ygyxNum }}</template>
               </el-table-column>
-              <el-table-column label="InSAR" min-width="100">
+              <!-- <el-table-column label="InSAR" min-width="100">
                 <template #default="scope">{{ scope.row.insarNum }}</template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column label="气象卫星" min-width="100">
                 <template #default="scope">{{ scope.row.qxwxNum }}</template>
               </el-table-column>
@@ -574,9 +577,9 @@
               <el-table-column label="测雨雷达" min-width="100">
                 <template #default="scope">{{ scope.row.cyldNum }}</template>
               </el-table-column>
-              <el-table-column label="其他" min-width="100">
+              <!-- <el-table-column label="其他" min-width="100">
                 <template #default="scope">{{ scope.row.qtNum }}</template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table-column>
             <el-table-column label="地" align="center">
               <el-table-column label="视频" min-width="100">
@@ -882,7 +885,8 @@ const controlData = reactive({
   video: 0,
   inspection: 0,
   rainwaterSituation: 0,
-  safetyMonitoring: 0
+  safetyMonitoring: 0,
+  unmannedShip: 0
 })
 const getControlData = () => {
   axios({
@@ -907,6 +911,7 @@ const getControlData = () => {
       controlData.inspection = res.data?.xjNum ?? '-'
       controlData.rainwaterSituation = res.data?.ysqNum ?? '-'
       controlData.safetyMonitoring = res.data?.aqjcNum ?? '-'
+      controlData.unmannedShip = '-'
     })
     .catch(() => {
       controlData.space = '-'
@@ -922,6 +927,7 @@ const getControlData = () => {
       controlData.inspection = '-'
       controlData.rainwaterSituation = '-'
       controlData.safetyMonitoring = '-'
+      controlData.unmannedShip = '-'
     })
 }
 onBeforeMount(() => {

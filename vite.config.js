@@ -42,9 +42,9 @@ export default defineConfig({
         rewrite: (path) => path.replace(RegExp(`^${globalConfig.baseUrl}`), '')
       },
       '/prod-api': {
-        target: 'http://192.168.2.173:1008',
+        target: 'http://192.168.2.227:9000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(RegExp(`^/prod-api`), '/prod-api')
+        rewrite: (path) => path.replace(RegExp(`^/prod-api`), '')
       }
     }
   }
