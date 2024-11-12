@@ -419,6 +419,7 @@ import BarAndLine from '@/components/chart/BarAndLine.vue'
 import { dataEcho, getOptions } from '@/utils/enum'
 import axios from '@/api/axios'
 import globalConfig from '@/config'
+import { getToken } from '@/utils/userToken'
 
 const colors = ['#0CBF5B', '#FFCB27', '#FF4D4F']
 const activeTab = ref('及时除险')
@@ -828,108 +829,114 @@ const search = () => {
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '二类坝总数') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '3',
-          screen: '6,7,8,9'
+          moduleType: 65,
+          pointType: 1
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '三类坝总数') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '3',
-          screen: '6,7,8,10'
+          moduleType: 65,
+          pointType: 4
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '二类坝未开工') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '3',
-          screen: '6,9'
+          moduleType: 65,
+          pointType: 2
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '三类坝未开工') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '3',
-          screen: '6,10'
+          moduleType: 65,
+          pointType: 5
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '二类坝已开工') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '3',
-          screen: '7,9'
+          moduleType: 65,
+          pointType: 3
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '三类坝已开工') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '3',
-          screen: '7,10'
+          moduleType: 65,
+          pointType: 6
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
@@ -954,36 +961,38 @@ const search = () => {
         })
     } else if (activeType.value === '问题处置' && activeItem.value === '处置中') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '5',
-          screen: '14'
+          moduleType: 71,
+          pointType: 3
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '问题处置' && activeItem.value === '已处置') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '5',
-          screen: '15'
+          moduleType: 71,
+          pointType: 4
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
@@ -1010,108 +1019,114 @@ const search = () => {
         })
     } else if (activeType.value === '风险研判' && activeItem.value === '绿码') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '1',
-          screen: '17'
+          moduleType: 66,
+          pointType: 4
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '风险研判' && activeItem.value === '黄码') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '1',
-          screen: '18'
+          moduleType: 66,
+          pointType: 5
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '风险研判' && activeItem.value === '红码') {
       axios({
-        url: '/mgt/bm/reservoirWT/generateProject',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          gpType: '1',
-          screen: '19'
+          moduleType: 66,
+          pointType: 6
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '安全鉴定' && activeItem.value === '三类坝') {
       axios({
-        url: '/mgt/resWisdom/synthesisRes',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          moduleType: 10,
-          pointType: 3
+          moduleType: 66,
+          pointType: 1
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '安全鉴定' && activeItem.value === '二类坝') {
       axios({
-        url: '/mgt/resWisdom/synthesisRes',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          moduleType: 10,
+          moduleType: 66,
           pointType: 2
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
         })
     } else if (activeType.value === '安全鉴定' && activeItem.value === '近一年到期') {
       axios({
-        url: '/mgt/resWisdom/synthesisRes',
+        url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
+          fetchAll: true,
           adcd: adcd.value,
           name: name.value,
           projectScale: scale.value,
-          moduleType: 12,
-          pointType: 1
+          moduleType: 66,
+          pointType: 3
         }
       })
         .then((res) => {
-          tableData.value = res.data || []
+          tableData.value = res.data.list || []
         })
         .catch(() => {
           tableData.value = []
@@ -1375,7 +1390,88 @@ const jumpScreen = (prcd) => {
 }
 
 const exported = () => {
-  console.log('导出')
+  let moduleType = '', pointType = ''
+  if (activeTab.value === '及时除险') {
+    if (activeType.value === '除险加固' && activeItem.value === '') {
+      moduleType = 10
+      pointType = ''
+    } else if (activeType.value === '除险加固' && activeItem.value === '二类坝总数') {
+      moduleType = 10
+      pointType = 1
+    } else if (activeType.value === '除险加固' && activeItem.value === '三类坝总数') {
+      moduleType = 10
+      pointType = 4
+    } else if (activeType.value === '除险加固' && activeItem.value === '二类坝未开工') {
+      moduleType = 10
+      pointType = 2
+    } else if (activeType.value === '除险加固' && activeItem.value === '三类坝未开工') {
+      moduleType = 10
+      pointType = 5
+    } else if (activeType.value === '除险加固' && activeItem.value === '二类坝已开工') {
+      moduleType = 10
+      pointType = 3
+    } else if (activeType.value === '除险加固' && activeItem.value === '三类坝已开工') {
+      moduleType = 10
+      pointType = 6
+    } else if (activeType.value === '问题处置' && activeItem.value === '') {
+      moduleType = 15
+      pointType = ''
+    } else if (activeType.value === '问题处置' && activeItem.value === '处置中') {
+      moduleType = 15
+      pointType = 3
+    } else if (activeType.value === '问题处置' && activeItem.value === '已处置') {
+      moduleType = 15
+      pointType = 4
+    }
+  } else if (activeTab.value === '水库体检') {
+    moduleType = 11
+    if (activeType.value === '' && activeItem.value === '') {
+      pointType = ''
+    } else if (activeType.value === '风险研判' && activeItem.value === '绿码') {
+      pointType = 4
+    } else if (activeType.value === '风险研判' && activeItem.value === '黄码') {
+      pointType = 5
+    } else if (activeType.value === '风险研判' && activeItem.value === '红码') {
+      pointType = 6
+    } else if (activeType.value === '安全鉴定' && activeItem.value === '三类坝') {
+      pointType = 1
+    } else if (activeType.value === '安全鉴定' && activeItem.value === '二类坝') {
+      pointType = 2
+    } else if (activeType.value === '安全鉴定' && activeItem.value === '近一年到期') {
+      pointType = 3
+    }
+  } else if (activeTab.value === '工程维护') {
+    moduleType = 12
+    if (activeType.value === '' && activeItem.value === '') {
+      pointType = ''
+    } else if (activeType.value === '维养计划' && activeItem.value === '已编制') {
+      pointType = 71
+    } else if (activeType.value === '维养计划' && activeItem.value === '已落实') {
+      pointType = 72
+    } else if (activeType.value === '白蚁防治' && activeItem.value === '已治理') {
+      pointType = 69
+    } else if (activeType.value === '白蚁防治' && activeItem.value === '未治理') {
+      pointType = 70
+    }
+  } else if (activeTab.value === '安全管控') {
+    moduleType = 13
+    if (activeType.value === '' && activeItem.value === '') {
+      pointType = ''
+    } else if (activeType.value === '标准化管理' && activeItem.value === '部级') {
+      pointType = 4
+    } else if (activeType.value === '标准化管理' && activeItem.value === '省级') {
+      pointType = 3
+    } else if (activeType.value === '标准化管理' && activeItem.value === '精品') {
+      pointType = 2
+    } else if (activeType.value === '标准化管理' && activeItem.value === '合格') {
+      pointType = 5
+    } else if (activeType.value === '管保范围' && activeItem.value === '已划定') {
+      pointType = 2
+    } else if (activeType.value === '管保范围' && activeItem.value === '未划定') {
+      pointType = 4
+    }
+  }
+  window.open(`${import.meta.env.DEV ? globalConfig.proxyTarget : 'https://swzg.slt.zj.gov.cn'}/mgt/bm/reservoirMatrix/oneTouchListToExcel?adcd=${adcd.value}&name=${name.value}&projectScale=${scale.value}&moduleType=${moduleType}&pointType=${pointType}&token=${getToken()}`)
 }
 </script>
 

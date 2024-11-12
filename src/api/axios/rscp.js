@@ -1,14 +1,13 @@
 import axios from 'axios'
 import globalConfig from '@/config'
-import router from '@/router'
 import { getToken, clearToken } from '@/utils/userToken'
 import { ElMessage } from 'element-plus'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
 const instance = axios.create({
-  // baseURL: globalConfig.baseUrl,
-  baseURL: 'https://swzg.slt.zj.gov.cn/dingrscp-api',
+  baseURL: globalConfig.baseUrl,
+  // baseURL: 'https://swzg.slt.zj.gov.cn/dingrscp-api',
   timeout: globalConfig.timeout
 })
 
@@ -38,8 +37,16 @@ instance.interceptors.response.use(
       })
       clearToken()
     }
-    const res = response.data
-    if (res instanceof Blob) res.fileName = decodeURI(response.headers['content-disposition'].split('=')[1])
+    let res = response.data
+    const contentType = response.headers['content-type']
+    const contentDisposition = response.headers['content-disposition']
+    const isAttachment = contentDisposition && contentDisposition.includes('attachment')
+    if (contentType && isAttachment) {
+      res = {
+        file: response.data,
+        name: decodeURI(contentDisposition.split('=')[1])
+      }
+    }
     return res
   },
   (error) => {

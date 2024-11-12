@@ -629,6 +629,7 @@ import BarAndLine from '@/components/chart/BarAndLine.vue'
 import axios from '@/api/axios'
 import { dataEcho, getOptions } from '@/utils/enum'
 import globalConfig from '@/config'
+import { getToken } from '@/utils/userToken'
 
 const activeTab = ref('监管全覆盖')
 const activeType = ref('')
@@ -1714,6 +1715,25 @@ const search = () => {
         .catch(() => {
           tableData.value = []
         })
+    } else if (activeItem.value === '无人船') {
+      // axios({
+      //   url: '/mgt/bm/reservoirMatrix/fourPower',
+      //   method: 'post',
+      //   data: {
+      //     adcd: adcd.value,
+      //     name: name.value,
+      //     projectScale: scale.value,
+      //     moduleType: 43,
+      //     pointType: 48
+      //   }
+      // })
+      //   .then((res) => {
+      //     tableData.value = res.data || []
+      //   })
+      //   .catch(() => {
+      //     tableData.value = []
+      //   })
+      tableData.value = []
     }
   } else if (activeTab.value === '全周期管理') {
     if (activeItem.value === '') {
@@ -1917,7 +1937,113 @@ const jumpScreen = (prcd) => {
 }
 
 const exported = () => {
-  console.log('导出')
+  let moduleType = '', pointType = ''
+  if (activeTab.value === '监管全覆盖') {
+    moduleType = 0
+    if (activeType.value === '' && activeItem.value === '') {
+      pointType = ''
+    } else if (activeType.value === '水库总览' && activeItem.value === '在册总数') {
+      pointType = ''
+    } else if (activeType.value === '水库总览' && activeItem.value === '注册') {
+      pointType = 27
+    } else if (activeType.value === '水库总览' && activeItem.value === '备案') {
+      pointType = 28
+    } else if (activeType.value === '所属行业' && activeItem.value === '水利') {
+      pointType = 13
+    } else if (activeType.value === '所属行业' && activeItem.value === '能源') {
+      pointType = 14
+    } else if (activeType.value === '所属行业' && activeItem.value === '司法行政') {
+      pointType = 15
+    } else if (activeType.value === '所属行业' && activeItem.value === '交通运输') {
+      pointType = 16
+    } else if (activeType.value === '所属行业' && activeItem.value === '其他行业') {
+      pointType = 17
+    }
+  } else if (activeTab.value === '全要素掌控') {
+    moduleType = 1
+    if (activeItem.value === '') {
+      pointType = ''
+    } else if (activeType.value === '工程要素' && activeItem.value === '混凝土坝') {
+      pointType = 4
+    } else if (activeType.value === '工程要素' && activeItem.value === '堆石坝') {
+      pointType = 29
+    } else if (activeType.value === '工程要素' && activeItem.value === '土坝') {
+      pointType = 3
+    } else if (activeType.value === '工程要素' && activeItem.value === '浆砌石坝') {
+      pointType = 30
+    } else if (activeType.value === '工程要素' && activeItem.value === '其他') {
+      pointType = 5
+    } else if (activeType.value === '工程要素' && activeItem.value === '坝高15m以下') {
+      pointType = 31
+    } else if (activeType.value === '工程要素' && activeItem.value === '坝高15-30m') {
+      pointType = 32
+    } else if (activeType.value === '工程要素' && activeItem.value === '坝高30-70m') {
+      pointType = 33
+    } else if (activeType.value === '工程要素' && activeItem.value === '坝高70m以上') {
+      pointType = 34
+    } else if (activeType.value === '工程要素' && activeItem.value === '库容曲线') {
+      pointType = 35
+    } else if (activeType.value === '工程要素' && activeItem.value === '泄洪曲线') {
+      pointType = 36
+    } else if (activeType.value === '工程要素' && activeItem.value === '溢洪道侵占') {
+      pointType = 66
+    }
+  } else if (activeTab.value === '全天候管控') {
+    moduleType = 2
+    if (activeItem.value === '') {
+      pointType = ''
+    } else if (activeItem.value === '天') {
+      pointType = 37
+    } else if (activeItem.value === '遥感影像') {
+      pointType = 38
+    } else if (activeItem.value === 'InSAR') {
+      pointType = 39
+    } else if (activeItem.value === '气象卫星') {
+      pointType = 40
+    } else if (activeItem.value === '空') {
+      pointType = 41
+    } else if (activeItem.value === '无人机') {
+      pointType = 42
+    } else if (activeItem.value === '测雨雷达') {
+      pointType = 49
+    } else if (activeItem.value === '其他') {
+      pointType = 43
+    } else if (activeItem.value === '地') {
+      pointType = 44
+    } else if (activeItem.value === '视频') {
+      pointType = 45
+    } else if (activeItem.value === '智能巡检') {
+      pointType = 46
+    } else if (activeItem.value === '雨水情') {
+      pointType = 47
+    } else if (activeItem.value === '安全监测') {
+      pointType = 48
+    } else if (activeItem.value === '无人船') {
+      pointType = '' // todo
+    }
+  } else if (activeTab.value === '全周期管理') {
+    moduleType = 3
+    if (activeItem.value === '') {
+      pointType = ''
+    } else if (activeItem.value === '10年以内') {
+      pointType = 10
+    } else if (activeItem.value === '10-50年') {
+      pointType = 11
+    } else if (activeItem.value === '50年以上') {
+      pointType = 12
+    } else if (activeItem.value === '竣工验收') {
+      pointType = 50
+    } else if (activeItem.value === '注册登记') {
+      pointType = 51
+    } else if (activeItem.value === '安全鉴定') {
+      pointType = 52
+    } else if (activeItem.value === '控运计划') {
+      pointType = 53
+    } else if (activeItem.value === '除险加固') {
+      pointType = 54
+    }
+  }
+  window.open(`${import.meta.env.DEV ? globalConfig.proxyTarget : 'https://swzg.slt.zj.gov.cn'}/mgt/bm/reservoirMatrix/oneTouchListToExcel?adcd=${adcd.value}&name=${name.value}&projectScale=${scale.value}&moduleType=${moduleType}&pointType=${pointType}&token=${getToken()}`)
 }
 </script>
 

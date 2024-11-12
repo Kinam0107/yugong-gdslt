@@ -511,6 +511,7 @@ import { dataEcho, getOptions } from '@/utils/enum'
 import axios from '@/api/axios'
 import axios_yw from '@/api/axios/yw.js'
 import globalConfig from '@/config'
+import { getToken } from '@/utils/userToken'
 
 const colors = ref(['#276AF0', '#0CBF5B', '#FFCB27', '#FF4D4F'])
 const activeTab = ref('体制管理')
@@ -1303,7 +1304,59 @@ const jumpScreen = (prcd) => {
 }
 
 const exported = () => {
-  console.log('导出')
+  let moduleType = '', pointType = ''
+  if (activeTab.value === '体制管理') {
+    moduleType = 4
+    if (activeType.value === '' && activeItem.value === '') {
+      pointType = ''
+    } else if (activeType.value === '' && activeItem.value === '县管') {
+      pointType = 61
+    } else if (activeType.value === '' && activeItem.value === '乡镇街道') {
+      pointType = 62
+    } else if (activeType.value === '' && activeItem.value === '水利部门') {
+      pointType = 13
+    } else if (activeType.value === '' && activeItem.value === '能源部门') {
+      pointType = 14
+    } else if (activeType.value === '' && activeItem.value === '司法部门') {
+      pointType = 15
+    } else if (activeType.value === '' && activeItem.value === '其他') {
+      pointType = 17
+    } else if (activeType.value === '明确产权' && activeItem.value === '完成数') {
+      pointType = 61
+    }
+  } else if (activeTab.value === '机制运行') {
+    moduleType = 5
+    if (activeType.value === '' && activeItem.value === '') {
+      pointType = ''
+    } else if (activeType.value === '管护主体' && activeItem.value === '事业单位') {
+      pointType = 62
+    } else if (activeType.value === '管护主体' && activeItem.value === '国有企业') {
+      pointType = 63
+    } else if (activeType.value === '管护主体' && activeItem.value === '集体单位') {
+      pointType = 64
+    } else if (activeType.value === '管护主体' && activeItem.value === '其他') {
+      pointType = 66
+    } else if (activeType.value === '管护模式' && activeItem.value === '有管理单位') {
+      pointType = 3
+    } else if (activeType.value === '管护模式' && activeItem.value === '无管理单位') {
+      pointType = 4
+    } else if (activeType.value === '管护模式' && activeItem.value === '委托物业化') {
+      pointType = 5
+    }
+  } else if (activeTab.value === '法制支撑') {
+    moduleType = 6
+    if (activeType.value === '' && activeItem.value === '') {
+      pointType = ''
+    }
+  } else if (activeTab.value === '责任制落实') {
+    moduleType = 7
+    if (activeType.value === '' && activeItem.value === '') {
+      pointType = ''
+    } else if (activeType.value === '' && activeItem.value === '落实座数') {
+      pointType = 2
+    }
+  }
+  window.open(`${import.meta.env.DEV ? globalConfig.proxyTarget : 'https://swzg.slt.zj.gov.cn'}/mgt/bm/reservoirMatrix/oneTouchListToExcel?adcd=${adcd.value}&name=${name.value}&projectScale=${scale.value}&moduleType=${moduleType}&pointType=${pointType}&token=${getToken()}`)
 }
 
 const dialogVisible = ref(false)

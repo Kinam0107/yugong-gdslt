@@ -411,6 +411,7 @@ import RingChart from '@/components/chart/RingChart.vue'
 import { dataEcho, getOptions } from '@/utils/enum'
 import axios from '@/api/axios'
 import globalConfig from '@/config'
+import { getToken } from '@/utils/userToken'
 
 const colors = ['#276AF0', '#FFCB27', '#FF4D4F']
 const activeTab = ref('精准预报')
@@ -946,7 +947,32 @@ const jumpScreen = (prcd) => {
 }
 
 const exported = () => {
-  console.log('导出')
+  let moduleType = '', pointType = ''
+  if (activeTab.value === '精准预报') {
+    moduleType = 8
+    if (activeType.value === '' && activeItem.value === '') {
+      pointType = ''
+    }
+  } else if (activeTab.value === '统一预警') {
+    moduleType = 20
+    if (activeType.value === '' && activeItem.value === '水情预警') {
+      pointType = 5
+    } else if (activeType.value === '' && activeItem.value === '超限制水位') {
+      pointType = 1
+    } else if (activeType.value === '' && activeItem.value === '超正常蓄水位') {
+      pointType = 4
+    } else if (activeType.value === '' && activeItem.value === '超设计水位') {
+      pointType = 2
+    }
+  } else if (activeTab.value === '在线预案') {
+    moduleType = 9
+    if (activeType.value === '' && activeItem.value === '') {
+      pointType = ''
+    } else if (activeType.value === '实战演练' && activeItem.value === '年度开展') {
+      pointType = 1
+    }
+  }
+  window.open(`${import.meta.env.DEV ? globalConfig.proxyTarget : 'https://swzg.slt.zj.gov.cn'}/mgt/bm/reservoirMatrix/oneTouchListToExcel?adcd=${adcd.value}&name=${name.value}&projectScale=${scale.value}&moduleType=${moduleType}&pointType=${pointType}&token=${getToken()}`)
 }
 </script>
 

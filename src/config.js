@@ -8,7 +8,7 @@ const servers = {
 }
 
 export default {
-  proxyTarget: servers['线上环境'], // 服务地址
+  proxyTarget: servers['路亚峰'], // 服务地址
   baseUrl: '/api', // 接口访问的基础路径
   timeout: undefined, // 接口请求的超时时间
   disablePermit: false, // 禁用权限（按钮权限、菜单权限、页面访问权限等）
