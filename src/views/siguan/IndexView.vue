@@ -760,8 +760,8 @@ const getSixMechanisms = () => {
     }
   })
     .then((res) => {
-      sixMechanisms.yls = res.data?.yls ?? '-'
-      sixMechanisms.wls = res.data?.yls && res.data?.num ? res.data.num - res.data.yls : '-'
+      sixMechanisms.yls = res.data.yls
+      sixMechanisms.wls = res.data.num - res.data.yls
     })
     .catch(() => {
       sixMechanisms.yls = '-'
@@ -1466,9 +1466,9 @@ const exported = () => {
     } else if (activeType.value === '标准化管理' && activeItem.value === '合格') {
       pointType = 5
     } else if (activeType.value === '管保范围' && activeItem.value === '已划定') {
-      pointType = 2
+      pointType = 7
     } else if (activeType.value === '管保范围' && activeItem.value === '未划定') {
-      pointType = 4
+      pointType = 8
     }
   }
   window.open(`${import.meta.env.DEV ? globalConfig.proxyTarget : 'https://swzg.slt.zj.gov.cn'}/mgt/bm/reservoirMatrix/oneTouchListToExcel?adcd=${adcd.value}&name=${name.value}&projectScale=${scale.value}&moduleType=${moduleType}&pointType=${pointType}&token=${getToken()}`)

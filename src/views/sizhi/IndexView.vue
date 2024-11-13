@@ -541,8 +541,8 @@ const getDzxData = () => {
     }
   })
     .then((res) => {
-      dzxData.xian = (res.data?.dzxXian ?? 0 + res.data?.xxXian ?? 0) || '-'
-      dzxData.jiedao = (res.data?.dzxJd ?? 0 + res.data?.xxJd ?? 0) || '-'
+      dzxData.xian = res.data?.xian ?? '-'
+      dzxData.jiedao = res.data?.jd ?? '-'
     })
     .catch(() => {
       dzxData.xian = '-'
@@ -1322,7 +1322,7 @@ const exported = () => {
     } else if (activeType.value === '' && activeItem.value === '其他') {
       pointType = 17
     } else if (activeType.value === '明确产权' && activeItem.value === '完成数') {
-      pointType = 61
+      pointType = 63
     }
   } else if (activeTab.value === '机制运行') {
     moduleType = 5

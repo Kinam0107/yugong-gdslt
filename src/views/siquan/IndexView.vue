@@ -197,7 +197,7 @@
           <div class="item">
             <div class="label">洪水影响范围(24h)</div>
             <div class="data">
-              <span class="value">{{ downstreamFactors.floodImpactScope.toFixed(2) }}</span>
+              <span class="value">{{ downstreamFactors.floodImpactScope }}</span>
               <span class="unit">km²</span>
             </div>
           </div>
@@ -205,7 +205,7 @@
           <div class="item">
             <div class="label">影响人口</div>
             <div class="data">
-              <span class="value">{{ downstreamFactors.populationImpact.toFixed(2) }}</span>
+              <span class="value">{{ downstreamFactors.populationImpact }}</span>
               <span class="unit">万人</span>
             </div>
           </div>
