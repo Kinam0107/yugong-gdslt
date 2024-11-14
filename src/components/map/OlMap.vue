@@ -1,6 +1,9 @@
 <template>
   <div class="map-container-wrapper">
     <div ref="olMap" class="map-container"></div>
+    <div class="slot-wrapper back">
+      <slot name="back"></slot>
+    </div>
     <div class="slot-wrapper default">
       <slot name="default"></slot>
     </div>
@@ -14,46 +17,33 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, watch, onMounted, nextTick } from 'vue'
 import { Map, View } from 'ol'
 import TileLayer from 'ol/layer/Tile'
 import XYZ from 'ol/source/XYZ'
-import { Vector as VectorLayer, Group as GroupLayer } from 'ol/layer'
+import { Vector as VectorLayer } from 'ol/layer'
 import { Vector as VectorSource } from 'ol/source'
 import GeoJSON from 'ol/format/GeoJSON'
-import { getVectorContext } from 'ol/render'
 import { Style, Fill, Stroke } from 'ol/style'
 import { defaults as defaultControls } from 'ol/control'
 import { defaults as defaultInteractions } from 'ol/interaction'
 import 'ol/ol.css'
 import globalConfig from '@/config.js'
-import { getCityFeatureStyle, changeCursor } from '@/utils/map.js'
+import { changeBaseMap, changeCursor } from '@/utils/map.js'
 
 const props = defineProps({
   baseMapMode: {
     type: String,
-    default: '影像底图',
-    validator: (val) => ['地形晕渲', '影像底图', '矢量底图', '影像注记'].includes(val)
-  },
-  hideMapOutsideBoundary: {
-    type: Boolean,
-    default: false
+    default: '影像图',
+    validator: (val) => ['影像图', '水利图'].includes(val)
   },
   hideProvinceBoundary: {
     type: Boolean,
     default: false
   },
-  hideCityBoundary: {
-    type: Boolean,
-    default: false
-  },
-  viewAdaptBoundary: {
-    type: Boolean,
-    default: false
-  },
   adaptPadding: {
-    type: Array,
-    default: () => [0, 0, 0, 0]
+    type: [Boolean, Array],
+    default: false
   }
 })
 
@@ -62,52 +52,45 @@ const emits = defineEmits(['initFinished', 'singleClick', 'doubleClick', 'mouseM
 let map
 const olMap = ref()
 
+watch(
+  () => props.baseMapMode,
+  (val) => {
+    changeBaseMap(map, val)
+  }
+)
+
 onMounted(() => {
   initMap()
 })
 
 const initMap = () => {
-  const baseLayer_dxyr = new TileLayer({
-    id: '地形晕渲',
-    visible: props.baseMapMode === '地形晕渲',
-    source: new XYZ({
-      url: 'https://t3.tianditu.gov.cn/DataServer?T=ter_c&X={x}&Y={y}&L={z}&tk=' + globalConfig.map.secretKey,
-      projection: 'EPSG:4326'
-    })
-  })
   const baseLayer_yxdt = new TileLayer({
-    id: '影像底图',
-    visible: props.baseMapMode === '影像底图',
+    id: '影像图1',
+    visible: props.baseMapMode === '影像图',
     source: new XYZ({
       url: 'https://t0.tianditu.gov.cn/DataServer?T=img_c&X={x}&Y={y}&L={z}&tk=' + globalConfig.map.secretKey,
       projection: 'EPSG:4326'
     })
   })
-  const baseLayer_sldt = new TileLayer({
-    id: '矢量底图',
-    visible: props.baseMapMode === '矢量底图',
-    source: new XYZ({
-      url: 'https://t0.tianditu.gov.cn/DataServer?T=vec_c&X={x}&Y={y}&L={z}&tk=' + globalConfig.map.secretKey,
-      projection: 'EPSG:4326'
-    })
-  })
   const baseLayer_yxzj = new TileLayer({
-    id: '影像注记',
-    visible: props.baseMapMode === '影像注记',
+    id: '影像图2',
+    visible: props.baseMapMode === '影像图',
     source: new XYZ({
       url: 'https://t3.tianditu.gov.cn/DataServer?T=cia_c&X={x}&Y={y}&L={z}&tk=' + globalConfig.map.secretKey,
       projection: 'EPSG:4326'
     })
   })
-  if (props.hideMapOutsideBoundary) {
-    handleHideMapOutsideBoundary(baseLayer_dxyr)
-    handleHideMapOutsideBoundary(baseLayer_yxdt)
-    handleHideMapOutsideBoundary(baseLayer_sldt)
-    handleHideMapOutsideBoundary(baseLayer_yxzj)
-  }
+  const baseLayer_zjwaterMap = new TileLayer({
+    id: '水利图',
+    visible: props.baseMapMode === '水利图',
+    source: new XYZ({
+      url: 'https://sldtpt.slt.zj.gov.cn/ZJSWZG/PBS/rest/services/WYX2021/MapServer/tile/{z}/{y}/{x}',
+      projection: 'EPSG:4326'
+    })
+  })
   map = new Map({
     target: olMap.value,
-    layers: [baseLayer_dxyr, baseLayer_yxdt, baseLayer_sldt, baseLayer_yxzj],
+    layers: [baseLayer_yxdt, baseLayer_yxzj, baseLayer_zjwaterMap],
     view: new View({
       projection: 'EPSG:4326',
       center: globalConfig.map.center,
@@ -118,9 +101,8 @@ const initMap = () => {
     controls: defaultControls({ zoom: false }).extend([]),
     interactions: defaultInteractions({ doubleClickZoom: false })
   })
-  if (!props.hideCityBoundary) drawCityLevelBoundary()
-  if (!props.hideProvinceBoundary) drawProvinceLevelBoundary()
-  if (props.viewAdaptBoundary) map.getView().fit(new GeoJSON().readFeatures(globalConfig.map.provinceLevelBoundary)[0].getGeometry(), { padding: props.adaptPadding, duration: 300 })
+  if (!props.hideProvinceBoundary) drawywBoundary()
+  if (props.adaptPadding) map.getView().fit(new GeoJSON().readFeatures(globalConfig.map.ywBoundary)[0].getGeometry(), { padding: props.adaptPadding, duration: 300 })
   map.on('singleclick', mapSingleClick)
   map.on('dblclick', mapDoubleClick)
   map.on('pointermove', mapPointerMove)
@@ -131,80 +113,20 @@ const initMap = () => {
   })
 }
 
-const handleHideMapOutsideBoundary = (baseLayer) => {
-  const clipLayer = new VectorLayer({
-    projection: 'EPSG:4326',
-    source: new VectorSource({
-      features: new GeoJSON().readFeatures(globalConfig.map.provinceLevelBoundary),
-      featureProjection: 'EPSG:4326'
-    })
-  })
-  baseLayer.on('postrender', function (e) {
-    e.context.globalCompositeOperation = 'destination-in'
-    clipLayer.getSource().forEachFeature(function (feature) {
-      getVectorContext(e).drawFeature(feature, new Style({ fill: new Fill({ color: '#000' }) }))
-    })
-    e.context.globalCompositeOperation = 'source-over'
-  })
-}
-
-const drawProvinceLevelBoundary = () => {
+const drawywBoundary = () => {
   const vectorSource = new VectorSource({
-    features: new GeoJSON().readFeatures(globalConfig.map.provinceLevelBoundary)
+    features: new GeoJSON().readFeatures(globalConfig.map.ywBoundary)
   })
   map.addLayer(
-    new GroupLayer({
-      layers: [
-        new VectorLayer({
-          id: 'provinceLevelBoundary1',
-          source: vectorSource,
-          style: new Style({
-            fill: new Fill({ color: 'transparent' }),
-            stroke: new Stroke({ color: 'rgba(0, 73, 255, 0.2)', width: 7 })
-          })
-        }),
-        new VectorLayer({
-          id: 'provinceLevelBoundary2',
-          source: vectorSource,
-          style: new Style({
-            fill: new Fill({ color: 'transparent' }),
-            stroke: new Stroke({ color: 'rgba(0, 126, 255, 0.4)', width: 3 })
-          })
-        }),
-        new VectorLayer({
-          id: 'provinceLevelBoundary3',
-          source: vectorSource,
-          style: new Style({
-            fill: new Fill({ color: 'transparent' }),
-            stroke: new Stroke({ color: 'rgba(0, 213, 255, 1)', width: 2, lineDash: [4, 8, 0, 8] })
-          })
-        })
-      ]
+    new VectorLayer({
+      id: 'ywBoundary',
+      source: vectorSource,
+      style: new Style({
+        fill: new Fill({ color: 'rgba(33, 154, 202, 0.1)' }),
+        stroke: new Stroke({ color: 'rgba(33, 154, 202, 1)', width: 2 })
+      })
     })
   )
-}
-
-const drawCityLevelBoundary = () => {
-  const cityLevelBoundaryLayer = new VectorLayer({
-    id: 'cityLevelBoundary',
-    source: new VectorSource({
-      features: new GeoJSON().readFeatures(globalConfig.map.cityLevelBoundary)
-    }),
-    style: (feature) => {
-      return getCityFeatureStyle(feature)
-    }
-  })
-  cityLevelBoundaryLayer.on('prerender', (evt) => {
-    evt.context.shadowBlur = 1
-    evt.context.shadowOffsetY = 2
-    evt.context.shadowColor = 'rgba(0, 4, 114, 1)'
-  })
-  cityLevelBoundaryLayer.on('postrender', (evt) => {
-    evt.context.shadowBlur = 0
-    evt.context.shadowOffsetY = 0
-    evt.context.shadowColor = 'rgba(0, 4, 114, 1)'
-  })
-  map.addLayer(cityLevelBoundaryLayer)
 }
 
 const mapSingleClick = (evt) => {
@@ -215,15 +137,9 @@ const mapSingleClick = (evt) => {
       return feat.get('features')[0]
     }
   })
-  const cityFeature = map.forEachFeatureAtPixel(evt.pixel, (feat, layer) => {
-    if (layer?.get('id') === 'cityLevelBoundary') {
-      return feat
-    }
-  })
   emits('singleClick', {
     coordinate: evt.coordinate,
-    featureData: feature?.get('data'),
-    cityFeature: cityFeature
+    featureData: feature?.get('data')
   })
 }
 
@@ -241,15 +157,9 @@ const mapPointerMove = (evt) => {
       return feat.get('features')[0]
     }
   })
-  const cityFeature = map.forEachFeatureAtPixel(evt.pixel, (feat, layer) => {
-    if (layer?.get('id') === 'cityLevelBoundary') {
-      return feat
-    }
-  })
   emits('mouseMove', {
     coordinate: evt.coordinate,
-    featureData: feature?.get('data'),
-    cityFeature: cityFeature
+    featureData: feature?.get('data')
   })
 }
 
@@ -276,9 +186,13 @@ const mapMoveEnd = () => {
 .slot-wrapper {
   position: absolute;
   z-index: 1;
-  &.default {
+  &.back {
     top: 0;
     left: 0;
+  }
+  &.default {
+    top: 0;
+    right: 0;
   }
   &.legend {
     right: 0;

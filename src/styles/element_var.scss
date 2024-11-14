@@ -36,9 +36,9 @@ $--font-family: (
 );
 
 $--button-border-radius: (
-  'large': 4px,
-  'default': 4px,
-  'small': 4px
+  'large': 2px,
+  'default': 2px,
+  'small': 2px
 );
 $--button-padding-vertical: (
   'large': 9px,
@@ -61,7 +61,7 @@ $--tree: (
 $--pagination: (
   'bg-color': $color-primary,
   'text-color': $color-whitebg,
-  'border-radius': 4px,
+  'border-radius': 2px,
   'button-color': $color-titletext,
   'button-disabled-color': $color-disabletext,
   'button-disabled-bg-color': $color-graybg,
@@ -98,7 +98,7 @@ $--radio-checked: (
 $--checkbox: (
   'text-color': $color-titletext,
   'checked-text-color': $color-titletext,
-  'border-radius': 4px
+  'border-radius': 2px
 );
 
 $--table: (
@@ -122,7 +122,7 @@ $--messagebox: (
 $--dialog: (
   'box-shadow': 0px 2px 8px 0px rgba(0, 0, 0, 0.15),
   'title-font-size': 16px,
-  'border-radius': 4px
+  'border-radius': 2px
 );
 
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (

@@ -6,7 +6,6 @@
   margin: 0;
   box-sizing: border-box;
   font-family: Arial, 'Roboto', 'PingFang SC', 'Source Han Sans', 'Microsoft YaHei', sans-serif;
-  font-size: 14px;
   &:focus {
     outline: none;
   }
@@ -16,6 +15,8 @@ html,
 body {
   overflow: hidden;
   height: 100%;
+  color: #ffffff;
+  background: #000000;
 }
 
 li {
@@ -25,9 +26,9 @@ li {
 // 整个滚动条
 ::-webkit-scrollbar {
   // 对应纵向滚动条的宽度
-  width: 4px;
+  width: 0px;
   // 对应横向滚动条的宽度
-  height: 4px;
+  height: 0px;
 }
 // 滚动条上的箭头按钮
 // ::-webkit-scrollbar-button {
@@ -64,18 +65,23 @@ div.el-dialog {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  background-color: rgba(0, 15, 29, 0.8);
+  border: 1px solid rgba(133, 243, 255, 0.3);
+  box-shadow: inset 0px 0px 14px 0px rgba(0, 161, 255, 0.3);
   .el-dialog__header {
-    border-bottom: 1px solid $color-separator;
+    border-bottom: none;
     margin: 0;
-    padding: 2 * $baseDistance 3 * $baseDistance;
-    @include fontCategory(3);
+    padding: 2 * $baseDistance;
     font-weight: 500;
-    color: $color-titletext;
+    font-size: 20px;
+    .el-icon.el-dialog__close {
+      color: $color-primary;
+    }
   }
   .el-dialog__body {
     overflow: auto;
     max-height: calc(100vh - 12 * $baseDistance - 57px - 65px);
-    padding: 3 * $baseDistance;
+    padding: 2 * $baseDistance;
   }
   .el-dialog__footer {
     border-top: 1px solid $color-separator;
@@ -83,33 +89,44 @@ div.el-dialog {
   }
 }
 
-// 添加抽屉的基础样式
-.el-drawer {
-  .el-drawer__header {
-    border-bottom: 1px solid $color-separator;
-    margin: 0;
-    padding: 2 * $baseDistance 3 * $baseDistance;
-    @include fontCategory(3);
-    font-weight: 500;
-    color: $color-titletext;
-  }
-  .el-drawer__body {
-    padding: 3 * $baseDistance;
-  }
-  .el-drawer__footer {
-    border-top: 1px solid $color-separator;
-    padding: 2 * $baseDistance 3 * $baseDistance;
+div.el-input__wrapper {
+  background-color: transparent;
+}
+span.el-radio__inner {
+  background-color: transparent;
+}
+span.el-radio__input.is-checked .el-radio__inner {
+  border-color: $color-primary;
+  background-color: transparent;
+  &::after {
+    width: 6px;
+    height: 6px;
+    background-color: $color-primary;
   }
 }
-
-// 带单位输入框必填是告警的红色外框样式
-.el-form-item.is-error .el-input-group--append .el-input-group__append {
-  box-shadow:
-    0 1px 0 0 $color-error inset,
-    0 -1px 0 0 $color-error inset,
-    -1px 0 0 0 $color-error inset;
+span.el-radio-button__inner {
+  background-color: transparent;
+  border-color: #ffffff;
+  color: #ffffff;
+  padding: 5px 8px;
+  font-size: 14px;
+  line-height: 16px;
 }
-
-.el-descriptions .el-descriptions__label:not(.is-bordered-label) {
-  margin-right: 0;
+label.el-radio-button.is-active .el-radio-button__inner {
+  background-color: transparent;
+  color: $color-primary;
+  box-shadow: inset 0px 0px 5px 0px #00baff !important;
+}
+div.el-descriptions__body {
+  background-color: transparent;
+  tr:nth-child(even) {
+    background-color: rgba(72, 152, 251, 0.1);
+  }
+  .el-descriptions__table:not(.is-bordered) .el-descriptions__cell {
+    padding: 0;
+    height: 32px;
+  }
+  .el-descriptions__label:not(.is-bordered-label) {
+    margin-left: 12px;
+  }
 }

@@ -27,45 +27,102 @@
   }
 }
 
-// 内容区域的基础布局
-.content_wrapper {
-  display: flex;
-  flex-direction: column;
+.module_title {
+  width: 100%;
+  height: 32px;
+  background-image: url(@/assets/images/moduleTitleBg.png);
+  font-family: PangMenZhengDao;
+  font-size: 20px;
+  line-height: 34px;
+  text-align: center;
+}
 
-  .action_wrapper {
+.fence_style {
+  .row {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    .function_bar {
+    + .row {
+      margin-top: 10px;
+    }
+    .col {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      margin-bottom: 3 * $baseDistance;
-      .el-button + .el-button {
-        margin-left: 2 * $baseDistance;
+      justify-content: center;
+      gap: 2;
+      flex: 1;
+      .label {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 24px;
+      }
+      .data {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .value {
+        font-family: PangMenZhengDao;
+        font-size: 20px;
+        line-height: 24px;
+        color: $color-primary;
+      }
+      .unit {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 24px;
       }
     }
-    .filter_bar {
-      display: flex;
-      align-items: center;
-      margin-bottom: 3 * $baseDistance;
-      label {
-        @include fontCategory();
-        flex-shrink: 0;
-        &:not(:first-child) {
-          margin-left: 2 * $baseDistance;
-        }
-      }
-      .el-input-group__append {
-        background-color: $color-primary;
-        color: #ffffff;
-        box-shadow: none;
-      }
+    .spl {
+      width: 2px;
+      height: 50px;
+      background-image: url(@/assets/images/splitLine.png);
     }
   }
-  .table_wrapper {
-    flex: 1;
-    .table_pagination {
-      margin-top: 2 * $baseDistance;
+}
+
+.desktop_style {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 40px;
+  padding: 0 23px 11px 23px;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 20px;
+    background-image: url(@/assets/images/desktopBg.png);
+  }
+  .item {
+    display: flex;
+    align-items: center;
+    width: calc(50% - 20px);
+    white-space: nowrap;
+    .icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 6px;
+    }
+    .label {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      margin-right: 6px;
+    }
+    .value {
+      font-family: PangMenZhengDao;
+      font-size: 20px;
+      line-height: 24px;
+      color: $color-primary;
+      margin-right: 6px;
+    }
+    .unit {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 24px;
+      color: $color-primary;
     }
   }
 }

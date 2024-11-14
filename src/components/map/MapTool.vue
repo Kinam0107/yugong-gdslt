@@ -142,7 +142,7 @@ watch(
 const initialMapPerspective = () => {
   changeSecondMenuSelection('地图初始视角')
   if (props.viewAdaptBoundary) {
-    props.map.getView().fit(new GeoJSON().readFeatures(globalConfig.map.provinceLevelBoundary)[0].getGeometry(), { padding: props.adaptPadding, duration: 300 })
+    props.map.getView().fit(new GeoJSON().readFeatures(globalConfig.map.ywBoundary)[0].getGeometry(), { padding: props.adaptPadding, duration: 300 })
   } else {
     props.map.getView().animate({
       center: globalConfig.map.center,
@@ -160,7 +160,7 @@ const changeAdcd = (adcd, level) => {
   if (!adcd) {
     initialMapPerspective()
   } else if (level == 1) {
-    addSelectedAdmnLayer(new GeoJSON().readFeatures(globalConfig.map.provinceLevelBoundary)[0])
+    addSelectedAdmnLayer(new GeoJSON().readFeatures(globalConfig.map.ywBoundary)[0])
   } else if (level == 2) {
     addSelectedAdmnLayer(new GeoJSON().readFeatures(globalConfig.map.cityLevelBoundary).find((e) => e.values_.code == adcd))
   } else if (level == 3) {

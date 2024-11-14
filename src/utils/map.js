@@ -480,16 +480,17 @@ export function draw(map, layerName, type, showLengthOrArea, handleFunction) {
 /**
  * @description 切换底图
  * @param {Map} map 地图对象
- * @param {String} mode 底图模式：['地形晕渲', '影像底图', '矢量底图', '影像注记']
+ * @param {String} mode 底图模式：['影像图', '水利图']
  */
 export function changeBaseMap(map, baseMapMode) {
   const mapBaseTileLayers = map.getAllLayers().filter((e) => e instanceof TileLayer)
-  const lastShowTileLayers = mapBaseTileLayers.find((e) => e.get('visible'))
-  const targetShowTileLayers = mapBaseTileLayers.find((e) => e.get('id') === baseMapMode)
-  if (lastShowTileLayers !== targetShowTileLayers) {
-    targetShowTileLayers.setVisible(true)
-    lastShowTileLayers.setVisible(false)
-  }
+  mapBaseTileLayers.forEach((layer) => {
+    if (layer.get('id').includes(baseMapMode)) {
+      layer.setVisible(true)
+    } else {
+      layer.setVisible(false)
+    }
+  })
 }
 
 /**
@@ -528,12 +529,7 @@ export function gotoPoint(map, animateConf, handleFunction) {
           return feat.get('features')[0]
         }
       })
-      const cityFeature = map.forEachFeatureAtPixel(pixel, (feat, layer) => {
-        if (layer?.get('id') === 'cityLevelBoundary') {
-          return feat
-        }
-      })
-      handleFunction({ featureData: feature?.get('data'), cityFeature: cityFeature })
+      handleFunction({ featureData: feature?.get('data') })
     }, duration + 50)
   }
 }

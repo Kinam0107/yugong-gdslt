@@ -35,10 +35,24 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     proxy: {
+      ['/fileOss']: {
+        target: 'https://swzg.slt.zj.gov.cn',
+        changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            proxyReq.removeHeader('Referer')
+          })
+        }
+      },
       [globalConfig.baseUrl]: {
         target: globalConfig.proxyTarget,
         changeOrigin: true,
         rewrite: (path) => path.replace(RegExp(`^${globalConfig.baseUrl}`), '')
+      },
+      [globalConfig.baseUrl_yw]: {
+        target: globalConfig.proxyTarget_yw,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(RegExp(`^${globalConfig.baseUrl_yw}`), '')
       }
     }
   }
