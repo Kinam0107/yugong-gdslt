@@ -8,6 +8,7 @@
     </ul>
     <span class="tab active" v-else>{{ props.modelValue }}</span>
     <i class="line"></i>
+    <slot></slot>
   </div>
 </template>
 
@@ -60,7 +61,10 @@ const changeTab = (val) => {
     margin-left: 16px;
     flex: 1;
     height: 1px;
-    background-color: #4dafff;
+    background-color: rgba(77, 175, 255, 0.5);
+    + :deep(img) {
+      margin-left: 5px;
+    }
   }
 }
 </style>

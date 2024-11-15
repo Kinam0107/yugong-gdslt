@@ -11,9 +11,6 @@
         <el-radio-button label="影像图" value="影像图" />
         <el-radio-button label="水利图" value="水利图" />
       </el-radio-group>
-      <template #back>
-        <ExitSingleMode v-show="isProjectDetail" @quit="initPage" />
-      </template>
       <div ref="featureFloating">
         <template v-if="showFeatureFloating">
           <div class="reservoir_name">{{ floatingPointData.name }}</div>
@@ -109,6 +106,9 @@
           </PopupBox>
         </template>
       </div>
+      <template #back>
+        <ExitSingleMode v-show="isProjectDetail" @quit="initPage" />
+      </template>
       <template #legend>
         <LengedBox>
           <template v-if="!isProjectDetail">
@@ -902,7 +902,7 @@ const downstreamImportantObjects = ref([
 }
 .res_select {
   width: calc(100% - 30px);
-  margin: 51px 15px 10px 15px;
+  margin: 12px 15px 10px 15px;
 }
 .res_element {
   overflow: auto;

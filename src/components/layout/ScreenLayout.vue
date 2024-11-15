@@ -82,15 +82,16 @@ const props = defineProps({
   box-shadow: inset 0px 0px 14px 0px rgba(0, 161, 255, 0.3);
 }
 :deep(> .section_title) {
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  left: -1px;
+  margin-right: -1px;
+  margin-left: -1px;
   height: 40px;
   padding: 5px 0 0 40px;
   background-image: url(@/assets/images/sectionTitleBg.png);
   font-family: PangMenZhengDao;
   font-size: 20px;
   line-height: 24px;
+  &:first-child {
+    margin-top: -1px;
+  }
 }
 </style>

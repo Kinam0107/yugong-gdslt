@@ -27,6 +27,10 @@
   }
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .module_title {
   width: 100%;
   height: 32px;
@@ -54,28 +58,43 @@
         font-size: 16px;
         font-weight: 500;
         line-height: 24px;
+        z-index: 1;
       }
       .data {
         display: flex;
         align-items: center;
         gap: 4px;
+        z-index: 1;
       }
       .value {
         font-family: PangMenZhengDao;
         font-size: 20px;
         line-height: 24px;
         color: $color-primary;
+        z-index: 1;
       }
       .unit {
         font-size: 14px;
         font-weight: 500;
         line-height: 24px;
+        z-index: 1;
+      }
+      &.active {
+        position: relative;
+        &::after {
+          content: '';
+          position: absolute;
+          top: -3px;
+          right: 16px;
+          bottom: -3px;
+          left: 16px;
+          background: linear-gradient(180deg, rgba(0, 140, 255, 0) 0%, rgba(0, 140, 255, 0.8) 100%);
+          border: 1px solid rgba(65, 158, 255, 0.8);
+        }
       }
     }
     .spl {
-      width: 2px;
-      height: 50px;
-      background-image: url(@/assets/images/splitLine.png);
+      @include fenceDividingLine();
     }
   }
 }
@@ -94,35 +113,42 @@
     bottom: 0;
     height: 20px;
     background-image: url(@/assets/images/desktopBg.png);
+    background-size: 100% 100%;
+  }
+  .item_single {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
   .item {
     display: flex;
     align-items: center;
     width: calc(50% - 20px);
     white-space: nowrap;
-    .icon {
-      width: 20px;
-      height: 20px;
-      margin-right: 6px;
-    }
-    .label {
-      font-size: 16px;
-      font-weight: 500;
-      line-height: 24px;
-      margin-right: 6px;
-    }
-    .value {
-      font-family: PangMenZhengDao;
-      font-size: 20px;
-      line-height: 24px;
-      color: $color-primary;
-      margin-right: 6px;
-    }
-    .unit {
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 24px;
-      color: $color-primary;
-    }
+  }
+  .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+  .label {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    margin-right: 6px;
+  }
+  .value {
+    font-family: PangMenZhengDao;
+    font-size: 20px;
+    line-height: 24px;
+    color: $color-primary;
+    margin-right: 6px;
+  }
+  .unit {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+    color: $color-primary;
   }
 }

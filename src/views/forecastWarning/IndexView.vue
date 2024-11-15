@@ -1,5 +1,5 @@
 <template>
-  <ScreenLayout hiddenRight>
+  <ScreenLayout>
     <OlMap :baseMapMode="mapMode" :adaptPadding="mapPadding" @initFinished="mapInitFinished">
       <el-input v-model="keyword" style="width: 216px; margin-bottom: 12px" size="large" placeholder="请输入水库名称搜索" clearable>
         <template #suffix>
@@ -45,7 +45,7 @@ import { renderPoint } from '@/utils/map'
 
 /* 地图初始化后取得地图对象 */
 const mapMode = ref('影像图')
-const mapPadding = ref([120, 200, 40, 500])
+const mapPadding = ref([120, 500, 40, 500])
 let map = null
 const mapInitFinished = (e) => {
   map = e
@@ -104,29 +104,11 @@ const drawReservoirPoints = () => {
 <style scoped lang="scss">
 :deep(.slot-wrapper.default) {
   top: 88px;
-  right: 16px;
-  .el-input__wrapper {
-    background: rgba(0, 15, 29, 0.6);
-    border: 1px solid rgba(133, 243, 255, 0.3);
-    box-shadow: inset 0px 0px 14px 0px rgba(0, 161, 255, 0.3);
-  }
-  .el-radio-button {
-    flex: 1;
-    .el-radio-button__inner {
-      width: 100%;
-      background: rgba(0, 15, 29, 0.6);
-      border: 1px solid rgba(133, 243, 255, 0.3);
-      box-shadow: inset 0px 0px 14px 0px rgba(0, 161, 255, 0.3);
-      color: #ffffff;
-    }
-    &.is-active .el-radio-button__inner {
-      background: linear-gradient(66deg, #0060ff 32%, #00e7ff 94%);
-      border: none;
-    }
-  }
+  right: 488px;
+  @include mapOperate();
 }
 :deep(.slot-wrapper.legend) {
-  right: 16px;
+  right: 488px;
   bottom: 16px;
 }
 :deep(.slot-wrapper.toolbox) {

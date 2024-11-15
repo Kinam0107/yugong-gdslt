@@ -35,3 +35,11 @@
     }
   }
 }
+
+// 栅栏布局中间的分割线
+@mixin fenceDividingLine($height: 50px) {
+  width: 2px;
+  height: $height;
+  background-image: url(@/assets/images/splitLine.png);
+  background-size: 100% 100%;
+}

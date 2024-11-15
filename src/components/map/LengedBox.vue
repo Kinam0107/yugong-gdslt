@@ -58,14 +58,20 @@ const toggle = () => {
         font-size: 16px;
       }
     }
-    .el-checkbox__inner {
-      background-color: transparent;
-    }
-    .el-checkbox__input.is-checked .el-checkbox__inner {
-      background-color: $color-primary;
-      &::after {
-        border-color: #0431a0;
-        border-width: 2px;
+  }
+  :deep(.el-radio-group) {
+    display: flex;
+    flex-direction: column;
+    .el-radio__label {
+      display: flex;
+      align-items: center;
+      > img {
+        margin-bottom: -3px;
+        margin-left: -5px;
+        margin-right: 1px;
+      }
+      > span {
+        font-size: 16px;
       }
     }
   }

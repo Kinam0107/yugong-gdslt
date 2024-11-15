@@ -9,6 +9,7 @@ const __dirname = path.dirname(filename)
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/screen',
   plugins: [
     vue(),
     createSvgIconsPlugin({

@@ -92,6 +92,22 @@ div.el-dialog {
 div.el-input__wrapper {
   background-color: transparent;
 }
+span.el-checkbox__label {
+  font-size: 16px;
+}
+span.el-checkbox__inner {
+  background-color: transparent;
+}
+span.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: $color-primary;
+  &::after {
+    border-color: #0431a0;
+    border-width: 2px;
+  }
+}
+span.el-checkbox__input.is-indeterminate .el-checkbox__inner::before {
+  background-color: #0431a0;
+}
 span.el-radio__inner {
   background-color: transparent;
 }
@@ -129,4 +145,26 @@ div.el-descriptions__body {
   .el-descriptions__label:not(.is-bordered-label) {
     margin-left: 12px;
   }
+}
+div.el-table {
+  background-color: transparent;
+  tr {
+    background-color: transparent;
+  }
+  th.el-table__cell {
+    background-color: rgba(121, 197, 255, 0.2);
+  }
+  th.el-table__cell.is-leaf,
+  td.el-table__cell {
+    border-bottom: none;
+  }
+  .el-table__inner-wrapper::before {
+    height: 0;
+  }
+}
+div.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+  background-color: rgba(121, 197, 255, 0.1);
+}
+div.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+  background-color: rgba(121, 197, 255, 0.2);
 }
