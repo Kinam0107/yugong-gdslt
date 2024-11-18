@@ -46,7 +46,7 @@ const exported = () => {
     status.value = 'pending'
     spend.value = 3
   }
-  axios({
+  axios.rscp({
     method: 'get',
     url: props.url,
     params: props.params,

@@ -452,7 +452,7 @@ const forecastData = reactive({
   yxqnyb: 0
 })
 const getForecastData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPre',
     method: 'post',
     data: {
@@ -511,7 +511,7 @@ const retainWaterStatistic = reactive({
 })
 const retainWaterData = ref([0, 0, 0, 0])
 const getRetainWater = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPre',
     method: 'post',
     data: {
@@ -554,7 +554,7 @@ const waterLevelData = ref([
 ])
 const waterLevelChart = ref()
 const getWarningData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/resWisdom/synthesisRes',
     method: 'post',
     data: {
@@ -597,7 +597,7 @@ const riskData = reactive({
   time: ''
 })
 const getRiskData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPre',
     method: 'post',
     data: {
@@ -625,7 +625,7 @@ const upstreamData = reactive({
   gdpss: 0
 })
 const getUpstreamData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPre',
     method: 'post',
     data: {
@@ -657,7 +657,7 @@ const downstreamData = reactive({
   gdpss: 0
 })
 const getDownstreamData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPre',
     method: 'post',
     data: {
@@ -687,7 +687,7 @@ const ddfa = reactive({
   w: 0
 })
 const getDdfa = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPre',
     method: 'post',
     data: {
@@ -713,7 +713,7 @@ const yjya = reactive({
   w: 0
 })
 const getYjya = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPre',
     method: 'post',
     data: {
@@ -739,7 +739,7 @@ const szyl = reactive({
   times: 0
 })
 const getSzyl = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPre',
     method: 'post',
     data: {
@@ -777,7 +777,7 @@ const tableDataSort = computed(() => {
 const search = () => {
   if (activeTab.value === '精准预报') {
     if (activeType.value === '' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPre',
         method: 'post',
         data: {
@@ -797,7 +797,7 @@ const search = () => {
     }
   } else if (activeTab.value === '统一预警') {
     if (activeType.value === '' && activeItem.value === '水情预警') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -815,7 +815,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '' && activeItem.value === '超限制水位') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -833,7 +833,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '' && activeItem.value === '超正常蓄水位') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -851,7 +851,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '' && activeItem.value === '超设计水位') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -871,7 +871,7 @@ const search = () => {
     }
   } else if (activeTab.value === '在线预案') {
     if (activeType.value === '' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPre',
         method: 'post',
         data: {
@@ -889,7 +889,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '实战演练' && activeItem.value === '年度开展') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPre',
         method: 'post',
         data: {

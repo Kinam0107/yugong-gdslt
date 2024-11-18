@@ -650,7 +650,7 @@ const reservoirsNum = reactive({
   record: 0
 })
 const getReservoirsNum = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPower',
     method: 'post',
     data: {
@@ -682,7 +682,7 @@ const sectorStocksData = ref([
 ])
 const sectorChart = ref()
 const getSectorStocksData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourSystem',
     method: 'post',
     data: {
@@ -738,7 +738,7 @@ const projectStatisticByDamHeight = reactive({
   over70Meters: 0
 })
 const getReservoirArea = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPower',
     method: 'post',
     data: {
@@ -803,7 +803,7 @@ const getWaterLevelInfluence = () => {
   } else if (waterLevelType.value === '校核洪水位') {
     moduleType = 38
   }
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPower',
     method: 'post',
     data: {
@@ -838,7 +838,7 @@ const curveData = reactive({
   spillwayEncroachment: 0
 })
 const getCurveData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPower',
     method: 'post',
     data: {
@@ -852,7 +852,7 @@ const getCurveData = () => {
     .catch(() => {
       curveData.spillwayEncroachment = '-'
     })
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPower',
     method: 'post',
     data: {
@@ -890,7 +890,7 @@ const controlData = reactive({
   unmannedShip: 0
 })
 const getControlData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPower',
     method: 'post',
     data: {
@@ -944,7 +944,7 @@ const downstreamFactors = reactive({
   farmland: 0
 })
 const getDownstreamFactors = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPower',
     method: 'post',
     data: {
@@ -988,7 +988,7 @@ const getYearStatistics = () => {
   yearChartData.xAxisValue = []
   yearChartData.barData = []
   yearChartData.lineData = []
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPower',
     method: 'post',
     data: {
@@ -1022,7 +1022,7 @@ const periodicData = reactive({
   reinforcement: 0
 })
 const getPeriodicData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPower',
     method: 'post',
     data: {
@@ -1066,7 +1066,7 @@ const tableDataSort = computed(() => {
 const search = () => {
   if (activeTab.value === '监管全覆盖') {
     if (activeType.value === '' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1084,7 +1084,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '水库总览' && activeItem.value === '在册总数') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1101,7 +1101,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '水库总览' && activeItem.value === '注册') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1119,7 +1119,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '水库总览' && activeItem.value === '备案') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1137,7 +1137,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '所属行业' && activeItem.value === '水利') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1155,7 +1155,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '所属行业' && activeItem.value === '能源') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1173,7 +1173,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '所属行业' && activeItem.value === '司法行政') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1191,7 +1191,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '所属行业' && activeItem.value === '交通运输') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1209,7 +1209,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '所属行业' && activeItem.value === '其他行业') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1229,7 +1229,7 @@ const search = () => {
     }
   } else if (activeTab.value === '全要素掌控') {
     if (activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1247,7 +1247,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '混凝土坝') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1265,7 +1265,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '堆石坝') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1283,7 +1283,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '土坝') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1301,7 +1301,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '浆砌石坝') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1319,7 +1319,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '其他') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1337,7 +1337,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '坝高15m以下') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1355,7 +1355,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '坝高15-30m') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1373,7 +1373,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '坝高30-70m') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1391,7 +1391,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '坝高70m以上') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1409,7 +1409,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '库容曲线') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1427,7 +1427,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '泄洪曲线') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1445,7 +1445,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '工程要素' && activeItem.value === '溢洪道侵占') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1464,7 +1464,7 @@ const search = () => {
     }
   } else if (activeTab.value === '全天候管控') {
     if (activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1482,7 +1482,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '天') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1500,7 +1500,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '遥感影像') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1518,7 +1518,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === 'InSAR') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1536,7 +1536,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '气象卫星') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1554,7 +1554,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '空') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1572,7 +1572,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '无人机') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1590,7 +1590,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '测雨雷达') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1608,7 +1608,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '其他') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1626,7 +1626,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '地') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1644,7 +1644,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '视频') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1662,7 +1662,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '智能巡检') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1680,7 +1680,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '雨水情') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1698,7 +1698,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '安全监测') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1716,7 +1716,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '无人船') {
-      // axios({
+      // axios.rscp({
       //   url: '/mgt/bm/reservoirMatrix/fourPower',
       //   method: 'post',
       //   data: {
@@ -1737,7 +1737,7 @@ const search = () => {
     }
   } else if (activeTab.value === '全周期管理') {
     if (activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1755,7 +1755,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '10年以内') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1773,7 +1773,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '10-50年') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1791,7 +1791,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '50年以上') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1809,7 +1809,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '竣工验收') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1827,7 +1827,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '注册登记') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1845,7 +1845,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '安全鉴定') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1863,7 +1863,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '控运计划') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1881,7 +1881,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeItem.value === '除险加固') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {

@@ -13,6 +13,11 @@
           <span class="value">{{ dzxData.jiedao }}</span>
           <span class="unit">座</span>
         </div>
+        <div class="item" :class="{ active: activeFlag('体制管理', '', '村管') }" @click="changeActive('体制管理', '', '村管')">
+          <span class="label">村管</span>
+          <span class="value">{{ dzxData.cun }}</span>
+          <span class="unit">座</span>
+        </div>
       </div>
       <div class="small-wrap">
         <div class="chart-wrap">
@@ -509,7 +514,6 @@ import RingChart from '@/components/chart/RingChart.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
 import { dataEcho, getOptions } from '@/utils/enum'
 import axios from '@/api/axios'
-import axios_yw from '@/api/axios/yw.js'
 import globalConfig from '@/config'
 import { getToken } from '@/utils/userToken'
 
@@ -529,10 +533,11 @@ const changeActive = (tab, type, item) => {
 
 const dzxData = reactive({
   xian: 0,
-  jiedao: 0
+  jiedao: 0,
+  cun: 0
 })
 const getDzxData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourSystem',
     method: 'post',
     data: {
@@ -543,10 +548,12 @@ const getDzxData = () => {
     .then((res) => {
       dzxData.xian = res.data?.xian ?? '-'
       dzxData.jiedao = res.data?.jd ?? '-'
+      dzxData.cun = res.data?.cg ?? '-'
     })
     .catch(() => {
       dzxData.xian = '-'
       dzxData.jiedao = '-'
+      dzxData.cun = '-'
     })
 }
 onBeforeMount(() => {
@@ -561,7 +568,7 @@ const departmentData = ref([
 ])
 const smallChart = ref()
 const getDepartmentData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourSystem',
     method: 'post',
     data: {
@@ -602,7 +609,7 @@ const completedData = reactive({
   per: 0
 })
 const getCompletedData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourSystem',
     method: 'post',
     data: {
@@ -631,7 +638,7 @@ const manageMain = reactive({
   qt: 0
 })
 const getManageMain = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourPower',
     method: 'post',
     data: {
@@ -662,7 +669,7 @@ const manageMode = reactive({
   wtwyh_per: 0
 })
 const getManageMode = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/resWisdom/synthesisRes',
     method: 'post',
     data: {
@@ -694,7 +701,7 @@ const fundsData = reactive({
   maintance: 0
 })
 const getFundsData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourSystem',
     method: 'post',
     data: {
@@ -725,7 +732,7 @@ const estateData = reactive({
   amount: 0
 })
 const getEstateData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourSystem',
     method: 'post',
     data: {
@@ -754,7 +761,7 @@ const legalSystem = reactive({
   technology: 0
 })
 const getLegalSystem = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourSystem',
     method: 'post',
     data: {
@@ -788,7 +795,7 @@ const getFileList = () => {
   } else if (fileCategroy.value === '技术标准') {
     moduleType = 17
   }
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourSystem',
     method: 'post',
     data: {
@@ -810,7 +817,7 @@ onBeforeMount(() => {
 
 const coordination = ref(0)
 const getCoordination = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourSystem',
     method: 'post',
     data: {
@@ -842,7 +849,7 @@ const responsibilityData = reactive({
   xczrr: 0
 })
 const getImplementData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourSystem',
     method: 'post',
     data: {
@@ -882,7 +889,7 @@ const financialSupport = reactive({
   town: 0,
 })
 const getFinancialSupport = () => {
-  axios_yw({
+  axios.yw({
     url: '/water-fund-support/count',
     method: 'get'
   }).then(res => {
@@ -918,7 +925,7 @@ const tableDataSort = computed(() => {
 const search = () => {
   if (activeTab.value === '体制管理') {
     if (activeType.value === '' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -936,7 +943,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '' && activeItem.value === '县管') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -954,7 +961,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '' && activeItem.value === '乡镇街道') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -971,8 +978,26 @@ const search = () => {
         .catch(() => {
           tableData.value = []
         })
+    } else if (activeType.value === '' && activeItem.value === '村管') {
+      axios.rscp({
+        url: '/mgt/bm/reservoirMatrix/fourSystem',
+        method: 'post',
+        data: {
+          adcd: adcd.value,
+          name: name.value,
+          projectScale: scale.value,
+          moduleType: 47,
+          pointType: 633
+        }
+      })
+        .then((res) => {
+          tableData.value = res.data || []
+        })
+        .catch(() => {
+          tableData.value = []
+        })
     } else if (activeType.value === '' && activeItem.value === '水利部门') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -990,7 +1015,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '' && activeItem.value === '能源部门') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1008,7 +1033,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '' && activeItem.value === '司法部门') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1026,7 +1051,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '' && activeItem.value === '其他') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1044,7 +1069,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '明确产权' && activeItem.value === '完成数') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1064,7 +1089,7 @@ const search = () => {
     }
   } else if (activeTab.value === '机制运行') {
     if (activeType.value === '' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1082,7 +1107,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '管护主体' && activeItem.value === '事业单位') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1100,7 +1125,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '管护主体' && activeItem.value === '国有企业') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1118,7 +1143,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '管护主体' && activeItem.value === '集体单位') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1136,7 +1161,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '管护主体' && activeItem.value === '其他') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourPower',
         method: 'post',
         data: {
@@ -1154,7 +1179,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '管护模式' && activeItem.value === '有管理单位') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -1172,7 +1197,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '管护模式' && activeItem.value === '无管理单位') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -1190,7 +1215,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '管护模式' && activeItem.value === '委托物业化') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -1210,7 +1235,7 @@ const search = () => {
     }
   } else if (activeTab.value === '法制支撑') {
     if (activeType.value === '' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1230,7 +1255,7 @@ const search = () => {
     }
   } else if (activeTab.value === '责任制落实') {
     if (activeType.value === '' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/oneTouchList',
         method: 'post',
         data: {
@@ -1248,7 +1273,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '' && activeItem.value === '落实座数') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourSystem',
         method: 'post',
         data: {
@@ -1313,6 +1338,8 @@ const exported = () => {
       pointType = 61
     } else if (activeType.value === '' && activeItem.value === '乡镇街道') {
       pointType = 62
+    } else if (activeType.value === '' && activeItem.value === '村管') {
+      pointType = 633
     } else if (activeType.value === '' && activeItem.value === '水利部门') {
       pointType = 13
     } else if (activeType.value === '' && activeItem.value === '能源部门') {
@@ -1363,7 +1390,7 @@ const dialogVisible = ref(false)
 const dialogData = ref([])
 const openDetail = () => {
   dialogVisible.value = true
-  axios_yw({
+  axios.yw({
     url: '/water-fund-support/page',
     method: 'get'
   }).then(res => {

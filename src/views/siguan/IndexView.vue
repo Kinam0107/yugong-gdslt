@@ -444,7 +444,7 @@ const dangerElimination = reactive({
   slbykg: 0
 })
 const getDangerElimination = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/resWisdom/synthesisRes',
     method: 'post',
     data: {
@@ -486,7 +486,7 @@ const problemData = reactive({
   ycz: 0
 })
 const getProblemData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
@@ -518,7 +518,7 @@ const riskAssessmentData = ref([
 ])
 const riskAssessmentChart = ref()
 const getRiskAssessmentData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirWT/threeMalCount',
     method: 'post',
     data: {
@@ -557,7 +557,7 @@ const safetyAppraisement = reactive({
   jyndq: 0
 })
 const getSafetyAppraisement = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/resWisdom/synthesisRes',
     method: 'post',
     data: {
@@ -581,7 +581,7 @@ const maintenancePlan = reactive({
   yls: 0
 })
 const getMaintenancePlan = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
@@ -614,7 +614,7 @@ const getRcwyChartData = () => {
   rcwyChartData.xAxisValue = []
   rcwyChartData.barData = []
   rcwyChartData.lineData = []
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
@@ -651,7 +651,7 @@ const byfzData = ref([
 ])
 const byfzChart = ref()
 const getByfzData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
@@ -693,7 +693,7 @@ const standardizationData = reactive({
   hg: 0
 })
 const getStandardizationData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/resWisdom/synthesisRes',
     method: 'post',
     data: {
@@ -725,7 +725,7 @@ const scopeData = reactive({
   whd: 0
 })
 const getScopeData = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/resWisdom/synthesisRes',
     method: 'post',
     data: {
@@ -751,7 +751,7 @@ const sixMechanisms = reactive({
   wls: 0
 })
 const getSixMechanisms = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
@@ -774,7 +774,7 @@ onBeforeMount(() => {
 
 const wzTotal = ref(0)
 const getWzTotal = () => {
-  axios({
+  axios.rscp({
     url: '/mgt/bm/reservoirMatrix/fourTube',
     method: 'post',
     data: {
@@ -810,7 +810,7 @@ const tableDataSort = computed(() => {
 const search = () => {
   if (activeTab.value === '及时除险') {
     if (activeType.value === '除险加固' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -828,7 +828,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '二类坝总数') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -847,7 +847,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '三类坝总数') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -866,7 +866,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '二类坝未开工') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -885,7 +885,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '三类坝未开工') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -904,7 +904,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '二类坝已开工') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -923,7 +923,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '除险加固' && activeItem.value === '三类坝已开工') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -942,7 +942,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '问题处置' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -960,7 +960,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '问题处置' && activeItem.value === '处置中') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -979,7 +979,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '问题处置' && activeItem.value === '已处置') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1000,7 +1000,7 @@ const search = () => {
     }
   } else if (activeTab.value === '水库体检') {
     if (activeType.value === '' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1018,7 +1018,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '风险研判' && activeItem.value === '绿码') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1037,7 +1037,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '风险研判' && activeItem.value === '黄码') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1056,7 +1056,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '风险研判' && activeItem.value === '红码') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1075,7 +1075,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '安全鉴定' && activeItem.value === '三类坝') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1094,7 +1094,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '安全鉴定' && activeItem.value === '二类坝') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1113,7 +1113,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '安全鉴定' && activeItem.value === '近一年到期') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1134,7 +1134,7 @@ const search = () => {
     }
   } else if (activeTab.value === '工程维护') {
     if (activeType.value === '' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1152,7 +1152,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '维养计划' && activeItem.value === '已编制') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1170,7 +1170,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '维养计划' && activeItem.value === '已落实') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1188,7 +1188,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '白蚁防治' && activeItem.value === '已治理') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1206,7 +1206,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '白蚁防治' && activeItem.value === '未治理') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1226,7 +1226,7 @@ const search = () => {
     }
   } else if (activeTab.value === '安全管控') {
     if (activeType.value === '' && activeItem.value === '') {
-      axios({
+      axios.rscp({
         url: '/mgt/bm/reservoirMatrix/fourTube',
         method: 'post',
         data: {
@@ -1244,7 +1244,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '标准化管理' && activeItem.value === '部级') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -1262,7 +1262,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '标准化管理' && activeItem.value === '省级') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -1280,7 +1280,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '标准化管理' && activeItem.value === '精品') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -1298,7 +1298,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '标准化管理' && activeItem.value === '合格') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -1316,7 +1316,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '管保范围' && activeItem.value === '已划定') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {
@@ -1334,7 +1334,7 @@ const search = () => {
           tableData.value = []
         })
     } else if (activeType.value === '管保范围' && activeItem.value === '未划定') {
-      axios({
+      axios.rscp({
         url: '/mgt/resWisdom/synthesisRes',
         method: 'post',
         data: {

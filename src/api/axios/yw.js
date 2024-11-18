@@ -1,9 +1,8 @@
 import axios from 'axios'
 import globalConfig from '@/config'
-import router from '@/router'
 import { ElMessage } from 'element-plus'
 
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 
 const instance = axios.create({
   baseURL: '/prod-api',
