@@ -24,7 +24,7 @@
     <br />
     <el-checkbox v-model="hsfxChecked" label="洪水风险图">
       <i class="cube" style="background-image: linear-gradient(180deg, #0453de 0%, #fffe39 27%, #ff9e24 59%, #fc0106 100%)"></i>
-      <span>河道水系</span>
+      <span>洪水风险图</span>
     </el-checkbox>
   </div>
 </template>

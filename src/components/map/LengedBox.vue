@@ -46,6 +46,9 @@ const toggle = () => {
   :deep(.el-checkbox-group) {
     display: flex;
     flex-direction: column;
+    .el-checkbox {
+      margin-right: 0;
+    }
     .el-checkbox__label {
       display: flex;
       align-items: center;
