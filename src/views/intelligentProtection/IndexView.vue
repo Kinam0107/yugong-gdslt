@@ -48,7 +48,7 @@
           <img src="@/assets/images/icons/equi_ygyx.png" />
           <div class="label">遥感影像</div>
           <div class="data">
-            <span class="value">{{ equiData.ygyxNum }}</span>
+            <span class="value">{{ equiData.ygyxNum || '-' }}</span>
             <span class="unit">座</span>
           </div>
         </div>
@@ -56,7 +56,7 @@
           <img src="@/assets/images/icons/equi_qxwx.png" />
           <div class="label">气象卫星</div>
           <div class="data">
-            <span class="value">{{ equiData.qxwxNum }}</span>
+            <span class="value">{{ equiData.qxwxNum || '-' }}</span>
             <span class="unit">座</span>
           </div>
         </div>
@@ -70,7 +70,7 @@
           <img src="@/assets/images/icons/equi_wrj.png" />
           <div class="label">无人机</div>
           <div class="data">
-            <span class="value">{{ equiData.wrjNum }}</span>
+            <span class="value">{{ equiData.wrjNum || '-' }}</span>
             <span class="unit">座</span>
           </div>
         </div>
@@ -78,7 +78,7 @@
           <img src="@/assets/images/icons/equi_cyld.png" />
           <div class="label">测雨雷达</div>
           <div class="data">
-            <span class="value">{{ equiData.cyldNum }}</span>
+            <span class="value">{{ equiData.cyldNum || '-' }}</span>
             <span class="unit">座</span>
           </div>
         </div>
@@ -92,7 +92,7 @@
           <img src="@/assets/images/icons/equi_sp.png" />
           <div class="label">视频</div>
           <div class="data">
-            <span class="value">{{ equiData.spNum }}</span>
+            <span class="value">{{ equiData.videoNum || '-' }}</span>
             <span class="unit">座</span>
           </div>
         </div>
@@ -100,7 +100,7 @@
           <img src="@/assets/images/icons/equi_znxj.png" />
           <div class="label">智能巡检</div>
           <div class="data">
-            <span class="value">{{ equiData.xjNum }}</span>
+            <span class="value">{{ equiData.xjNum || '-' }}</span>
             <span class="unit">座</span>
           </div>
         </div>
@@ -108,7 +108,7 @@
           <img src="@/assets/images/icons/equi_ysq.png" />
           <div class="label">雨水情</div>
           <div class="data">
-            <span class="value">{{ equiData.ysqNum }}</span>
+            <span class="value">{{ equiData.rainWaterNum || '-' }}</span>
             <span class="unit">座</span>
           </div>
         </div>
@@ -118,7 +118,7 @@
           <img src="@/assets/images/icons/equi_aqjc.png" />
           <div class="label">安全监测</div>
           <div class="data">
-            <span class="value">{{ equiData.aqjcNum }}</span>
+            <span class="value">{{ equiData.aqjcNum || '-' }}</span>
             <span class="unit">座</span>
           </div>
         </div>
@@ -126,7 +126,7 @@
           <img src="@/assets/images/icons/equi_wrc.png" />
           <div class="label">无人船</div>
           <div class="data">
-            <span class="value">{{ '-' }}</span>
+            <span class="value">{{ equiData.boatNum || '-' }}</span>
             <span class="unit">座</span>
           </div>
         </div>
@@ -288,13 +288,9 @@ const onRowClick = (row) => {
 const equiData = ref({})
 const getEquiData = () => {
   axios
-    .rscp({
-      url: '/mgt/bm/reservoirMatrix/fourPower',
-      method: 'post',
-      data: {
-        adcd: '330782000000',
-        moduleType: '42'
-      }
+    .yw({
+      url: '/res-base-info-count/tkdCount',
+      method: 'get'
     })
     .then((res) => {
       equiData.value = res.data || {}

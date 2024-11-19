@@ -39,7 +39,7 @@ const props = defineProps({
     type: Object,
     default: () => {
       return {
-        观测值: [6, 7, 11, 14, 13, 12, 11, 10, 9, 8, 11, 7, 6, 4, 9]
+        监测值: [6, 7, 11, 14, 13, 12, 11, 10, 9, 8, 11, 7, 6, 4, 9]
       }
     }
   }
@@ -84,7 +84,7 @@ const initChart = () => {
     grid: {
       left: 0,
       top: 48,
-      right: 0,
+      right: 24,
       bottom: 48,
       containLabel: true
     },
@@ -104,7 +104,7 @@ const initChart = () => {
     },
     yAxis: {
       type: 'value',
-      name: '观测值 ' + props.yAxisUnit,
+      name: '监测值 ' + props.yAxisUnit,
       nameTextStyle: {
         color: '#ffffff',
         fontSize: 16,

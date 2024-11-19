@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="dialogVisible" :title="title" width="1200" append-to-body>
     <div class="operating_area">
-      <el-radio-group v-model="radio" @change="getRainfallData">
+      <el-radio-group v-model="radio" @change="getFlowData">
         <el-radio :label="1">近一天</el-radio>
         <el-radio :label="2">近一周</el-radio>
         <el-radio :label="3">自定义</el-radio>
@@ -17,7 +17,7 @@
           format="YYYY-MM-DD HH:mm:ss"
           value-format="YYYY-MM-DD HH:mm:ss"
           popper-class="transparent_pooper"
-          @change="getRainfallData" />
+          @change="getFlowData" />
       </div>
       <el-radio-group v-model="mode">
         <el-radio-button :label="1">图</el-radio-button>
@@ -27,12 +27,18 @@
     <div class="chart_data_area">
       <div class="chart_area" :style="{ visibility: mode == 2 ? 'hidden' : '' }">
         <div class="chart_box">
-          <RainfallData ref="rainfallData" v-if="dialogVisible" :xAxisValue="xAxisValue" :barData="rainfallBarData" :lineData="rainfallLineData" />
+          <WaterLevelLine ref="flowLine" v-if="dialogVisible" :xAxisValue="xAxisValue" yAxisUnit="m³/s" :data="flowData" />
         </div>
         <div class="extra_box">
           <div class="item">
-            <span class="label">累积雨量：</span>
-            <span class="value">{{ totalRainfall }}mm</span>
+            <span class="label">最高水位：</span>
+            <span class="value">{{ extremeValue.max }}m</span>
+            <span class="time">({{ extremeValue.maxTm }})</span>
+          </div>
+          <div class="item">
+            <span class="label">最低水位：</span>
+            <span class="value">{{ extremeValue.min }}m</span>
+            <span class="time">({{ extremeValue.minTm }})</span>
           </div>
         </div>
       </div>
@@ -40,7 +46,7 @@
         <el-table :data="tableData" style="width: 100%" :height="580" size="large" stripe>
           <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
           <el-table-column prop="tm" label="时间" align="center"></el-table-column>
-          <el-table-column prop="drp" label="雨量(mm)" align="center"></el-table-column>
+          <el-table-column prop="rz" label="流量(m³/s)" align="center"></el-table-column>
         </el-table>
       </div>
     </div>
@@ -48,8 +54,8 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, nextTick } from 'vue'
-import RainfallData from '@/components/chart/RainfallData.vue'
+import { computed, ref, watch, nextTick, reactive } from 'vue'
+import WaterLevelLine from '@/components/chart/WaterLevelLine.vue'
 import axios from '@/api/axios'
 const props = defineProps({
   modelValue: {
@@ -62,7 +68,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: '雨量站'
+    default: '流量站'
   }
 })
 const emits = defineEmits(['update:modelValue'])
@@ -95,26 +101,26 @@ const endTime = computed(() => {
   }
 })
 const mode = ref(1)
-const rainfallData = ref()
+const flowLine = ref()
 const xAxisValue = ref([])
-const rainfallBarData = ref({
-  雨量: []
+const flowData = ref({
+  流量: []
 })
-const rainfallLineData = ref({
-  累积雨量: []
+const extremeValue = reactive({
+  max: '',
+  maxTm: ''
 })
-const totalRainfall = ref('')
 const tableData = ref([])
 watch(
   () => dialogVisible.value,
   (val) => {
-    if (val) getRainfallData()
+    if (val) getFlowData()
   }
 )
-const getRainfallData = () => {
+const getFlowData = () => {
   axios
     .yw({
-      url: '/pptn-r/findDataList',
+      url: '/rsvr-r/findDataList',
       method: 'get',
       params: {
         stcd: props.id,
@@ -126,32 +132,39 @@ const getRainfallData = () => {
       const data = res.data || []
       let temp = {
         xa: [],
-        yl: [],
-        ljyl: [],
-        total: 0
+        ll: [],
+        max: '',
+        maxTm: ''
       }
       data.forEach((e) => {
         temp.xa.push(e.tm.substring(5, 16))
-        temp.yl.push(e.drp)
-        temp.total += e.drp
-        temp.ljyl.push(temp.total)
+        temp.ll.push(e.rz)
+        if (temp.max) {
+          if (temp.max < e.rz) {
+            temp.max = e.rz
+            temp.maxTm = e.tm.substring(5, 16)
+          }
+        } else {
+          temp.max = e.rz
+          temp.maxTm = e.tm.substring(5, 16)
+        }
       })
+      extremeValue.max = temp.max
+      extremeValue.maxTm = temp.maxTm
       xAxisValue.value = temp.xa
-      rainfallBarData.value['雨量'] = temp.yl
-      rainfallLineData.value['累积雨量'] = temp.ljyl
-      totalRainfall.value = temp.total
+      flowData.value['流量'] = temp.ll
       tableData.value = data
     })
     .catch(() => {
+      extremeValue.max = '-'
+      extremeValue.maxTm = '-'
       xAxisValue.value = []
-      rainfallBarData.value['雨量'] = []
-      rainfallLineData.value['累积雨量'] = []
-      totalRainfall.value = '-'
+      flowData.value['流量'] = []
       tableData.value = []
     })
     .finally(() => {
       nextTick(() => {
-        rainfallData.value.initChart()
+        flowLine.value.initChart()
       })
     })
 }
@@ -194,6 +207,10 @@ const getRainfallData = () => {
         }
         .value {
           font-size: 16px;
+        }
+        .time {
+          font-size: 14px;
+          margin-left: 4px;
         }
       }
     }

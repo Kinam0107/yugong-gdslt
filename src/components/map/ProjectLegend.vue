@@ -20,6 +20,13 @@
       <span>超汛限</span>
     </div>
   </div>
+  <div class="title">流量站</div>
+  <div class="row">
+    <div class="cell">
+      <img src="@/assets/images/points/flow.png" />
+      <span>流量站</span>
+    </div>
+  </div>
   <div class="title">雨量站</div>
   <div class="row">
     <div class="cell">

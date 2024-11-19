@@ -85,7 +85,7 @@ const initChart = () => {
     grid: {
       left: 0,
       top: 48,
-      right: 0,
+      right: 24,
       bottom: 48,
       containLabel: true
     },
@@ -184,7 +184,7 @@ const initChart = () => {
             align: 'right',
             verticalAlign: 'bottom',
             fontSize: 14,
-            offset: [4, -8]
+            offset: [0, -8]
           }
         }
       }

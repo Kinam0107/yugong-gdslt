@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
 
 const props = defineProps({
@@ -41,7 +41,6 @@ onUnmounted(() => {
   }
 })
 
-const total = computed(() => props.data.map((e) => e.value).sum())
 const initChart = () => {
   myChart = echarts.init(chart.value)
   const option = {
@@ -86,7 +85,7 @@ const initChart = () => {
         axisLabel: { show: false },
         data: [
           {
-            value: total.value,
+            value: props.data.map((e) => e.value).sum(),
             name: `${props.title || '总数'}${props.unit ? ' (' + props.unit + ')' : ''}`,
             title: {
               show: true,
@@ -102,6 +101,8 @@ const initChart = () => {
   }
   myChart.setOption(option)
 }
+
+defineExpose({ initChart })
 </script>
 
 <style scoped lang="scss">

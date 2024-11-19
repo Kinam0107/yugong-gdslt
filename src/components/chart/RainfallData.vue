@@ -117,7 +117,7 @@ const initChart = () => {
     grid: {
       left: 0,
       top: 48,
-      right: 0,
+      right: 24,
       bottom: 48,
       containLabel: true
     },
@@ -300,6 +300,8 @@ const getColor = (color) => {
     }
   }
 }
+
+defineExpose({ initChart })
 </script>
 
 <style scoped lang="scss">

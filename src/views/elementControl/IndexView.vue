@@ -13,7 +13,7 @@
       </el-radio-group>
       <div ref="featureFloating">
         <template v-if="showFeatureFloating">
-          <div class="reservoir_name">{{ floatingPointData.name }}</div>
+          <div class="reservoir_name">{{ floatingPointData.name || floatingPointData.stnm || floatingPointData.cameraName || floatingPointData.sensorName || floatingPointData.facName }}</div>
         </template>
       </div>
       <div ref="featureOverlay">
@@ -31,30 +31,44 @@
             </template>
             <template v-else-if="overlayPointData.layerName === '水位站'">
               <div class="item">
-                <span class="label">{{ overlayPointData.name }}</span>
-                <span class="detail" @click="openWaterLevelDetail(overlayPointData.id, overlayPointData.name)">详情</span>
+                <span class="label">{{ overlayPointData.stnm }}</span>
+                <span class="detail" @click="openWaterLevelDetail(overlayPointData.stcd, overlayPointData.stnm, overlayPointData.mFS)">详情</span>
               </div>
               <div class="item">
                 <span class="label">当前水位：</span>
-                <span class="value">{{ 128.34 }}m</span>
+                <span class="value">{{ overlayPointData.rrtd }}m</span>
               </div>
               <div class="item">
                 <span class="label">更新时间：</span>
-                <span class="value">{{ new Date().format('yyyy-MM-dd HH:mm:ss') }}</span>
+                <span class="value">{{ overlayPointData.rtm }}</span>
+              </div>
+            </template>
+            <template v-else-if="overlayPointData.layerName === '流量站'">
+              <div class="item">
+                <span class="label">{{ overlayPointData.stnm }}</span>
+                <span class="detail" @click="openFlowDetail(overlayPointData.stcd, overlayPointData.stnm)">详情</span>
+              </div>
+              <div class="item">
+                <span class="label">实时流量：</span>
+                <span class="value">{{ overlayPointData.rrtd }}m³/s</span>
+              </div>
+              <div class="item">
+                <span class="label">更新时间：</span>
+                <span class="value">{{ overlayPointData.rtm }}</span>
               </div>
             </template>
             <template v-else-if="overlayPointData.layerName === '雨量站'">
               <div class="item">
-                <span class="label">{{ overlayPointData.name }}</span>
-                <span class="detail" @click="openRainfallDetail(overlayPointData.id, overlayPointData.name)">详情</span>
+                <span class="label">{{ overlayPointData.stnm }}</span>
+                <span class="detail" @click="openRainfallDetail(overlayPointData.stcd, overlayPointData.stnm)">详情</span>
               </div>
               <div class="item">
                 <span class="label">累积雨量：</span>
-                <span class="value">{{ 128.34 }}mm</span>
+                <span class="value">{{ overlayPointData.prtd }}mm</span>
               </div>
               <div class="item">
                 <span class="label">更新时间：</span>
-                <span class="value">{{ new Date().format('yyyy-MM-dd HH:mm:ss') }}</span>
+                <span class="value">{{ overlayPointData.ptm }}</span>
               </div>
             </template>
             <template v-else-if="overlayPointData.layerName === '视频站'">
@@ -69,25 +83,21 @@
             </template>
             <template v-else-if="overlayPointData.layerName === '安全监测'">
               <div class="item">
-                <span class="label">{{ overlayPointData.name }}</span>
-                <span class="detail" @click="openSafetyDetail(overlayPointData.id, overlayPointData.name)">详情</span>
+                <span class="label">{{ overlayPointData.sensorName }}</span>
+                <span class="detail" @click="openSafetyDetail(overlayPointData.sensorId, overlayPointData.sensorName)">详情</span>
               </div>
               <div class="item">
-                <span class="label">观测值：</span>
-                <span class="value">{{ 128.34 }}mm</span>
+                <span class="label">监测值：</span>
+                <span class="value">{{ overlayPointData.todo }}</span>
               </div>
               <div class="item">
-                <span class="label">观测时间：</span>
-                <span class="value">{{ new Date().format('yyyy-MM-dd HH:mm:ss') }}</span>
-              </div>
-              <div class="item">
-                <span class="label">观测人员：</span>
-                <span class="value">{{ '-' }}</span>
+                <span class="label">监测时间：</span>
+                <span class="value">{{ overlayPointData.todo }}</span>
               </div>
             </template>
             <template v-else-if="overlayPointData.layerName === '重要设施' || overlayPointData.layerName === '重点对象'">
               <div class="item">
-                <span class="label">{{ overlayPointData.name }}</span>
+                <span class="label">{{ overlayPointData.facName }}</span>
                 <span class="detail" @click="openElementDetail(overlayPointData)">详情</span>
               </div>
               <div class="item">
@@ -152,7 +162,7 @@
       </div>
       <div class="type_statistic">
         <div class="type_chart">
-          <RingChart :data="typeStatistic" />
+          <RingChart ref="typeRingChart" :data="typeStatistic" />
         </div>
         <div class="type_legend">
           <div v-for="(e, i) in typeStatistic" class="item" :key="i">
@@ -181,12 +191,12 @@
     </template>
     <template #right>
       <div class="section_title">全要素掌握</div>
-      <el-select class="res_select" v-model="prcd" filterable size="large">
-        <el-option v-for="item in resOptions" :key="item.prcd" :label="item.name" :value="item.prcd" />
+      <el-select class="res_select" v-model="prcd" filterable size="large" popper-class="transparent_pooper" @change="changePrcd">
+        <el-option v-for="item in resOptions" :key="item.id" :label="item.resName" :value="item.id" />
       </el-select>
       <div class="res_element">
         <div class="module_title" style="margin-bottom: 10px">库区要素</div>
-        <CategoryTitle v-model="waterLevelType" :tabs="['正常蓄水位', '设计洪水位', '校核洪水位']" style="margin-bottom: 9px" />
+        <CategoryTitle v-model="waterLevelType" :tabs="['正常蓄水位', '设计洪水位', '校核洪水位']" style="margin-bottom: 9px" @change="setWaterLevelInfluence" />
         <div class="fence_style" style="margin-bottom: 10px">
           <div class="row" v-for="i in 2" :key="i">
             <template v-for="(item, index) in waterLevelInfluence.slice((i - 1) * 3, i * 3)" :key="item.label">
@@ -257,7 +267,8 @@
     <template #cover>
       <VideoPopup v-model="videoVisible" :name="project_name" :prcd="project_prcd" :code="camera_code" />
     </template>
-    <WaterLevelStation v-model="waterLevelStationVisible" :id="waterLevelStationId" :title="waterLevelStationName" />
+    <WaterLevelStation v-model="waterLevelStationVisible" :id="waterLevelStationId" :title="waterLevelStationName" :floodLimit="waterLevelStationFloodLimit" />
+    <FlowStation v-model="flowStationVisible" :id="flowStationId" :title="flowStationName" />
     <RainfallStation v-model="rainfallStationVisible" :id="rainfallStationId" :title="rainfallStationName" />
     <SafetyStation v-model="safetyStationVisible" :id="safetyStationId" :title="safetyStationName" />
     <ElementPoint v-model="elementPointVisible" :info="elementPointInfo" />
@@ -278,6 +289,7 @@ import GeoJSON from 'ol/format/GeoJSON'
 import ProjectLegend from '@/components/map/ProjectLegend.vue'
 import PopupBox from '@/components/map/PopupBox.vue'
 import WaterLevelStation from '@/components/station/WaterLevelStation.vue'
+import FlowStation from '@/components/station/FlowStation.vue'
 import RainfallStation from '@/components/station/RainfallStation.vue'
 import SafetyStation from '@/components/station/SafetyStation.vue'
 import ElementPoint from '@/components/station/ElementPoint.vue'
@@ -302,6 +314,7 @@ const initPage = (isFirst) => {
       removeLayer(map, '管理范围线')
       removeLayer(map, '保护范围线')
       removeLayer(map, '水位站')
+      removeLayer(map, '流量站')
       removeLayer(map, '雨量站')
       removeLayer(map, '视频站')
       removeLayer(map, '安全监测')
@@ -316,6 +329,12 @@ const initPage = (isFirst) => {
 const keyword = ref('')
 const scaleArr = ref(['3', '4', '5'])
 const reservoirPoints = ref([])
+const typeRingChart = ref()
+const typeStatistic = ref([
+  { value: 0, name: '中型', color: '#46FDFF' },
+  { value: 0, name: '小（1）型', color: '#419EFF' },
+  { value: 0, name: '小（2）型', color: '#FF9936' }
+])
 const getReservoirPoints = () => {
   axios
     .rscp({
@@ -324,18 +343,36 @@ const getReservoirPoints = () => {
       data: {
         type: '水库',
         adcd: '330782000000',
-        queryStr: keyword.value,
         fetchAll: true
       }
     })
     .then((res) => {
       reservoirPoints.value = res.rows || []
+      typeStatistic.value.map((e) => {
+        switch (e.name) {
+          case '中型':
+            e.value = reservoirPoints.value.filter((e) => e.projectScale === '3').length
+            break
+          case '小（1）型':
+            e.value = reservoirPoints.value.filter((e) => e.projectScale === '4').length
+            break
+          case '小（2）型':
+            e.value = reservoirPoints.value.filter((e) => e.projectScale === '5').length
+            break
+        }
+        return e
+      })
     })
     .catch(() => {
       reservoirPoints.value = []
+      typeStatistic.value.map((e) => {
+        e.value = 0
+        return e
+      })
     })
     .finally(() => {
       drawReservoirPoints()
+      typeRingChart.value.initChart()
     })
 }
 const resScaleIcon = {
@@ -348,7 +385,7 @@ const drawReservoirPoints = () => {
     map,
     '水库落点',
     reservoirPoints.value
-      .filter((e) => scaleArr.value.includes(e.projectScale))
+      .filter((e) => e.name.includes(keyword.value) && scaleArr.value.includes(e.projectScale))
       .map((e) => {
         e.longitude = e.lgtd
         e.latitude = e.lttd
@@ -365,7 +402,7 @@ const featureFloating = ref()
 const floatingPointData = ref({})
 const showFeatureFloating = ref(false)
 const mapMouseMove = (e) => {
-  if (e.featureData && ['水库落点', '水位站', '雨量站', '视频站', '安全监测', '重要设施', '重点对象'].includes(e.featureData.layerName) && overlayPointData.value.name !== e.featureData.name) {
+  if (e.featureData && ['水库落点', '水位站', '流量站', '雨量站', '视频站', '安全监测', '重要设施', '重点对象'].includes(e.featureData.layerName) && overlayPointData.value.id !== e.featureData.id) {
     floatingPointData.value = e.featureData
     showFeatureFloating.value = true
     renderOverlay(map, '落点名称浮窗', e.featureData, featureFloating.value)
@@ -388,7 +425,7 @@ const mapSingleClick = (e) => {
       openFeatureOverlay(e)
     }
   } else {
-    if (e.featureData && ['水库落点', '水位站', '雨量站', '视频站', '安全监测', '重要设施', '重点对象'].includes(e.featureData.layerName)) {
+    if (e.featureData && ['水库落点', '水位站', '流量站', '雨量站', '视频站', '安全监测', '重要设施', '重点对象'].includes(e.featureData.layerName)) {
       openFeatureOverlay(e)
     } else {
       closeFeatureOverlay()
@@ -409,6 +446,17 @@ const closeFeatureOverlay = () => {
 
 /* 进入单库大屏 */
 const isProjectDetail = computed(() => !!useProjectStore().prcd)
+const eleTypeIcon = {
+  铁路: new URL('@/assets/images/points/railway.png', import.meta.url).href,
+  高速公路: new URL('@/assets/images/points/expressway.png', import.meta.url).href,
+  公路桥: new URL('@/assets/images/points/highwayBridge.png', import.meta.url).href,
+  其他: new URL('@/assets/images/points/other.png', import.meta.url).href,
+  学校: new URL('@/assets/images/points/school.png', import.meta.url).href,
+  医院: new URL('@/assets/images/points/hospital.png', import.meta.url).href,
+  居民区: new URL('@/assets/images/points/residentialArea.png', import.meta.url).href,
+  重要敏感点: new URL('@/assets/images/points/sensitivePoint.png', import.meta.url).href,
+  政府机构及事业单位: new URL('@/assets/images/points/governmentOrgan.png', import.meta.url).href
+}
 const enterReservoirDetail = async (prcd) => {
   if (!useProjectStore().prcd) {
     await useProjectStore().getDetail(prcd)
@@ -445,14 +493,76 @@ const enterReservoirDetail = async (prcd) => {
         polygonStyleConf: { fillColor: 'transparent', strokeColor: '#F5402A', strokeWidth: 3 }
       })
     })
-  renderPoint(map, '水位站', [
-    { name: 'XXX水位站', longitude: 120.188557, latitude: 29.420767, dotStyleConf: { src: new URL('@/assets/images/points/waterLevel.png', import.meta.url).href } },
-    { name: 'YYY水位站', longitude: 120.190381, latitude: 29.423543, dotStyleConf: { src: new URL('@/assets/images/points/waterLevelWarn.png', import.meta.url).href } }
-  ])
-  renderPoint(map, '雨量站', [
-    { name: 'XXX雨量站', longitude: 120.185986, latitude: 29.42744, dotStyleConf: { src: new URL('@/assets/images/points/rainfall0.png', import.meta.url).href } },
-    { name: 'YYY雨量站', longitude: 120.178288, latitude: 29.426185, dotStyleConf: { src: new URL('@/assets/images/points/rainfall0_10.png', import.meta.url).href } }
-  ])
+  axios
+    .yw({
+      url: '/res-base-info-count/stbprpTypeCount',
+      method: 'get',
+      params: {
+        prcd: prcd
+      }
+    })
+    .then((res) => {
+      const data = res.data.data || []
+      renderPoint(
+        map,
+        '水位站',
+        data
+          .filter((e) => e.sttp === 'RR')
+          .map((e) => {
+            e.id = e.stcd
+            e.longitude = e.lgtd
+            e.latitude = e.lttd
+            e.dotStyleConf = {
+              src: e.wheRrtd === '1' ? new URL('@/assets/images/points/waterLevel.png', import.meta.url).href : new URL('@/assets/images/points/waterLevelWarn.png', import.meta.url).href
+            }
+            return e
+          })
+      )
+      renderPoint(
+        map,
+        '雨量站',
+        data
+          .filter((e) => e.sttp === 'PP')
+          .map((e) => {
+            e.id = e.stcd
+            e.longitude = Number(e.lgtd) + 0.00000001
+            e.latitude = Number(e.lttd) + 0.00000001
+            e.dotStyleConf = {
+              src: getPPIcon(Number(e.prtd)),
+              scale: 0.7
+            }
+            return e
+          })
+      )
+    })
+  axios
+    .yw({
+      url: '/res-base-info-count/stbprpTypeCount',
+      method: 'get',
+      params: {
+        prcd: prcd
+      }
+    })
+    .then((res) => {
+      console.log(res)
+      const data = res.data.data || []
+      renderPoint(
+        map,
+        '流量站',
+        data
+          .filter((e) => e.sttp === 'PP')
+          .map((e) => {
+            e.id = e.stcd
+            e.longitude = Number(e.lgtd) + 0.00000001
+            e.latitude = Number(e.lttd) + 0.00000001
+            e.dotStyleConf = {
+              src: getPPIcon(Number(e.prtd)),
+              scale: 0.7
+            }
+            return e
+          })
+      )
+    })
   axios
     .yw({
       url: '/camera/page',
@@ -468,7 +578,6 @@ const enterReservoirDetail = async (prcd) => {
         map,
         '视频站',
         (res.data.records || []).map((e) => {
-          e.name = e.cameraName
           e.longitude = e.lng
           e.latitude = e.lat
           e.dotStyleConf = {
@@ -478,10 +587,28 @@ const enterReservoirDetail = async (prcd) => {
         })
       )
     })
-  renderPoint(map, '安全监测', [
-    { name: 'XXX安全监测', longitude: 120.196446, latitude: 29.423889, dotStyleConf: { src: new URL('@/assets/images/points/station.png', import.meta.url).href } },
-    { name: 'YYY安全监测', longitude: 120.198616, latitude: 29.426541, dotStyleConf: { src: new URL('@/assets/images/points/stationWarn.png', import.meta.url).href } }
-  ])
+  axios
+    .yw({
+      url: '/bus-safemonitor-sensor/pageList',
+      method: 'get',
+      params: {
+        projectCode: prcd,
+        current: 1,
+        size: 10000
+      }
+    })
+    .then((res) => {
+      renderPoint(
+        map,
+        '安全监测',
+        (res.data.records || []).map((e) => {
+          e.dotStyleConf = {
+            src: new URL('@/assets/images/points/station.png', import.meta.url).href //stationWarn.png
+          }
+          return e
+        })
+      )
+    })
   axios
     .yw({
       url: '/bus-essential-factor-ext/page',
@@ -498,7 +625,6 @@ const enterReservoirDetail = async (prcd) => {
         map,
         '重要设施',
         (res.data.records || []).map((e) => {
-          e.name = e.facName
           e.longitude = e.lng
           e.latitude = e.lat
           e.dotStyleConf = {
@@ -524,7 +650,6 @@ const enterReservoirDetail = async (prcd) => {
         map,
         '重点对象',
         (res.data.records || []).map((e) => {
-          e.name = e.facName
           e.longitude = e.lng
           e.latitude = e.lat
           e.dotStyleConf = {
@@ -535,24 +660,23 @@ const enterReservoirDetail = async (prcd) => {
       )
     })
 }
-const eleTypeIcon = {
-  铁路: new URL('@/assets/images/points/railway.png', import.meta.url).href,
-  高速公路: new URL('@/assets/images/points/expressway.png', import.meta.url).href,
-  公路桥: new URL('@/assets/images/points/highwayBridge.png', import.meta.url).href,
-  其他: new URL('@/assets/images/points/other.png', import.meta.url).href,
-  学校: new URL('@/assets/images/points/school.png', import.meta.url).href,
-  医院: new URL('@/assets/images/points/hospital.png', import.meta.url).href,
-  居民区: new URL('@/assets/images/points/residentialArea.png', import.meta.url).href,
-  重要敏感点: new URL('@/assets/images/points/sensitivePoint.png', import.meta.url).href,
-  政府机构及事业单位: new URL('@/assets/images/points/governmentOrgan.png', import.meta.url).href
+const getPPIcon = (rainfall) => {
+  if (rainfall <= 0) {
+    return new URL('@/assets/images/points/rainfall0.png', import.meta.url).href
+  } else if (rainfall <= 10) {
+    return new URL('@/assets/images/points/rainfall0_10.png', import.meta.url).href
+  } else if (rainfall <= 25) {
+    return new URL('@/assets/images/points/rainfall10_25.png', import.meta.url).href
+  } else if (rainfall <= 50) {
+    return new URL('@/assets/images/points/rainfall25_50.png', import.meta.url).href
+  } else if (rainfall <= 100) {
+    return new URL('@/assets/images/points/rainfall50_100.png', import.meta.url).href
+  } else if (rainfall <= 250) {
+    return new URL('@/assets/images/points/rainfall100_250.png', import.meta.url).href
+  } else {
+    return new URL('@/assets/images/points/rainfall250.png', import.meta.url).href
+  }
 }
-
-/* 水库按规模统计 */
-const typeStatistic = ref([
-  { value: 6, name: '中型', color: '#46FDFF' },
-  { value: 18, name: '小（1）型', color: '#419EFF' },
-  { value: 77, name: '小（2）型', color: '#FF9936' }
-])
 
 /* 重要水库（6个中型水库） */
 const importantResList = ref([])
@@ -583,11 +707,23 @@ onBeforeMount(() => {
 /* 打开水位站弹窗 */
 const waterLevelStationId = ref('')
 const waterLevelStationName = ref('')
+const waterLevelStationFloodLimit = ref('')
 const waterLevelStationVisible = ref(false)
-const openWaterLevelDetail = (id, name) => {
+const openWaterLevelDetail = (id, name, floodLimit) => {
   waterLevelStationId.value = id
   waterLevelStationName.value = name
+  waterLevelStationFloodLimit.value = floodLimit
   waterLevelStationVisible.value = true
+}
+
+/* 打开流量站弹窗 */
+const flowStationId = ref('')
+const flowStationName = ref('')
+const flowStationVisible = ref(false)
+const openFlowDetail = (id, name) => {
+  flowStationId.value = id
+  flowStationName.value = name
+  flowStationVisible.value = true
 }
 
 /* 打开水位站弹窗 */
@@ -645,59 +781,218 @@ const openElementDetail = (info) => {
   elementPointVisible.value = true
 }
 
+/* 指定水库的工程影响范围 */
 const prcd = ref('')
+const changePrcd = () => {
+  getFeatureData()
+}
 const resOptions = ref([])
 onBeforeMount(() => {
-  resOptions.value = [
-    { prcd: '330782022000521', name: '巧溪水库' },
-    { prcd: '33d473fd-1c7b-11ea-8760-6c92bf66b1485e', name: '龙门脚水库' }
-  ]
-  prcd.value = resOptions.value.length ? resOptions.value[0].prcd : ''
+  axios
+    .yw({
+      url: '/res-base-info/page',
+      method: 'get',
+      params: {
+        fetchAll: true
+      }
+    })
+    .then((res) => {
+      resOptions.value = res.data.records || []
+    })
+    .catch(() => {
+      resOptions.value = []
+    })
+    .finally(() => {
+      prcd.value = resOptions.value.length ? resOptions.value[0].id : ''
+      if (prcd.value) changePrcd()
+    })
 })
-
 const waterLevelType = ref('正常蓄水位')
 const waterLevelInfluence = ref([
-  { label: '淹没范围', value: '755.9', unit: 'km²' },
-  { label: '影响人口', value: '25.1', unit: '万人' },
-  { label: '道路', value: '36.1', unit: '条' },
-  { label: '基础设施', value: '27', unit: '个' },
-  { label: '城(集)镇', value: '29', unit: '个' },
-  { label: '耕(园)地', value: '55.75', unit: '万亩' }
+  { label: '淹没范围', value: '0', unit: 'km²' },
+  { label: '影响人口', value: '0', unit: '万人' },
+  { label: '道路', value: '0', unit: '条' },
+  { label: '基础设施', value: '0', unit: '个' },
+  { label: '城(集)镇', value: '0', unit: '个' },
+  { label: '耕(园)地', value: '0', unit: '万亩' }
 ])
 const waterLevelImportantFacilities = ref([
-  { label: '铁路', value: '17', unit: '个', icon: new URL('@/assets/images/icons/railway.png', import.meta.url).href },
-  { label: '高速公路', value: '23', unit: '个', icon: new URL('@/assets/images/icons/expressway.png', import.meta.url).href },
-  { label: '公路桥', value: '37', unit: '个', icon: new URL('@/assets/images/icons/highwayBridge.png', import.meta.url).href },
-  { label: '其他', value: '9', unit: '个', icon: new URL('@/assets/images/icons/other.png', import.meta.url).href }
+  { label: '铁路', value: '0', unit: '个', icon: new URL('@/assets/images/icons/railway.png', import.meta.url).href },
+  { label: '高速公路', value: '0', unit: '个', icon: new URL('@/assets/images/icons/expressway.png', import.meta.url).href },
+  { label: '公路桥', value: '0', unit: '个', icon: new URL('@/assets/images/icons/highwayBridge.png', import.meta.url).href },
+  { label: '其他', value: '0', unit: '个', icon: new URL('@/assets/images/icons/other.png', import.meta.url).href }
 ])
 const waterLevelImportantObjects = ref([
-  { label: '学校', value: '45', unit: '个', icon: new URL('@/assets/images/icons/school.png', import.meta.url).href },
-  { label: '医院', value: '9', unit: '个', icon: new URL('@/assets/images/icons/hospital.png', import.meta.url).href },
-  { label: '居民区', value: '80', unit: '个', icon: new URL('@/assets/images/icons/residentialArea.png', import.meta.url).href },
-  { label: '重要敏感点', value: '6', unit: '个', icon: new URL('@/assets/images/icons/sensitivePoint.png', import.meta.url).href },
-  { label: '政府机构及事业单位', value: '23', unit: '个', icon: new URL('@/assets/images/icons/governmentOrgan.png', import.meta.url).href }
+  { label: '学校', value: '0', unit: '个', icon: new URL('@/assets/images/icons/school.png', import.meta.url).href },
+  { label: '医院', value: '0', unit: '个', icon: new URL('@/assets/images/icons/hospital.png', import.meta.url).href },
+  { label: '居民区', value: '0', unit: '个', icon: new URL('@/assets/images/icons/residentialArea.png', import.meta.url).href },
+  { label: '重要敏感点', value: '0', unit: '个', icon: new URL('@/assets/images/icons/sensitivePoint.png', import.meta.url).href },
+  { label: '政府机构及事业单位', value: '0', unit: '个', icon: new URL('@/assets/images/icons/governmentOrgan.png', import.meta.url).href }
 ])
 const downstreamInfluence = ref([
-  { label: '淹没范围', value: '68.48', unit: 'km²' },
-  { label: '影响人口', value: '95.19', unit: '万人' },
-  { label: '道路', value: '14', unit: '条' },
-  { label: '基础设施', value: '78', unit: '个' },
-  { label: '城(集)镇', value: '22', unit: '个' },
-  { label: '耕(园)地', value: '221679', unit: '万亩' }
+  { label: '淹没范围', value: '0', unit: 'km²' },
+  { label: '影响人口', value: '0', unit: '万人' },
+  { label: '道路', value: '0', unit: '条' },
+  { label: '基础设施', value: '0', unit: '个' },
+  { label: '城(集)镇', value: '0', unit: '个' },
+  { label: '耕(园)地', value: '0', unit: '万亩' }
 ])
 const downstreamImportantFacilities = ref([
-  { label: '铁路', value: '18', unit: '个', icon: new URL('@/assets/images/icons/railway.png', import.meta.url).href },
-  { label: '高速公路', value: '39', unit: '个', icon: new URL('@/assets/images/icons/expressway.png', import.meta.url).href },
-  { label: '公路桥', value: '45', unit: '个', icon: new URL('@/assets/images/icons/highwayBridge.png', import.meta.url).href },
-  { label: '其他', value: '17', unit: '个', icon: new URL('@/assets/images/icons/other.png', import.meta.url).href }
+  { label: '铁路', value: '0', unit: '个', icon: new URL('@/assets/images/icons/railway.png', import.meta.url).href },
+  { label: '高速公路', value: '0', unit: '个', icon: new URL('@/assets/images/icons/expressway.png', import.meta.url).href },
+  { label: '公路桥', value: '0', unit: '个', icon: new URL('@/assets/images/icons/highwayBridge.png', import.meta.url).href },
+  { label: '其他', value: '0', unit: '个', icon: new URL('@/assets/images/icons/other.png', import.meta.url).href }
 ])
 const downstreamImportantObjects = ref([
-  { label: '学校', value: '60', unit: '个', icon: new URL('@/assets/images/icons/school.png', import.meta.url).href },
-  { label: '医院', value: '27', unit: '个', icon: new URL('@/assets/images/icons/hospital.png', import.meta.url).href },
-  { label: '居民区', value: '23', unit: '个', icon: new URL('@/assets/images/icons/residentialArea.png', import.meta.url).href },
-  { label: '重要敏感点', value: '7', unit: '个', icon: new URL('@/assets/images/icons/sensitivePoint.png', import.meta.url).href },
-  { label: '政府机构及事业单位', value: '12', unit: '个', icon: new URL('@/assets/images/icons/governmentOrgan.png', import.meta.url).href }
+  { label: '学校', value: '0', unit: '个', icon: new URL('@/assets/images/icons/school.png', import.meta.url).href },
+  { label: '医院', value: '0', unit: '个', icon: new URL('@/assets/images/icons/hospital.png', import.meta.url).href },
+  { label: '居民区', value: '0', unit: '个', icon: new URL('@/assets/images/icons/residentialArea.png', import.meta.url).href },
+  { label: '重要敏感点', value: '0', unit: '个', icon: new URL('@/assets/images/icons/sensitivePoint.png', import.meta.url).href },
+  { label: '政府机构及事业单位', value: '0', unit: '个', icon: new URL('@/assets/images/icons/governmentOrgan.png', import.meta.url).href }
 ])
+const syFeature = ref([])
+const setWaterLevelInfluence = () => {
+  let weaterType = waterLevelType.value === '正常蓄水位' ? '1' : waterLevelType.value === '设计洪水位' ? '2' : waterLevelType.value === '校核洪水位' ? '3' : ''
+  if (weaterType) {
+    const data = syFeature.value.find((e) => e.weaterType === weaterType) || {}
+    waterLevelInfluence.value.map((e) => {
+      switch (e.label) {
+        case '淹没范围':
+          e.value = data.radiusArea || '-'
+          break
+        case '影响人口':
+          e.value = data.inundPop || '-'
+          break
+        case '道路':
+          e.value = data.road || '-'
+          break
+        case '基础设施':
+          e.value = data.infrastructure || '-'
+          break
+        case '城(集)镇':
+          e.value = data.town || '-'
+          break
+        case '耕(园)地':
+          e.value = data.infCult || '-'
+          break
+      }
+      return e
+    })
+  }
+}
+const getFeatureData = () => {
+  axios
+    .yw({
+      url: '/res-base-info-count/totalPart',
+      method: 'get',
+      params: {
+        prcd: prcd.value
+      }
+    })
+    .then((res) => {
+      const data = res.data || {}
+      const xyFeature = res.data.outVO || {}
+      syFeature.value = res.data.list || []
+      setWaterLevelInfluence()
+      waterLevelImportantFacilities.value.map((e) => {
+        switch (e.label) {
+          case '铁路':
+            e.value = data.num1 || '-'
+            break
+          case '高速公路':
+            e.value = data.num2 || '-'
+            break
+          case '公路桥':
+            e.value = data.num3 || '-'
+            break
+          case '其他':
+            e.value = data.num4 || '-'
+            break
+        }
+        return e
+      })
+      waterLevelImportantObjects.value.map((e) => {
+        switch (e.label) {
+          case '学校':
+            e.value = data.num5 || '-'
+            break
+          case '医院':
+            e.value = data.num6 || '-'
+            break
+          case '居民区':
+            e.value = data.num7 || '-'
+            break
+          case '重要敏感点':
+            e.value = data.num8 || '-'
+            break
+          case '政府机构及事业单位':
+            e.value = data.num9 || '-'
+            break
+        }
+        return e
+      })
+      downstreamInfluence.value.map((e) => {
+        switch (e.label) {
+          case '淹没范围':
+            e.value = xyFeature.radiusArea || '-'
+            break
+          case '影响人口':
+            e.value = xyFeature.inundPop || '-'
+            break
+          case '道路':
+            e.value = xyFeature.road || '-'
+            break
+          case '基础设施':
+            e.value = xyFeature.infrastructure || '-'
+            break
+          case '城(集)镇':
+            e.value = xyFeature.town || '-'
+            break
+          case '耕(园)地':
+            e.value = xyFeature.infCult || '-'
+            break
+        }
+        return e
+      })
+      downstreamImportantFacilities.value.map((e) => {
+        switch (e.label) {
+          case '铁路':
+            e.value = data.num10 || '-'
+            break
+          case '高速公路':
+            e.value = data.num11 || '-'
+            break
+          case '公路桥':
+            e.value = data.num12 || '-'
+            break
+          case '其他':
+            e.value = data.num13 || '-'
+            break
+        }
+        return e
+      })
+      downstreamImportantObjects.value.map((e) => {
+        switch (e.label) {
+          case '学校':
+            e.value = data.num14 || '-'
+            break
+          case '医院':
+            e.value = data.num15 || '-'
+            break
+          case '居民区':
+            e.value = data.num16 || '-'
+            break
+          case '重要敏感点':
+            e.value = data.num17 || '-'
+            break
+          case '政府机构及事业单位':
+            e.value = data.num18 || '-'
+            break
+        }
+        return e
+      })
+    })
+}
 </script>
 
 <style scoped lang="scss">
