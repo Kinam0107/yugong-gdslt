@@ -13,7 +13,7 @@
       </el-radio-group>
       <div ref="featureFloating">
         <template v-if="showFeatureFloating">
-          <div class="reservoir_name">{{ floatingPointData.NAME }}</div>
+          <div class="reservoir_name">{{ floatingPointData.resName }}</div>
         </template>
       </div>
       <template #legend>
@@ -136,15 +136,24 @@
         <el-table :data="reservoirPoints" style="width: 100%" :height="listHeight" size="default" stripe @row-click="onRowClick">
           <el-table-column type="index" label="序号" width="55" align="center" />
           <template v-if="equiType === '视频'">
-            <el-table-column prop="NAME" label="水库名称" min-width="100" align="center" />
-            <el-table-column prop="spNum" label="视频(个)" width="80" align="center" />
-            <el-table-column prop="todo" label="在线(个)" width="80" align="center" />
-            <el-table-column prop="todo" label="离线(个)" width="80" align="center" />
+            <el-table-column prop="resName" label="水库名称" min-width="100" align="center" />
+            <el-table-column prop="videoNum" label="视频(个)" width="80" align="center" />
+            <el-table-column prop="num1" label="在线(个)" width="80" align="center">
+              <template #default="scope">
+                <span style="color: #47f5a7">{{ scope.row.num1 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="num2" label="离线(个)" width="80" align="center">
+              <template #default="scope">
+                <span style="color: #f7b500">{{ scope.row.num2 }}</span>
+              </template>
+            </el-table-column>
           </template>
           <template v-else-if="equiType === '雨水情'">
-            <el-table-column prop="NAME" label="水库名称" min-width="100" align="center" />
-            <el-table-column prop="todo" label="雨量站" width="80" align="center" />
-            <el-table-column prop="todo" label="水位站" width="80" align="center" />
+            <el-table-column prop="resName" label="水库名称" min-width="100" align="center" />
+            <el-table-column prop="rainNum" label="雨量站" width="80" align="center" />
+            <el-table-column prop="waterNum" label="水位站" width="80" align="center" />
+            <el-table-column prop="flowNum" label="流量站" width="80" align="center" />
           </template>
         </el-table>
       </div>
@@ -186,20 +195,18 @@ const changeEquiType = (type) => {
 }
 const reservoirPoints = ref([])
 const getReservoirPoints = () => {
-  let url = '/mgt/bm/reservoirMatrix/fourPower',
-    params = { adcd: '330782000000' }
+  let url = '/res-base-info-count/tkdTypeCount',
+    params = {}
   if (equiType.value === '视频') {
-    params.moduleType = '43'
-    params.pointType = '45'
+    params.type = 1
   } else if (equiType.value === '雨水情') {
-    params.moduleType = '43'
-    params.pointType = '47'
+    params.type = 2
   }
   axios
-    .rscp({
+    .yw({
       url: url,
-      method: 'post',
-      data: params
+      method: 'get',
+      params
     })
     .then((res) => {
       reservoirPoints.value = res.data || []
@@ -221,12 +228,12 @@ const drawReservoirPoints = () => {
     map,
     '水库落点',
     reservoirPoints.value
-      .filter((e) => e.NAME.includes(keyword.value) && scaleArr.value.includes(e.project_scale))
+      .filter((e) => e.resName.includes(keyword.value) && scaleArr.value.includes(e.engScal))
       .map((e) => {
-        e.longitude = e.LGTD
-        e.latitude = e.LTTD
+        e.longitude = e.resLong
+        e.latitude = e.resLat
         e.dotStyleConf = {
-          src: resScaleIcon[e.project_scale]
+          src: resScaleIcon[e.engScal]
         }
         return e
       })
@@ -254,9 +261,9 @@ const mapSingleClick = (e) => {
   console.log(e)
   if (e.featureData && e.featureData.layerName === '水库落点') {
     if (equiType.value === '视频') {
-      openVideoPopup(e.featureData.NAME, e.featureData.PRCD)
+      openVideoPopup(e.featureData.resName, e.featureData.prcd)
     } else if (equiType.value === '雨水情') {
-      openRainwaterDetail(e.featureData.NAME, e.featureData.PRCD)
+      openRainwaterDetail(e.featureData.resName, e.featureData.prcd)
     }
   }
 }
@@ -278,9 +285,9 @@ onBeforeUnmount(() => {
 /* 表格行点击打开对应窗口 */
 const onRowClick = (row) => {
   if (equiType.value === '视频') {
-    openVideoPopup(row.NAME, row.PRCD)
+    openVideoPopup(row.resName, row.prcd)
   } else if (equiType.value === '雨水情') {
-    openRainwaterDetail(row.NAME, row.PRCD)
+    openRainwaterDetail(row.resName, row.prcd)
   }
 }
 

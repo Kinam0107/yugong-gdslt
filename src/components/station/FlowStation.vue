@@ -27,18 +27,13 @@
     <div class="chart_data_area">
       <div class="chart_area" :style="{ visibility: mode == 2 ? 'hidden' : '' }">
         <div class="chart_box">
-          <WaterLevelLine ref="flowLine" v-if="dialogVisible" :xAxisValue="xAxisValue" yAxisUnit="m³/s" :data="flowData" />
+          <FlowLine ref="flowLine" v-if="dialogVisible" :xAxisValue="xAxisValue" yAxisUnit="m³/s" :data="flowData" />
         </div>
         <div class="extra_box">
           <div class="item">
-            <span class="label">最高水位：</span>
-            <span class="value">{{ extremeValue.max }}m</span>
+            <span class="label">最大流量：</span>
+            <span class="value">{{ extremeValue.max }}m³/s</span>
             <span class="time">({{ extremeValue.maxTm }})</span>
-          </div>
-          <div class="item">
-            <span class="label">最低水位：</span>
-            <span class="value">{{ extremeValue.min }}m</span>
-            <span class="time">({{ extremeValue.minTm }})</span>
           </div>
         </div>
       </div>
@@ -46,7 +41,7 @@
         <el-table :data="tableData" style="width: 100%" :height="580" size="large" stripe>
           <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
           <el-table-column prop="tm" label="时间" align="center"></el-table-column>
-          <el-table-column prop="rz" label="流量(m³/s)" align="center"></el-table-column>
+          <el-table-column prop="todo" label="流量(m³/s)" align="center"></el-table-column>
         </el-table>
       </div>
     </div>
@@ -55,8 +50,9 @@
 
 <script setup>
 import { computed, ref, watch, nextTick, reactive } from 'vue'
-import WaterLevelLine from '@/components/chart/WaterLevelLine.vue'
+import FlowLine from '@/components/chart/WaterLevelLine.vue'
 import axios from '@/api/axios'
+
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -120,7 +116,7 @@ watch(
 const getFlowData = () => {
   axios
     .yw({
-      url: '/rsvr-r/findDataList',
+      url: '/todo/findDataList',
       method: 'get',
       params: {
         stcd: props.id,
@@ -138,14 +134,14 @@ const getFlowData = () => {
       }
       data.forEach((e) => {
         temp.xa.push(e.tm.substring(5, 16))
-        temp.ll.push(e.rz)
+        temp.ll.push(e.todo)
         if (temp.max) {
-          if (temp.max < e.rz) {
-            temp.max = e.rz
+          if (temp.max < e.todo) {
+            temp.max = e.todo
             temp.maxTm = e.tm.substring(5, 16)
           }
         } else {
-          temp.max = e.rz
+          temp.max = e.todo
           temp.maxTm = e.tm.substring(5, 16)
         }
       })
