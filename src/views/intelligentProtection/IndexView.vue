@@ -114,7 +114,7 @@
         </div>
       </div>
       <div class="equi_row">
-        <div class="equi_cell">
+        <div class="equi_cell" :class="{ active: equiType === '安全监测' }" @click="changeEquiType('安全监测')">
           <img src="@/assets/images/icons/equi_aqjc.png" />
           <div class="label">安全监测</div>
           <div class="data">
@@ -155,6 +155,20 @@
             <el-table-column prop="waterNum" label="水位站" width="80" align="center" />
             <el-table-column prop="flowNum" label="流量站" width="80" align="center" />
           </template>
+          <template v-if="equiType === '安全监测'">
+            <el-table-column prop="resName" label="水库名称" min-width="100" align="center" />
+            <el-table-column prop="videoNum" label="总数" width="80" align="center" />
+            <el-table-column prop="num1" label="在线" width="80" align="center">
+              <template #default="scope">
+                <span style="color: #47f5a7">{{ scope.row.num1 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="num2" label="离线" width="80" align="center">
+              <template #default="scope">
+                <span style="color: #f7b500">{{ scope.row.num2 }}</span>
+              </template>
+            </el-table-column>
+          </template>
         </el-table>
       </div>
     </template>
@@ -162,6 +176,7 @@
       <VideoPopup v-model="videoVisible" :name="project_name" :prcd="project_prcd" />
     </template>
     <RainwaterSituation v-model="rainwaterVisible" :title="projectName" :prcd="projectPrcd" />
+    <ProjectSensor v-model="safetyMonitorVisible" :title="projectName" :prcd="projectPrcd" />
   </ScreenLayout>
 </template>
 
@@ -172,6 +187,7 @@ import AuxiliaryInfo from '@/components/map/AuxiliaryInfo.vue'
 import axios from '@/api/axios'
 import { renderPoint, renderOverlay, removeLayer } from '@/utils/map'
 import RainwaterSituation from '@/components/station/RainwaterSituation.vue'
+import ProjectSensor from '@/components/station/ProjectSensor.vue'
 
 /* 地图初始化后取得地图对象 */
 const mapMode = ref('影像图')
@@ -201,6 +217,8 @@ const getReservoirPoints = () => {
     params.type = 1
   } else if (equiType.value === '雨水情') {
     params.type = 2
+  } else if (equiType.value === '安全监测') {
+    params.type = 3
   }
   axios
     .yw({
@@ -288,6 +306,8 @@ const onRowClick = (row) => {
     openVideoPopup(row.resName, row.prcd)
   } else if (equiType.value === '雨水情') {
     openRainwaterDetail(row.resName, row.prcd)
+  } else if (equiType.value === '安全监测') {
+    openSafetyMonitorDetail(row.resName, row.prcd)
   }
 }
 
@@ -328,6 +348,14 @@ const openRainwaterDetail = (name, prcd) => {
   projectName.value = name
   projectPrcd.value = prcd
   rainwaterVisible.value = true
+}
+
+/* 打开安全监测弹窗 */
+const safetyMonitorVisible = ref(false)
+const openSafetyMonitorDetail = (name, prcd) => {
+  projectName.value = name
+  projectPrcd.value = prcd
+  safetyMonitorVisible.value = true
 }
 </script>
 

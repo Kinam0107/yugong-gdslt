@@ -191,4 +191,8 @@
       background: rgba(255, 255, 255, 0.2);
     }
   }
+  .el-cascader-node:not(.is-disabled):hover,
+  .el-cascader-node:not(.is-disabled):focus {
+    background: rgba(255, 255, 255, 0.2);
+  }
 }

@@ -9,8 +9,8 @@
           <template v-else-if="item.sttp === 'QQ'">实时流量：{{ item.todo }}m³/s</template>
         </div>
         <div v-if="item.sttp === 'RR'" class="state" :style="{ color: item.wheRrtd === '1' ? '#47F5A7' : '#FFA01E' }">{{ item.wheRrtd === '1' ? '正常' : '超汛限' }}</div>
-        <div v-else-if="item.sttp === 'PP'" class="state" style="color: #47F5A7">{{ '正常' }}</div>
-        <div v-else-if="item.sttp === 'QQ'" class="state" style="color: #47F5A7">{{ '正常' }}</div>
+        <div v-else-if="item.sttp === 'PP'" class="state" style="color: #47f5a7">{{ '正常' }}</div>
+        <div v-else-if="item.sttp === 'QQ'" class="state" style="color: #47f5a7">{{ '正常' }}</div>
       </div>
     </div>
     <div class="operating_area">
@@ -218,7 +218,7 @@ const getChartData = () => {
         url: '/rsvr-r/findDataList',
         method: 'get',
         params: {
-          stcd: props.id,
+          stcd: stationId.value,
           startTime: startTime.value,
           endTime: endTime.value
         }
@@ -287,7 +287,7 @@ const getChartData = () => {
         url: '/pptn-r/findDataList',
         method: 'get',
         params: {
-          stcd: props.id,
+          stcd: stationId.value,
           startTime: startTime.value,
           endTime: endTime.value
         }
@@ -330,7 +330,7 @@ const getChartData = () => {
         url: '/todo/findDataList',
         method: 'get',
         params: {
-          stcd: props.id,
+          stcd: stationId.value,
           startTime: startTime.value,
           endTime: endTime.value
         }
@@ -386,6 +386,7 @@ const getChartData = () => {
   margin-top: -16px;
   margin-bottom: 16px;
   .station_item {
+    flex-shrink: 0;
     position: relative;
     width: 220px;
     height: 64px;

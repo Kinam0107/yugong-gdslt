@@ -16,5 +16,14 @@ export default {
     330782104000: '上溪镇',
     330782105000: '苏溪镇',
     330782106000: '大陈镇'
+  },
+  /* 监测类型 */ JCLX: {
+    'gps-total-x': 'gps-total-x（X轴累计变化）',
+    'gps-total-y': 'gps-total-y（Y轴累计变化）',
+    'gps-total-z': 'gps-total-z（Z轴累计变化）',
+    'gps-2d': 'gps-2d（2D累积变化）',
+    'gps-total': 'gps-total（3D累积变化）',
+    'target-dispx': 'target-dispx（X轴方向位移）',
+    'target-dispy': 'target-dispy（Y轴方向位移）'
   }
 }
