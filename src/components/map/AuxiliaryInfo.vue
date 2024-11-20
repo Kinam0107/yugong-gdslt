@@ -30,17 +30,68 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { Vector as VectorLayer } from 'ol/layer'
-import { Vector as VectorSource } from 'ol/source'
-import GeoJSON from 'ol/format/GeoJSON'
-import { Style, Fill, Stroke } from 'ol/style'
+import { onMounted, ref } from 'vue'
+import axios from 'axios'
+import Image from 'ol/layer/Image'
+import ImageWMS from 'ol/source/ImageWMS'
 
 const props = defineProps({
   map: {
     required: true
   }
 })
+
+onMounted(() => {
+  props.map.on('singleclick', (event) => {
+    const viewResolution = props.map.getView().getResolution()
+    const url = sqsxLayer.getSource().getFeatureInfoUrl(
+      event.coordinate,
+      viewResolution,
+      'EPSG:4326',
+      { INFO_FORMAT: 'application/geojson' } // 或者 'text/html' 或 'text/plain'
+    )
+    if (url) {
+      axios.get(url).then((res) => {
+        const properties = res.data?.features?.[0]?.properties
+        console.log(properties)
+      })
+    }
+  })
+})
+
+// 加载三区三线图层
+let sqsxSource
+let sqsxLayer
+const renderSqsxLayer = () => {
+  const LAYERS = []
+  if (yjjbntbhhxChecked.value) LAYERS.push('0')
+  if (stbhhxChecked.value) LAYERS.push('1')
+  if (czkfbjChecked.value) LAYERS.push('2')
+  if (!sqsxLayer) {
+    sqsxSource = new ImageWMS({
+      url: 'https://webgis.ygwjg.com/arcgis/services/yiwu/sqsx/MapServer/WmsServer?',
+      params: {
+        FORMAT: 'image/png',
+        LAYERS: LAYERS.join()
+      },
+      crossOrigin: 'anonymous'
+    })
+    sqsxLayer = new Image({
+      source: sqsxSource
+    })
+    props.map.addLayer(sqsxLayer)
+  } else {
+    if (LAYERS.length) {
+      sqsxSource.updateParams({
+        LAYERS: LAYERS.join()
+      })
+    } else {
+      props.map.removeLayer(sqsxLayer)
+      sqsxLayer = null
+      sqsxSource = null
+    }
+  }
+}
 
 const isIndeterminate = ref(false)
 const sqsxChecked = ref(false)
@@ -49,122 +100,74 @@ const sqsxCheckedChange = (val) => {
     czkfbjChecked.value = true
     stbhhxChecked.value = true
     yjjbntbhhxChecked.value = true
-    czkfbjCheckedChange(true)
-    stbhhxCheckedChange(true)
-    yjjbntbhhxCheckedChange(true)
+    isIndeterminate.value = false
   } else {
     czkfbjChecked.value = false
     stbhhxChecked.value = false
     yjjbntbhhxChecked.value = false
-    czkfbjCheckedChange(false)
-    stbhhxCheckedChange(false)
-    yjjbntbhhxCheckedChange(false)
+    isIndeterminate.value = false
   }
+  renderSqsxLayer()
 }
 
-let czkfbjLayer
 const czkfbjChecked = ref(false)
 const czkfbjCheckedChange = (val) => {
   if (val) {
     if (yjjbntbhhxChecked.value && stbhhxChecked.value) {
       isIndeterminate.value = false
+      sqsxChecked.value = true
     } else {
       isIndeterminate.value = true
     }
-    if (czkfbjLayer) props.map.removeLayer(czkfbjLayer)
-    fetch('/geoJson/CZKFBJ.json')
-      .then((response) => response.json())
-      .then((res) => {
-        czkfbjLayer = new VectorLayer({
-          source: new VectorSource({
-            features: new GeoJSON().readFeatures(res)
-          }),
-          style: new Style({
-            fill: new Fill({ color: 'transparent' }),
-            stroke: new Stroke({ color: '#06D862', width: 1 })
-          })
-        })
-        props.map.addLayer(czkfbjLayer)
-      })
   } else {
     if (!yjjbntbhhxChecked.value && !stbhhxChecked.value) {
       isIndeterminate.value = false
+      sqsxChecked.value = false
     } else {
       isIndeterminate.value = true
     }
-    props.map.removeLayer(czkfbjLayer)
-    czkfbjLayer = null
   }
+  renderSqsxLayer()
 }
 
-let yjjbntbhhxLayer
 const yjjbntbhhxChecked = ref(false)
 const yjjbntbhhxCheckedChange = (val) => {
   if (val) {
     if (czkfbjChecked.value && stbhhxChecked.value) {
       isIndeterminate.value = false
+      sqsxChecked.value = true
     } else {
       isIndeterminate.value = true
     }
-    if (yjjbntbhhxLayer) props.map.removeLayer(yjjbntbhhxLayer)
-    fetch('/geoJson/YJJBNTBHTB.json')
-      .then((response) => response.json())
-      .then((res) => {
-        yjjbntbhhxLayer = new VectorLayer({
-          source: new VectorSource({
-            features: new GeoJSON().readFeatures(res)
-          }),
-          style: new Style({
-            fill: new Fill({ color: 'transparent' }),
-            stroke: new Stroke({ color: '#FF784A', width: 1 })
-          })
-        })
-        props.map.addLayer(yjjbntbhhxLayer)
-      })
   } else {
     if (!czkfbjChecked.value && !stbhhxChecked.value) {
       isIndeterminate.value = false
+      sqsxChecked.value = false
     } else {
       isIndeterminate.value = true
     }
-    props.map.removeLayer(yjjbntbhhxLayer)
-    yjjbntbhhxLayer = null
   }
+  renderSqsxLayer()
 }
 
-let stbhhxLayer
-const stbhhxChecked = ref(false)
+const stbhhxChecked = ref()
 const stbhhxCheckedChange = (val) => {
   if (val) {
     if (czkfbjChecked.value && yjjbntbhhxChecked.value) {
       isIndeterminate.value = false
+      sqsxChecked.value = true
     } else {
       isIndeterminate.value = true
     }
-    if (stbhhxLayer) props.map.removeLayer(stbhhxLayer)
-    fetch('/geoJson/STBHHX.json')
-      .then((response) => response.json())
-      .then((res) => {
-        stbhhxLayer = new VectorLayer({
-          source: new VectorSource({
-            features: new GeoJSON().readFeatures(res)
-          }),
-          style: new Style({
-            fill: new Fill({ color: 'transparent' }),
-            stroke: new Stroke({ color: '#FF0000', width: 1 })
-          })
-        })
-        props.map.addLayer(stbhhxLayer)
-      })
   } else {
     if (!czkfbjChecked.value && !yjjbntbhhxChecked.value) {
       isIndeterminate.value = false
+      sqsxChecked.value = false
     } else {
       isIndeterminate.value = true
     }
-    props.map.removeLayer(stbhhxLayer)
-    stbhhxLayer = null
   }
+  renderSqsxLayer()
 }
 
 const hdsxChecked = ref(false)
