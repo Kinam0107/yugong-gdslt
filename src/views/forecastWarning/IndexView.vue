@@ -53,13 +53,24 @@
       <div class="flood_forecast">
         <div class="item" v-for="item in floodForecastList" :key="item.name">
           <div class="name">{{ item.name }}</div>
-          <div class="data">
-            <div class="label">未来24小时最高水位</div>
-            <div class="value">{{ item.waterLevel }}m</div>
+          <div class="period">未来24小时</div>
+          <div class="detail">
+            <span>详情</span>
+            <SvgIcon :size="20" color="#46FDFF" icon="detailArraw" />
           </div>
-          <div class="data">
-            <div class="label">最近预报时间</div>
-            <div class="value">{{ item.time }}</div>
+          <div class="data_wrap">
+            <div class="data">
+              <div class="label">预报最高水位</div>
+              <div class="value">{{ item.waterLevel }}m</div>
+            </div>
+            <div class="data">
+              <div class="label">预报最大降雨</div>
+              <div class="value">{{ item.waterLevel }}m</div>
+            </div>
+            <div class="data">
+              <div class="label">最近预报时间</div>
+              <div class="value">{{ item.time }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -263,10 +274,10 @@ const drawReservoirPoints = () => {
 }
 
 const floodForecastList = ref([
-  { name: '巧溪水库', waterLevel: '132.34', time: '10-31 12:00' },
-  { name: '枫坑水库', waterLevel: '89.08', time: '10-31 12:00' },
-  { name: '柏峰水库', waterLevel: '122.5', time: '10-31 12:00' },
-  { name: '岩口水库', waterLevel: '184', time: '10-31 12:00' }
+  { name: '巧溪水库', waterLevel: '89.08', rainfall: '1.4', time: '10-31 12:00' },
+  { name: '巧溪水库', waterLevel: '89.08', rainfall: '1.4', time: '10-31 12:00' },
+  { name: '巧溪水库', waterLevel: '89.08', rainfall: '1.4', time: '10-31 12:00' },
+  { name: '巧溪水库', waterLevel: '89.08', rainfall: '1.4', time: '10-31 12:00' }
 ])
 const storageCategory = ref('现状实况')
 const changeStorageCategory = (category) => {
@@ -395,23 +406,48 @@ const openWaterLevelDetail = (id, name) => {
   }
 }
 .flood_forecast {
+  overflow: auto;
   height: 388px;
   padding: 16px 15px 20px 15px;
   .item {
+    position: relative;
     display: flex;
-    align-items: center;
     gap: 15px;
-    height: 76px;
-    padding: 0 16px;
+    height: 106px;
+    padding: 8px 16px;
     background: linear-gradient(0deg, rgba(42, 174, 245, 0.2) 0%, rgba(9, 65, 105, 0.01) 152%);
     + .item {
       margin-top: 16px;
     }
     .name {
-      flex: 1;
       font-size: 20px;
       font-weight: 500;
       line-height: 24px;
+    }
+    .period {
+      flex: 1;
+      margin-left: 8px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .detail {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 24px;
+      color: $color-primary;
+    }
+    .data_wrap {
+      position: absolute;
+      bottom: 16px;
+      right: 36px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
     .data {
       .label {
@@ -537,6 +573,7 @@ const openWaterLevelDetail = (id, name) => {
   }
 }
 .important_reservoir {
+  overflow: auto;
   height: 558px;
   padding: 16px 15px;
   .important_item {
