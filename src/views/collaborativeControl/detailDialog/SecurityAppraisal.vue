@@ -8,7 +8,7 @@
         <el-select v-model="params.projectScale" placeholder="工程规模" style="width: 240px" size="large" popper-class="transparent_pooper" clearable @change="search">
           <el-option v-for="item in getOptions('SKGM')" :key="'sacle' + item.value" :label="item.label" :value="item.value" />
         </el-select>
-        <el-input v-model="params.name" placeholder="请输入数控库名称搜索" style="width: 240px" size="large" clearable @change="search">
+        <el-input v-model="params.name" placeholder="请输入水库名称搜索" style="width: 240px" size="large" clearable @change="search">
           <template #suffix>
             <el-icon style="cursor: pointer" @click="search"><Search /></el-icon>
           </template>
@@ -45,7 +45,7 @@
 import { computed, reactive, watch, ref } from 'vue'
 import { dataEcho, getOptions } from '@/utils/enum'
 import axios from '@/api/axios'
-import SvgIcon from '@/components/SvgIcon.vue'
+
 const props = defineProps({
   modelValue: {
     type: Boolean,

@@ -96,7 +96,7 @@
           </div>
         </div>
         <CategoryTitle modelValue="除险加固" style="margin-bottom: 14px">
-          <img class="clickable" :src="noteIcon" />
+          <img class="clickable" :src="noteIcon" @click="openRiskEliminationDetails" />
         </CategoryTitle>
         <div class="reinforcement_box" style="margin-bottom: 20px">
           <div class="reinforcement_item" v-for="item in reinforcementData" :key="item.label">
@@ -119,7 +119,7 @@
           </div>
         </div>
         <CategoryTitle modelValue="问题处置" style="margin-bottom: 11px">
-          <img class="clickable" :src="noteIcon" />
+          <img class="clickable" :src="noteIcon" @click="openProblemHandlingDetails" />
         </CategoryTitle>
         <div class="problem_handle_box" style="margin-bottom: 12px">
           <div class="item" v-for="item in problemHandle" :key="item.label" :style="{ background: `url(${item.bgi})` }">
@@ -159,7 +159,7 @@
           </div>
         </div>
         <CategoryTitle modelValue="经费保障" style="margin-bottom: 10px">
-          <img class="clickable" :src="noteIcon" />
+          <img class="clickable" :src="noteIcon" @click="openFundingGuaranteeDetails" />
         </CategoryTitle>
         <div class="funding_guarantee_box" style="margin-bottom: 22px">
           <div class="implement_box">
@@ -197,7 +197,7 @@
           </div>
         </div>
         <CategoryTitle modelValue="村级水务员资金支撑" style="margin-bottom: 12px">
-          <img class="clickable" :src="noteIcon" />
+          <img class="clickable" :src="noteIcon" @click="openVillageSupportDetails" />
         </CategoryTitle>
         <div class="financial_support_box">
           <div class="financial_support_item row_data">
@@ -386,6 +386,10 @@
       </div>
     </template>
     <SecurityAppraisal v-model="securityAppraisalVisible" />
+    <RiskElimination v-model="riskEliminationVisible" />
+    <ProblemHandling v-model="problemHandlingVisible" />
+    <FundingGuarantee v-model="fundingGuaranteeVisible" />
+    <VillageSupport v-model="villageSupportVisible" />
   </ScreenLayout>
 </template>
 
@@ -397,7 +401,11 @@ import axios from '@/api/axios'
 import { renderPoint, renderOverlay, removeLayer } from '@/utils/map'
 import noteIcon from '@/assets/images/icons/note.png'
 import RingChart from '@/components/chart/RingChart.vue'
-import SecurityAppraisal from './detailDialog.vue/SecurityAppraisal.vue'
+import SecurityAppraisal from './detailDialog/SecurityAppraisal.vue'
+import RiskElimination from './detailDialog/RiskElimination.vue'
+import ProblemHandling from './detailDialog/ProblemHandling.vue'
+import FundingGuarantee from './detailDialog/FundingGuarantee.vue'
+import VillageSupport from './detailDialog/VillageSupport.vue'
 
 /* 地图初始化后取得地图对象 */
 const legendType = ref('')
@@ -922,6 +930,30 @@ const inspectionRateList = computed(() => {
 const securityAppraisalVisible = ref(false)
 const openSecurityAppraisalDetails = () => {
   securityAppraisalVisible.value = true
+}
+
+/* 除险加固详情弹窗 */
+const riskEliminationVisible = ref(false)
+const openRiskEliminationDetails = () => {
+  riskEliminationVisible.value = true
+}
+
+/* 除险加固详情弹窗 */
+const problemHandlingVisible = ref(false)
+const openProblemHandlingDetails = () => {
+  problemHandlingVisible.value = true
+}
+
+/* 除险加固详情弹窗 */
+const fundingGuaranteeVisible = ref(false)
+const openFundingGuaranteeDetails = () => {
+  fundingGuaranteeVisible.value = true
+}
+
+/* 除险加固详情弹窗 */
+const villageSupportVisible = ref(false)
+const openVillageSupportDetails = () => {
+  villageSupportVisible.value = true
 }
 </script>
 
