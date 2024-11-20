@@ -50,19 +50,19 @@
             </div>
             <div class="item">
               <span class="label">永久基本农田图斑面积：</span>
-              <span class="value">{{ featureOverlayData.YJJBNTTBMJ || '-' }}</span>
+              <span class="value">{{ featureOverlayData.YJJBNTTBMJ || '-' }}m²</span>
             </div>
             <div class="item">
               <span class="label">扣除面积：</span>
-              <span class="value">{{ featureOverlayData.KCMJ || '-' }}</span>
+              <span class="value">{{ featureOverlayData.KCMJ || '-' }}m²</span>
             </div>
             <div class="item">
               <span class="label">永久基本农田面积：</span>
-              <span class="value">{{ featureOverlayData.YJJBNTMJ || '-' }}</span>
+              <span class="value">{{ featureOverlayData.YJJBNTMJ || '-' }}m²</span>
             </div>
             <div class="item">
               <span class="label">耕地类型：</span>
-              <span class="value">{{ featureOverlayData.GDLX || '-' }}</span>
+              <span class="value">{{ featureOverlayData.GDLX === 'TT' ? '梯田' : featureOverlayData.GDLX === 'PD' ? '坡地' : featureOverlayData.GDLX || '-' }}</span>
             </div>
             <div class="item">
               <span class="label">种植属性：</span>
