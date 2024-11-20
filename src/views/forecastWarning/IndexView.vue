@@ -36,15 +36,15 @@
     <template #left>
       <div class="section_title">三道防线</div>
       <div class="three_defense_lines">
-        <div class="item">
+        <div class="item" @click="openPrecipitationForecast">
           <img src="@/assets/images/icons/precipitation.png" />
           <span>降水预报</span>
         </div>
-        <div class="item">
+        <div class="item" @click="openCloudChart">
           <img src="@/assets/images/icons/nephogram.png" />
           <span>气象云图</span>
         </div>
-        <div class="item">
+        <div class="item" @click="openTyphoonPath">
           <img src="@/assets/images/icons/typhoon.png" />
           <span>台风路径</span>
         </div>
@@ -179,6 +179,9 @@
       </div>
     </template>
     <WaterLevelStation v-model="waterLevelStationVisible" :id="waterLevelStationId" :title="waterLevelStationName" />
+    <PrecipitationForecast v-model="precipitationForecastVisible" />
+    <CloudChart v-model="cloudChartVisible" />
+    <TyphoonPath v-model="typhoonPathVisible" />
   </ScreenLayout>
 </template>
 
@@ -198,6 +201,9 @@ cylinder(Highcharts)
 funnel3d(Highcharts)
 import RingChart from '@/components/chart/RingChart.vue'
 import WaterLevelStation from '@/components/station/WaterLevelStation.vue'
+import PrecipitationForecast from './detailDialog/PrecipitationForecast.vue'
+import CloudChart from './detailDialog/CloudChart.vue'
+import TyphoonPath from './detailDialog/TyphoonPath.vue'
 
 /* 地图初始化后取得地图对象 */
 const mapMode = ref('影像图')
@@ -327,6 +333,24 @@ const warningChartData = ref([
   { value: 0, name: '超正常蓄水位', color: '#FFCB27' },
   { value: 0, name: '超设计水位', color: '#FF551F' }
 ])
+
+/* 打开降水预报弹窗 */
+const precipitationForecastVisible = ref(false)
+const openPrecipitationForecast = () => {
+  precipitationForecastVisible.value = true
+}
+
+/* 打开气象云图弹窗 */
+const cloudChartVisible = ref(false)
+const openCloudChart = () => {
+  cloudChartVisible.value = true
+}
+
+/* 打开气象云图弹窗 */
+const typhoonPathVisible = ref(false)
+const openTyphoonPath = () => {
+  typhoonPathVisible.value = true
+}
 
 /* 打开水位站弹窗 */
 const waterLevelStationId = ref('')

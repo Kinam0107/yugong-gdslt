@@ -87,6 +87,11 @@ div.el-dialog {
     border-top: 1px solid $color-separator;
     padding: 2 * $baseDistance 3 * $baseDistance;
   }
+  &.is-fullscreen .el-dialog__body {
+    height: calc(100% - 57px);
+    max-height: none;
+    padding: 0;
+  }
 }
 
 div.el-input__wrapper {
