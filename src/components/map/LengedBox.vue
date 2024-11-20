@@ -52,10 +52,14 @@ const toggle = () => {
     .el-checkbox__label {
       display: flex;
       align-items: center;
-      > img {
+      > img:not(.icon) {
         margin-bottom: -3px;
         margin-left: -5px;
         margin-right: 1px;
+      }
+      > img.icon {
+        margin-left: 4px;
+        margin-right: 8px;
       }
       > span {
         font-size: 16px;
@@ -77,6 +81,12 @@ const toggle = () => {
         font-size: 16px;
       }
     }
+  }
+  :deep(.legend_line) {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.4);
+    margin: 8px 0 6px 0;
   }
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <ScreenLayout>
-    <OlMap :baseMapMode="mapMode" :adaptPadding="mapPadding" @initFinished="mapInitFinished">
-      <el-input v-model="keyword" style="width: 216px; margin-bottom: 12px" size="large" placeholder="请输入水库名称搜索" clearable>
+    <OlMap :baseMapMode="mapMode" :adaptPadding="mapPadding" @initFinished="mapInitFinished" @mouseMove="mapMouseMove">
+      <el-input v-model="keyword" style="width: 216px; margin-bottom: 12px" size="large" placeholder="请输入水库名称搜索" clearable @change="getReservoirPoints">
         <template #suffix>
-          <el-icon style="cursor: pointer"><Search /></el-icon>
+          <el-icon style="cursor: pointer" @click="getReservoirPoints"><Search /></el-icon>
         </template>
       </el-input>
       <br />
@@ -11,25 +11,51 @@
         <el-radio-button label="影像图" value="影像图" />
         <el-radio-button label="水利图" value="水利图" />
       </el-radio-group>
+      <div ref="featureFloating">
+        <template v-if="showFeatureFloating">
+          <div class="reservoir_name">{{ floatingPointData.name || floatingPointData.NAME }}</div>
+        </template>
+      </div>
       <template #legend>
         <LengedBox>
-          <template v-if="legendType === '安全鉴定'">
-            <el-radio-group v-model="appraisalType">
-              <el-radio label="三类坝">
-                <img src="@/assets/images/points/damRed.png" />
-                <span>三类坝</span>
-              </el-radio>
-              <el-radio label="二类坝">
-                <img src="@/assets/images/points/damYellow.png" />
-                <span>二类坝</span>
-              </el-radio>
-              <el-radio label="近一年到期">
-                <img src="@/assets/images/points/damBlue.png" />
-                <span>近一年到期</span>
-              </el-radio>
-            </el-radio-group>
-          </template>
-          <el-checkbox-group v-else v-model="scaleArr">
+          <el-radio-group v-if="legendType === '安全鉴定'" v-model="appraisalType" @change="getReservoirPoints">
+            <el-radio label="三类坝">
+              <img src="@/assets/images/points/damRed.png" />
+              <span>三类坝</span>
+            </el-radio>
+            <el-radio label="二类坝">
+              <img src="@/assets/images/points/damYellow.png" />
+              <span>二类坝</span>
+            </el-radio>
+            <el-radio label="近一年到期">
+              <img src="@/assets/images/points/damBlue.png" />
+              <span>近一年到期</span>
+            </el-radio>
+          </el-radio-group>
+          <el-checkbox-group v-else-if="legendType === '除险加固'" v-model="reinforcementSelect" @change="getReservoirPoints">
+            <el-checkbox label="6">
+              <img src="@/assets/images/points/flagYellow.png" />
+              <span>未开工</span>
+            </el-checkbox>
+            <el-checkbox label="7">
+              <img src="@/assets/images/points/flagBlue.png" />
+              <span>已开工</span>
+            </el-checkbox>
+            <el-checkbox label="8">
+              <img src="@/assets/images/points/flagGreen.png" />
+              <span>当年完工</span>
+            </el-checkbox>
+            <div class="legend_line"></div>
+            <el-checkbox label="9">
+              <img class="icon" src="@/assets/images/points/dam.png" />
+              <span>二类坝</span>
+            </el-checkbox>
+            <el-checkbox label="10">
+              <img class="icon" src="@/assets/images/points/dam.png" />
+              <span>三类坝</span>
+            </el-checkbox>
+          </el-checkbox-group>
+          <el-checkbox-group v-else v-model="scaleArr" @change="getReservoirPoints">
             <el-checkbox label="3">
               <img src="@/assets/images/points/res3.png" />
               <span>中型</span>
@@ -80,12 +106,12 @@
                 <span class="label">{{ item.label }}</span>
               </div>
             </div>
-            <div class="subitem">
+            <div class="subitem" :class="{ active: reinforcementType === '二类坝' + item.label }" @click="changeReinforcementType('二类坝' + item.label)">
               <span class="label">二类坝</span>
               <span class="value">{{ item.elb }}</span>
               <span class="unit">座</span>
             </div>
-            <div class="subitem">
+            <div class="subitem" :class="{ active: reinforcementType === '三类坝' + item.label }" @click="changeReinforcementType('三类坝' + item.label)">
               <span class="label">三类坝</span>
               <span class="value">{{ item.slb }}</span>
               <span class="unit">座</span>
@@ -112,9 +138,9 @@
           <div class="item_single">
             <img class="icon" src="@/assets/images/icons/property.png" />
             <span class="label" style="margin-right: 24px">委托物业化</span>
-            <span class="value">{{ 93 }}</span>
+            <span class="value">{{ propertyManagement.count }}</span>
             <span class="unit" style="margin-right: 10px">座</span>
-            <span class="value">{{ 92.1 }}</span>
+            <span class="value">{{ propertyManagement.percentage }}</span>
             <span class="unit">%</span>
           </div>
         </div>
@@ -144,15 +170,15 @@
             <div class="row">
               <div class="col">
                 <span class="label">已落实</span>
-                <span class="value" style="color: #47f5a7">15</span>
+                <span class="value" style="color: #47f5a7">{{ fundingGuarantee.yls }}</span>
               </div>
               <div class="col">
-                <span class="value" style="color: #efc30a">86</span>
+                <span class="value" style="color: #efc30a">{{ fundingGuarantee.wls }}</span>
                 <span class="label">未落实</span>
               </div>
             </div>
             <div class="row">
-              <span class="percentage" :style="{ background: '#47f5a7', width: (15 / (15 + 86)) * 100 + '%' }"></span>
+              <span class="percentage" :style="{ background: '#47f5a7', width: (fundingGuarantee.yls / (fundingGuarantee.yls + fundingGuarantee.wls)) * 100 + '%' }"></span>
               <span class="percentage" style="background: #efc30a; flex: 1"></span>
             </div>
           </div>
@@ -160,12 +186,12 @@
           <div class="funding_box row_data">
             <div class="row">
               <span class="label">管理经费</span>
-              <span class="value">1624</span>
+              <span class="value">{{ fundingGuarantee.manage }}</span>
               <span class="unit">万元</span>
             </div>
             <div class="row">
               <span class="label">维养经费</span>
-              <span class="value">391</span>
+              <span class="value">{{ fundingGuarantee.maintance }}</span>
               <span class="unit">万元</span>
             </div>
           </div>
@@ -177,12 +203,12 @@
           <div class="financial_support_item row_data">
             <div class="row">
               <span class="label">村级水务员</span>
-              <span class="value">97</span>
+              <span class="value">{{ financialSupport.people }}</span>
               <span class="unit">人</span>
             </div>
             <div class="row">
               <span class="label">每年费用</span>
-              <span class="value">523.8</span>
+              <span class="value">{{ financialSupport.cost }}</span>
               <span class="unit">万元</span>
             </div>
           </div>
@@ -190,12 +216,12 @@
           <div class="financial_support_item row_data">
             <div class="row">
               <span class="label">市级支持</span>
-              <span class="value">314.28</span>
+              <span class="value">{{ financialSupport.city }}</span>
               <span class="unit">万元</span>
             </div>
             <div class="row">
               <span class="label">乡镇街道</span>
-              <span class="value">209.52</span>
+              <span class="value">{{ financialSupport.town }}</span>
               <span class="unit">万元</span>
             </div>
           </div>
@@ -363,11 +389,11 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onBeforeMount, reactive, ref } from 'vue'
 import LengedBox from '@/components/map/LengedBox.vue'
 import AuxiliaryInfo from '@/components/map/AuxiliaryInfo.vue'
 import axios from '@/api/axios'
-import { renderPoint } from '@/utils/map'
+import { renderPoint, renderOverlay, removeLayer } from '@/utils/map'
 import noteIcon from '@/assets/images/icons/note.png'
 import RingChart from '@/components/chart/RingChart.vue'
 
@@ -386,49 +412,130 @@ const keyword = ref('')
 const scaleArr = ref(['3', '4', '5'])
 const reservoirPoints = ref([])
 const getReservoirPoints = () => {
-  axios
-    .rscp({
-      url: '/mgt/ml/waterdirectory/listJson',
-      method: 'post',
-      data: {
-        type: '水库',
-        adcd: '330782000000',
-        queryStr: keyword.value,
-        fetchAll: true
-      }
-    })
-    .then((res) => {
-      reservoirPoints.value = res.rows || []
-    })
-    .catch(() => {
-      reservoirPoints.value = []
-    })
-    .finally(() => {
-      drawReservoirPoints()
-    })
+  let moduleType, pointType
+  if (legendType.value === '安全鉴定') {
+    moduleType = 66
+    if (appraisalType.value === '三类坝') {
+      pointType = 1
+    } else if (appraisalType.value === '二类坝') {
+      pointType = 2
+    } else if (appraisalType.value === '近一年到期') {
+      pointType = 3
+    }
+    axios
+      .rscp({
+        url: '/mgt/bm/reservoirMatrix/fourTube',
+        method: 'post',
+        data: {
+          adcd: '330782000000',
+          fetchAll: true,
+          moduleType,
+          pointType
+        }
+      })
+      .then((res) => {
+        reservoirPoints.value = res.data.list || []
+      })
+      .catch(() => {
+        reservoirPoints.value = []
+      })
+      .finally(() => {
+        drawReservoirPoints()
+      })
+  } else if (legendType.value === '除险加固') {
+    axios
+      .rscp({
+        url: '/mgt/bm/reservoirWT/generateProject',
+        method: 'post',
+        data: {
+          adcd: '330782000000',
+          gpType: '3',
+          screen: reinforcementSelect.value.join()
+        }
+      })
+      .then((res) => {
+        reservoirPoints.value = res.data || []
+      })
+      .catch(() => {
+        reservoirPoints.value = []
+      })
+      .finally(() => {
+        drawReservoirPoints()
+      })
+  } else {
+    axios
+      .rscp({
+        url: '/mgt/ml/waterdirectory/listJson',
+        method: 'post',
+        data: {
+          type: '水库',
+          adcd: '330782000000',
+          queryStr: keyword.value,
+          scale: scaleArr.value.join(),
+          fetchAll: true
+        }
+      })
+      .then((res) => {
+        reservoirPoints.value = res.rows || []
+      })
+      .catch(() => {
+        reservoirPoints.value = []
+      })
+      .finally(() => {
+        drawReservoirPoints()
+      })
+  }
 }
 const resScaleIcon = {
   3: new URL('@/assets/images/points/res3_large.png', import.meta.url).href,
   4: new URL('@/assets/images/points/res4.png', import.meta.url).href,
-  5: new URL('@/assets/images/points/res5.png', import.meta.url).href
+  5: new URL('@/assets/images/points/res5.png', import.meta.url).href,
+  三类坝: new URL('@/assets/images/points/damRed.png', import.meta.url).href,
+  二类坝: new URL('@/assets/images/points/damYellow.png', import.meta.url).href,
+  近一年到期: new URL('@/assets/images/points/damBlue.png', import.meta.url).href,
+  未开工: new URL('@/assets/images/points/flagYellow.png', import.meta.url).href,
+  已开工: new URL('@/assets/images/points/flagBlue.png', import.meta.url).href,
+  当年完工: new URL('@/assets/images/points/flagGreen.png', import.meta.url).href
 }
 const drawReservoirPoints = () => {
   renderPoint(
     map,
     '水库落点',
     reservoirPoints.value
-      .filter((e) => scaleArr.value.includes(e.projectScale))
+      .filter((e) => scaleArr.value.includes(e.projectScale || e.project_scale))
       .map((e) => {
-        e.longitude = e.lgtd
-        e.latitude = e.lttd
-        e.dotStyleConf = {
-          src: resScaleIcon[e.projectScale]
+        e.longitude = e.lgtd || e.LGTD
+        e.latitude = e.lttd || e.LTTD
+        e.dotStyleConf = {}
+        if (legendType.value === '安全鉴定') {
+          e.dotStyleConf.src = resScaleIcon[appraisalType.value]
+        } else if (legendType.value === '除险加固') {
+          e.dotStyleConf.src = resScaleIcon[e.status]
+        } else {
+          e.dotStyleConf.src = resScaleIcon[e.projectScale || e.project_scale]
         }
         return e
       })
   )
 }
 
+/* 鼠标悬浮落点上是显示工程名称 */
+const featureFloating = ref()
+const floatingPointData = ref({})
+const showFeatureFloating = ref(false)
+const mapMouseMove = (e) => {
+  if (e.featureData && e.featureData.layerName === '水库落点') {
+    floatingPointData.value = e.featureData
+    showFeatureFloating.value = true
+    renderOverlay(map, '落点名称浮窗', e.featureData, featureFloating.value)
+  } else {
+    showFeatureFloating.value = false
+    floatingPointData.value = {}
+    removeLayer(map, '落点名称浮窗')
+  }
+}
+
+/* 安全鉴定选中项 选中后切换地图落点 */
 const appraisalType = ref('')
 const changeAppraisalType = (type) => {
   if (type === appraisalType.value) {
@@ -438,31 +545,323 @@ const changeAppraisalType = (type) => {
     legendType.value = '安全鉴定'
     appraisalType.value = type
   }
+  getReservoirPoints()
 }
+
+/* 除险加固选中项 选中后切换地图落点 */
+const reinforcementType = ref('')
+const reinforcementSelect = ref([])
+const changeReinforcementType = (type) => {
+  if (type === reinforcementType.value) {
+    legendType.value = ''
+    reinforcementType.value = ''
+    reinforcementSelect.value = []
+  } else {
+    legendType.value = '除险加固'
+    reinforcementType.value = type
+    if (type === '二类坝总数') {
+      reinforcementSelect.value = ['6', '7', '8', '9']
+    } else if (type === '三类坝总数') {
+      reinforcementSelect.value = ['6', '7', '8', '10']
+    } else if (type === '二类坝未开工') {
+      reinforcementSelect.value = ['6', '9']
+    } else if (type === '三类坝未开工') {
+      reinforcementSelect.value = ['6', '10']
+    } else if (type === '二类坝已开工') {
+      reinforcementSelect.value = ['7', '9']
+    } else if (type === '三类坝已开工') {
+      reinforcementSelect.value = ['7', '10']
+    }
+  }
+  getReservoirPoints()
+}
+
+/* 安全鉴定和除险加固的统计数据 */
 const safetyAppraisement = ref([
   { label: '三类坝', value: '0', unit: '座' },
-  { label: '二类坝', value: '2', unit: '座' },
-  { label: '近一年到期', value: '6', unit: '座' }
+  { label: '二类坝', value: '0', unit: '座' },
+  { label: '近一年到期', value: '0', unit: '座' }
 ])
 const reinforcementData = ref([
-  { label: '总数', elb: '2', slb: '0' },
+  { label: '总数', elb: '0', slb: '0' },
   { label: '未开工', elb: '0', slb: '0' },
-  { label: '已开工', elb: '2', slb: '0' }
+  { label: '已开工', elb: '0', slb: '0' }
 ])
+const getSafetyAppraisementReinforcementData = () => {
+  axios
+    .rscp({
+      url: '/mgt/resWisdom/synthesisRes',
+      method: 'post',
+      data: {
+        adcd: '330782000000',
+        moduleType: 9
+      }
+    })
+    .then((res) => {
+      const data = res.data || {}
+      reinforcementData.value.map((e) => {
+        switch (e.label) {
+          case '总数':
+            e.elb = data.two ?? '-'
+            e.slb = data.three ?? '-'
+            break
+          case '未开工':
+            e.elb = data.twoWkg2 ?? '-'
+            e.slb = data.threeWkg2 ?? '-'
+            break
+          case '已开工':
+            e.elb = data.twoYkg ?? '-'
+            e.slb = data.threeYkg ?? '-'
+            break
+        }
+        return e
+      })
+      safetyAppraisement.value.map((e) => {
+        switch (e.label) {
+          case '三类坝':
+            e.value = data.three ?? '-'
+            break
+          case '二类坝':
+            e.value = data.two ?? '-'
+            break
+        }
+        return e
+      })
+    })
+    .catch(() => {
+      reinforcementData.value.map((e) => {
+        e.elb = '-'
+        e.slb = '-'
+        return e
+      })
+      safetyAppraisement.value.map((e) => {
+        switch (e.label) {
+          case '三类坝':
+            e.value = '-'
+            break
+          case '二类坝':
+            e.value = '-'
+            break
+        }
+        return e
+      })
+    })
+  axios
+    .rscp({
+      url: '/mgt/resWisdom/synthesisRes',
+      method: 'post',
+      data: {
+        adcd: '330782000000',
+        moduleType: 11
+      }
+    })
+    .then((res) => {
+      const data = res.data || {}
+      safetyAppraisement.value.map((e) => {
+        switch (e.label) {
+          case '近一年到期':
+            e.value = data.dueNum ?? '-'
+            break
+        }
+        return e
+      })
+    })
+    .catch(() => {
+      safetyAppraisement.value.map((e) => {
+        switch (e.label) {
+          case '近一年到期':
+            e.value = '-'
+            break
+        }
+        return e
+      })
+    })
+}
+onBeforeMount(() => {
+  getSafetyAppraisementReinforcementData()
+})
+
+/* 问题处置统计数据 */
 const problemHandle = ref([
-  { label: '检查总量', value: '39', unit: '座次', bgi: new URL('@/assets/images/problemHandle_jczl.png', import.meta.url).href },
-  { label: '发现问题', value: '1', unit: '项', bgi: new URL('@/assets/images/problemHandle_fxwt.png', import.meta.url).href },
-  { label: '处置中', value: '1', unit: '项', bgi: new URL('@/assets/images/problemHandle_czz.png', import.meta.url).href },
+  { label: '检查总量', value: '0', unit: '座次', bgi: new URL('@/assets/images/problemHandle_jczl.png', import.meta.url).href },
+  { label: '发现问题', value: '0', unit: '项', bgi: new URL('@/assets/images/problemHandle_fxwt.png', import.meta.url).href },
+  { label: '处置中', value: '0', unit: '项', bgi: new URL('@/assets/images/problemHandle_czz.png', import.meta.url).href },
   { label: '已处置', value: '0', unit: '项', bgi: new URL('@/assets/images/problemHandle_ycz.png', import.meta.url).href }
 ])
+const getProblemHandle = () => {
+  axios
+    .rscp({
+      url: '/mgt/bm/reservoirMatrix/fourTube',
+      method: 'post',
+      data: {
+        adcd: '330782000000',
+        moduleType: 69
+      }
+    })
+    .then((res) => {
+      const data = res.data || {}
+      problemHandle.value.map((e) => {
+        switch (e.label) {
+          case '检查总量':
+            e.value = data.checkNum ?? '-'
+            break
+          case '发现问题':
+            e.value = data.problemNum ?? '-'
+            break
+          case '处置中':
+            e.value = data.czzNum ?? '-'
+            break
+          case '已处置':
+            e.value = data.yczNum ?? '-'
+            break
+        }
+        return e
+      })
+    })
+    .catch(() => {
+      safetyAppraisement.value.map((e) => {
+        e.value = '-'
+        return e
+      })
+    })
+}
+onBeforeMount(() => getProblemHandle())
+
+/* 物业管理统计数据 */
+const propertyManagement = reactive({
+  count: 0,
+  percentage: 0
+})
+const getPropertyManagement = () => {
+  axios
+    .rscp({
+      url: '/mgt/resWisdom/synthesisRes',
+      method: 'post',
+      data: {
+        adcd: '330782000000',
+        moduleType: 27
+      }
+    })
+    .then((res) => {
+      propertyManagement.count = res.data?.xwyNum + res.data?.dwyNum
+      propertyManagement.percentage = res.data?.wyRate ?? '-'
+    })
+    .catch(() => {
+      propertyManagement.count = '-'
+      propertyManagement.percentage = '-'
+    })
+}
+onBeforeMount(() => {
+  getPropertyManagement()
+})
 const propertyContract = ref([
-  { label: '物业合同', value: '428', unit: '个' },
-  { label: '委托合同', value: '667', unit: '份' },
-  { label: '合同金额', value: '3258.5', unit: '亿元' }
+  { label: '物业单位', value: '0', unit: '个' },
+  { label: '委托合同', value: '0', unit: '份' },
+  { label: '合同金额', value: '0', unit: '亿元' }
 ])
+const getPropertyContract = () => {
+  axios
+    .rscp({
+      url: '/mgt/bm/reservoirMatrix/fourSystem',
+      method: 'post',
+      data: {
+        adcd: '330782000000',
+        moduleType: 14
+      }
+    })
+    .then((res) => {
+      const data = res.data || {}
+      propertyContract.value.map((e) => {
+        switch (e.label) {
+          case '物业单位':
+            e.value = data.wydwNum ?? '-'
+            break
+          case '委托合同':
+            e.value = data.wthtNum ?? '-'
+            break
+          case '合同金额':
+            e.value = data.htje ?? '-'
+            break
+        }
+        return e
+      })
+    })
+    .catch(() => {
+      propertyContract.value.map((e) => {
+        e.value = '-'
+        return e
+      })
+    })
+}
+onBeforeMount(() => {
+  getPropertyContract()
+})
+
+/* 经费保障统计数据 */
+const fundingGuarantee = reactive({
+  yls: 0,
+  wls: 0,
+  manage: 0,
+  maintance: 0
+})
+const getFundingGuarantee = () => {
+  axios
+    .rscp({
+      url: '/mgt/bm/reservoirMatrix/fourSystem',
+      method: 'post',
+      data: {
+        adcd: '330782000000',
+        moduleType: 12
+      }
+    })
+    .then((res) => {
+      fundingGuarantee.yls = res.data?.ylsNum ?? '-'
+      fundingGuarantee.wls = res.data?.wlsNum ?? '-'
+      fundingGuarantee.manage = res.data?.gljf ?? '-'
+      fundingGuarantee.maintance = res.data?.wyjf ?? '-'
+    })
+    .catch(() => {
+      fundingGuarantee.yls = '-'
+      fundingGuarantee.wls = '-'
+      fundingGuarantee.manage = '-'
+      fundingGuarantee.maintance = '-'
+    })
+}
+onBeforeMount(() => {
+  getFundingGuarantee()
+})
+
+/* 村级水务员资金支撑统计数据 */
+const financialSupport = reactive({
+  people: 0,
+  cost: 0,
+  city: 0,
+  town: 0
+})
+const getFinancialSupport = () => {
+  axios
+    .yw({
+      url: '/water-fund-support/count',
+      method: 'get'
+    })
+    .then((res) => {
+      financialSupport.people = res.data?.oneNum ?? '-'
+      financialSupport.cost = res.data?.twoNum ?? '-'
+      financialSupport.city = res.data?.threeNum ?? '-'
+      financialSupport.town = res.data?.fourNum ?? '-'
+    })
+    .catch(() => {
+      financialSupport.people = '-'
+      financialSupport.cost = '-'
+      financialSupport.city = '-'
+      financialSupport.town = '-'
+    })
+}
+onBeforeMount(() => {
+  getFinancialSupport()
+})
 
 const patrolMode = ref('记分值')
-
 const eventStatistic = ref([
   { value: 23, name: '基础治理平台', color: '#46FDFF' },
   { value: 13, name: '12345', color: '#419EFF' },
@@ -470,7 +869,6 @@ const eventStatistic = ref([
   { value: 4, name: '定期检查', color: '#47F5A7' },
   { value: 10, name: '设备感知', color: '#F8861C' }
 ])
-
 const inspectionRateList = computed(() => {
   return reservoirPoints.value
 })
@@ -509,6 +907,20 @@ const inspectionRateList = computed(() => {
     display: flex;
     align-items: center;
     padding: 0 10px;
+    cursor: pointer;
+    &.active {
+      position: relative;
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(180deg, rgba(0, 140, 255, 0) 0%, rgba(0, 140, 255, 0.8) 100%);
+        border: 1px solid rgba(65, 158, 255, 0.8);
+      }
+    }
     + .subitem {
       margin-top: 4px;
     }
@@ -516,17 +928,20 @@ const inspectionRateList = computed(() => {
       flex: 1;
       font-size: 16px;
       line-height: 24px;
+      z-index: 1;
     }
     .value {
       font-family: PangMenZhengDao;
       font-size: 20px;
       line-height: 24px;
       color: $color-primary;
+      z-index: 1;
     }
     .unit {
       font-size: 14px;
       line-height: 24px;
       margin-left: 5px;
+      z-index: 1;
     }
   }
 }
@@ -851,5 +1266,14 @@ const inspectionRateList = computed(() => {
       }
     }
   }
+}
+.reservoir_name {
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 4px;
+  background: #ffffff;
+  font-size: 16px;
+  line-height: 26px;
+  color: #333333;
 }
 </style>
