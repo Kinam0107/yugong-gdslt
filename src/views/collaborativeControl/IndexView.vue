@@ -168,7 +168,7 @@
               <span class="title">本年度经费落实情况</span>
             </div>
             <div class="row">
-              <div class="col">
+              <div class="col clickable" :class="{ active: implemented }" @click="changeImplemented()">
                 <span class="label">已落实</span>
                 <span class="value" style="color: #47f5a7">{{ fundingGuarantee.yls }}</span>
               </div>
@@ -428,9 +428,10 @@ const getReservoirPoints = () => {
         method: 'post',
         data: {
           adcd: '330782000000',
-          fetchAll: true,
+          name: keyword.value,
           moduleType,
-          pointType
+          pointType,
+          fetchAll: true
         }
       })
       .then((res) => {
@@ -449,8 +450,32 @@ const getReservoirPoints = () => {
         method: 'post',
         data: {
           adcd: '330782000000',
+          name: keyword.value,
           gpType: '3',
           screen: reinforcementSelect.value.join()
+        }
+      })
+      .then((res) => {
+        reservoirPoints.value = res.data || []
+      })
+      .catch(() => {
+        reservoirPoints.value = []
+      })
+      .finally(() => {
+        drawReservoirPoints()
+      })
+  } else if (legendType.value === '已落实') {
+    moduleType = 13
+    pointType = 23
+    axios
+      .rscp({
+        url: '/mgt/bm/reservoirMatrix/fourSystem',
+        method: 'post',
+        data: {
+          adcd: '330782000000',
+          name: keyword.value,
+          moduleType,
+          pointType
         }
       })
       .then((res) => {
@@ -535,9 +560,11 @@ const mapMouseMove = (e) => {
   }
 }
 
-/* 安全鉴定选中项 选中后切换地图落点 */
+/* 安全鉴定选中项 选中后更新地图落点 */
 const appraisalType = ref('')
 const changeAppraisalType = (type) => {
+  reinforcementType.value = ''
+  implemented.value = false
   if (type === appraisalType.value) {
     legendType.value = ''
     appraisalType.value = ''
@@ -548,10 +575,12 @@ const changeAppraisalType = (type) => {
   getReservoirPoints()
 }
 
-/* 除险加固选中项 选中后切换地图落点 */
+/* 除险加固选中项 选中后更新地图落点 */
 const reinforcementType = ref('')
 const reinforcementSelect = ref([])
 const changeReinforcementType = (type) => {
+  appraisalType.value = ''
+  implemented.value = false
   if (type === reinforcementType.value) {
     legendType.value = ''
     reinforcementType.value = ''
@@ -572,6 +601,20 @@ const changeReinforcementType = (type) => {
     } else if (type === '三类坝已开工') {
       reinforcementSelect.value = ['7', '10']
     }
+  }
+  getReservoirPoints()
+}
+
+/* 选中已落实 选中后更新地图落点 */
+const implemented = ref(false)
+const changeImplemented = () => {
+  appraisalType.value = ''
+  reinforcementType.value = ''
+  implemented.value = !implemented.value
+  if (implemented.value) {
+    legendType.value = '已落实'
+  } else {
+    legendType.value = ''
   }
   getReservoirPoints()
 }
@@ -1005,14 +1048,29 @@ const inspectionRateList = computed(() => {
         display: flex;
         align-items: center;
         gap: 4px;
+        &.active {
+          position: relative;
+          &::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -6px;
+            bottom: 0;
+            left: -6px;
+            background: linear-gradient(180deg, rgba(0, 140, 255, 0) 0%, rgba(0, 140, 255, 0.8) 100%);
+            border: 1px solid rgba(65, 158, 255, 0.8);
+          }
+        }
         .label {
           font-size: 16px;
           line-height: 24px;
+          z-index: 1;
         }
         .value {
           font-family: PangMenZhengDao;
           font-size: 18px;
           line-height: 26px;
+          z-index: 1;
         }
       }
       .percentage {
