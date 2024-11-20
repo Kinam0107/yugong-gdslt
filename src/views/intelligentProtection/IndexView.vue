@@ -282,6 +282,8 @@ const mapSingleClick = (e) => {
       openVideoPopup(e.featureData.resName, e.featureData.prcd)
     } else if (equiType.value === '雨水情') {
       openRainwaterDetail(e.featureData.resName, e.featureData.prcd)
+    } else if (equiType.value === '安全监测') {
+      openSafetyMonitorDetail(e.featureData.resName, e.featureData.prcd)
     }
   }
 }

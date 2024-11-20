@@ -111,7 +111,7 @@ const initChart = () => {
         lineHeight: 19,
         align: 'left'
       },
-      minInterval: 5,
+      minInterval: 1,
       axisLine: { show: false },
       axisTick: { show: false },
       axisLabel: {
