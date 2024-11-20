@@ -17,7 +17,8 @@
 .ghost_button {
   &.el-button--primary {
     background-color: transparent !important;
-    border-color: #fff !important;
+    border-color: $color-primary !important;
+    color: $color-primary !important;
   }
   &.is-disabled {
     opacity: 0.5 !important;

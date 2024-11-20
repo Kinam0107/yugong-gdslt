@@ -79,7 +79,7 @@
       <div class="section_title">安全管控</div>
       <div class="security_control_box">
         <CategoryTitle modelValue="安全鉴定" style="margin-bottom: 11px">
-          <img class="clickable" :src="noteIcon" />
+          <img class="clickable" :src="noteIcon" @click="openSecurityAppraisalDetails" />
         </CategoryTitle>
         <div class="fence_style" style="margin-bottom: 19px">
           <div class="row">
@@ -385,6 +385,7 @@
         </div>
       </div>
     </template>
+    <SecurityAppraisal v-model="securityAppraisalVisible" />
   </ScreenLayout>
 </template>
 
@@ -396,6 +397,7 @@ import axios from '@/api/axios'
 import { renderPoint, renderOverlay, removeLayer } from '@/utils/map'
 import noteIcon from '@/assets/images/icons/note.png'
 import RingChart from '@/components/chart/RingChart.vue'
+import SecurityAppraisal from './detailDialog.vue/SecurityAppraisal.vue'
 
 /* 地图初始化后取得地图对象 */
 const legendType = ref('')
@@ -915,6 +917,12 @@ const eventStatistic = ref([
 const inspectionRateList = computed(() => {
   return reservoirPoints.value
 })
+
+/* 安全鉴定详情弹窗 */
+const securityAppraisalVisible = ref(false)
+const openSecurityAppraisalDetails = () => {
+  securityAppraisalVisible.value = true
+}
 </script>
 
 <style scoped lang="scss">

@@ -153,13 +153,23 @@ div.el-table {
   }
   th.el-table__cell {
     background-color: rgba(121, 197, 255, 0.2);
+    border: none;
   }
   th.el-table__cell.is-leaf,
   td.el-table__cell {
-    border-bottom: none;
+    border: none;
   }
-  .el-table__inner-wrapper::before {
+  .el-table__inner-wrapper::before,
+  .el-table__inner-wrapper::after {
     height: 0;
+  }
+  .el-table__border-left-patch,
+  &.el-table--border::before,
+  &.el-table--border::after {
+    width: 0;
+  }
+  thead.is-group th.el-table__cell {
+    background-color: rgba(121, 197, 255, 0.2);
   }
 }
 div.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
