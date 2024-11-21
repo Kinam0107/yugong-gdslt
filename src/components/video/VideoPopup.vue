@@ -9,23 +9,30 @@
           <span class="text">个</span>
         </template>
       </div>
-      <el-icon color="#46FDFF" size="24" style="cursor: pointer" @click="close"><CloseBold /></el-icon>
+      <el-icon color="#46FDFF" size="24" style="cursor: pointer" @click="close">
+        <CloseBold />
+      </el-icon>
     </div>
     <div class="body">
-      <VideoPlayer v-if="prcd" :code="activeVideoCode" />
+      <VideoPlayer v-if="prcd" :code="activeVideoCode" :state="activeVideoState" />
       <VideoPlayer v-else :code="props.code" />
     </div>
     <div class="selection" v-if="props.prcd">
-      <el-icon color="#46FDFF" size="26" style="cursor: pointer" @click="scrollList(-695)"><ArrowLeftBold /></el-icon>
+      <el-icon color="#46FDFF" size="26" style="cursor: pointer" @click="scrollList(-695)">
+        <ArrowLeftBold />
+      </el-icon>
       <ul class="video_list" ref="refVideoList">
-        <li v-for="item in videoList" :key="item.id" :class="{ active: item.cameraCode === activeVideoCode }" @click="playVideo(item.cameraCode)">
+        <li v-for="item in videoList" :key="item.id" :class="{ active: item.cameraCode === activeVideoCode }"
+          @click="playVideo(item.cameraCode, item.state)">
           <img class="icon" v-if="item.cameraName.includes('球机')" src="@/assets/images/icons/cameraSpherical.png" />
           <img class="icon" v-else src="@/assets/images/icons/cameraGunShaped.png" />
           <div class="name">{{ item.cameraName }}</div>
           <i class="state" :style="{ background: item.state == 1 ? '#47F5A7' : '#F7B500' }"></i>
         </li>
       </ul>
-      <el-icon color="#46FDFF" size="26" style="cursor: pointer" @click="scrollList(695)"><ArrowRightBold /></el-icon>
+      <el-icon color="#46FDFF" size="26" style="cursor: pointer" @click="scrollList(695)">
+        <ArrowRightBold />
+      </el-icon>
     </div>
   </div>
 </template>
@@ -51,13 +58,15 @@ const props = defineProps({
   code: {
     type: String,
     default: ''
-  }
+  },
 })
 
 const emits = defineEmits(['update:modelValue'])
 
 const activeVideoCode = ref('')
-const playVideo = (code) => {
+const activeVideoState = ref(1)
+const playVideo = (code, state) => {
+  activeVideoState.value = state
   activeVideoCode.value = code
 }
 
@@ -118,25 +127,30 @@ const close = () => {
   border: 1px solid rgba(133, 243, 255, 0.3);
   box-shadow: inset 0px 0px 14px 0px rgba(0, 161, 255, 0.3);
   z-index: 1;
+
   .top {
     position: relative;
     display: flex;
     align-items: center;
     height: 55px;
     padding: 0 20px;
+
     .name {
       font-size: 20px;
       font-weight: 500;
     }
+
     .count {
       display: flex;
       align-items: center;
       flex: 1;
       margin-left: 24px;
+
       .text {
         font-size: 14px;
         font-weight: 500;
       }
+
       .number {
         font-family: PangMenZhengDao;
         font-size: 20px;
@@ -145,10 +159,12 @@ const close = () => {
       }
     }
   }
+
   .body {
     height: 420px;
     border: 3px solid #286378;
   }
+
   .selection {
     display: flex;
     align-items: center;
@@ -156,10 +172,12 @@ const close = () => {
     padding: 0 4px;
   }
 }
+
 ul.video_list {
   overflow: auto;
   display: flex;
   flex: 1;
+
   li {
     position: relative;
     flex-basis: 131px;
@@ -168,12 +186,15 @@ ul.video_list {
     height: 96px;
     border: 1px solid rgba(65, 158, 255, 0.8);
     cursor: pointer;
-    + li {
+
+    +li {
       margin-left: 8px;
     }
+
     &.active {
       background: linear-gradient(180deg, rgba(0, 140, 255, 0) 0%, rgba(0, 140, 255, 0.8) 100%);
     }
+
     .icon {
       position: absolute;
       top: 10px;
@@ -182,6 +203,7 @@ ul.video_list {
       width: 32px;
       height: 32px;
     }
+
     .name {
       position: absolute;
       top: 48px;
@@ -195,6 +217,7 @@ ul.video_list {
       text-align: center;
       @include ellipsis(2);
     }
+
     i {
       position: absolute;
       top: 6px;

@@ -1,9 +1,13 @@
 <template>
   <ScreenLayout :hiddenLeft="isProjectDetail" :hiddenRight="isProjectDetail">
-    <OlMap :class="{ project_detail: isProjectDetail }" :baseMapMode="mapMode" :adaptPadding="mapPadding" @initFinished="mapInitFinished" @mouseMove="mapMouseMove" @singleClick="mapSingleClick">
-      <el-input v-show="!isProjectDetail" v-model="keyword" style="width: 216px; margin-bottom: 12px" size="large" placeholder="请输入水库名称搜索" clearable @change="getReservoirPoints">
+    <OlMap :class="{ project_detail: isProjectDetail }" :baseMapMode="mapMode" :adaptPadding="mapPadding"
+      @initFinished="mapInitFinished" @mouseMove="mapMouseMove" @singleClick="mapSingleClick">
+      <el-input v-show="!isProjectDetail" v-model="keyword" style="width: 216px; margin-bottom: 12px" size="large"
+        placeholder="请输入水库名称搜索" clearable @change="getReservoirPoints">
         <template #suffix>
-          <el-icon style="cursor: pointer" @click="getReservoirPoints"><Search /></el-icon>
+          <el-icon style="cursor: pointer" @click="getReservoirPoints">
+            <Search />
+          </el-icon>
         </template>
       </el-input>
       <br v-show="!isProjectDetail" />
@@ -13,68 +17,72 @@
       </el-radio-group>
       <div ref="featureFloating">
         <template v-if="showFeatureFloating">
-          <div class="reservoir_name">{{ floatingPointData.name || floatingPointData.stnm || floatingPointData.cameraName || floatingPointData.sensorName || floatingPointData.facName }}</div>
+          <div class="reservoir_name">{{ floatingPointData.name || floatingPointData.stnm ||
+            floatingPointData.cameraName || floatingPointData.sensorName || floatingPointData.facName }}</div>
         </template>
       </div>
       <div ref="featureOverlay">
         <template v-if="showFeatureOverlay">
-          <PopupBox :title="overlayPointData.layerName === '水库落点' ? overlayPointData.name : ''" @close="closeFeatureOverlay">
+          <PopupBox :title="overlayPointData.layerName === '水库落点' ? overlayPointData.name : ''"
+            @close="closeFeatureOverlay">
             <template v-if="overlayPointData.layerName === '水库落点'">
               <div class="item">
                 <span class="label">工程规模：</span>
-                <span class="value">{{ overlayPointData.scale }}</span>
+                <span class="value">{{ overlayPointData.scale || '-' }}</span>
               </div>
               <div class="item">
                 <span class="label">所在乡镇：</span>
-                <span class="value">{{ overlayPointData.adcdnm }}</span>
+                <span class="value">{{ overlayPointData.adcdnm || '-' }}</span>
               </div>
             </template>
             <template v-else-if="overlayPointData.layerName === '水位站'">
               <div class="item">
-                <span class="label">{{ overlayPointData.stnm }}</span>
-                <span class="detail" @click="openWaterLevelDetail(overlayPointData.stcd, overlayPointData.stnm, overlayPointData.mFS)">详情</span>
+                <span class="label">{{ overlayPointData.stnm || '-' }}</span>
+                <span class="detail"
+                  @click="openWaterLevelDetail(overlayPointData.stcd, overlayPointData.stnm, overlayPointData.mFS)">详情</span>
               </div>
               <div class="item">
                 <span class="label">当前水位：</span>
-                <span class="value">{{ overlayPointData.rrtd }}m</span>
+                <span class="value">{{ overlayPointData.rrtd || '-' }}m</span>
               </div>
               <div class="item">
                 <span class="label">更新时间：</span>
-                <span class="value">{{ overlayPointData.rtm }}</span>
+                <span class="value">{{ overlayPointData.rtm || '-' }}</span>
               </div>
             </template>
             <template v-else-if="overlayPointData.layerName === '流量站'">
               <div class="item">
-                <span class="label">{{ overlayPointData.stnm }}</span>
+                <span class="label">{{ overlayPointData.stnm || '-' }}</span>
                 <span class="detail" @click="openFlowDetail(overlayPointData.stcd, overlayPointData.stnm)">详情</span>
               </div>
               <div class="item">
                 <span class="label">实时流量：</span>
-                <span class="value">{{ overlayPointData.rrtd }}m³/s</span>
+                <span class="value">{{ overlayPointData.rrtd || '-' }}m³/s</span>
               </div>
               <div class="item">
                 <span class="label">更新时间：</span>
-                <span class="value">{{ overlayPointData.rtm }}</span>
+                <span class="value">{{ overlayPointData.rtm || '-' }}</span>
               </div>
             </template>
             <template v-else-if="overlayPointData.layerName === '雨量站'">
               <div class="item">
-                <span class="label">{{ overlayPointData.stnm }}</span>
+                <span class="label">{{ overlayPointData.stnm || '-' }}</span>
                 <span class="detail" @click="openRainfallDetail(overlayPointData.stcd, overlayPointData.stnm)">详情</span>
               </div>
               <div class="item">
                 <span class="label">累积雨量：</span>
-                <span class="value">{{ overlayPointData.prtd }}mm</span>
+                <span class="value">{{ overlayPointData.prtd || '-' }}mm</span>
               </div>
               <div class="item">
                 <span class="label">更新时间：</span>
-                <span class="value">{{ overlayPointData.ptm }}</span>
+                <span class="value">{{ overlayPointData.ptm || '-' }}</span>
               </div>
             </template>
             <template v-else-if="overlayPointData.layerName === '视频站'">
               <div class="item">
-                <span class="label">{{ overlayPointData.name }}</span>
-                <span class="detail" @click="openMonitorPopup(overlayPointData.name, overlayPointData.cameraCode)">详情</span>
+                <span class="label">{{ overlayPointData.cameraName || '-' }}</span>
+                <span class="detail" v-if="overlayPointData.state == 1"
+                  @click="openMonitorPopup(overlayPointData.cameraName, overlayPointData.cameraCode)">详情</span>
               </div>
               <div class="item">
                 <span class="label">状态：</span>
@@ -83,34 +91,37 @@
             </template>
             <template v-else-if="overlayPointData.layerName === '安全监测'">
               <div class="item">
-                <span class="label">{{ overlayPointData.sensorName }}</span>
-                <span class="detail" @click="openSafetyDetail(overlayPointData.sensorId, overlayPointData.sensorName)">详情</span>
+                <span class="label">{{ overlayPointData.sensorName || '-' }}</span>
+                <span class="detail"
+                  @click="openSafetyDetail(overlayPointData.sensorId, overlayPointData.sensorName)">详情</span>
               </div>
               <div class="item">
                 <span class="label">监测值：</span>
-                <span class="value">{{ overlayPointData.todo }}</span>
+                <span class="value">{{ overlayPointData.todo || '-' }}</span>
               </div>
               <div class="item">
                 <span class="label">监测时间：</span>
-                <span class="value">{{ overlayPointData.todo }}</span>
+                <span class="value">{{ overlayPointData.todo || '-' }}</span>
               </div>
             </template>
             <template v-else-if="overlayPointData.layerName === '重要设施' || overlayPointData.layerName === '重点对象'">
               <div class="item">
-                <span class="label">{{ overlayPointData.facName }}</span>
+                <span class="label">{{ overlayPointData.facName || '-' }}</span>
                 <span class="detail" @click="openElementDetail(overlayPointData)">详情</span>
               </div>
               <div class="item">
                 <span class="label">{{ overlayPointData.layerName }}：</span>
-                <span class="value">{{ overlayPointData.facType }}</span>
+                <span class="value">{{ overlayPointData.facType || '-' }}</span>
               </div>
               <div class="item">
                 <span class="label">位置：</span>
-                <span class="value">{{ overlayPointData.facLoca == 1 ? '上游' : '下游' }}</span>
+                <span class="value">
+                  {{ overlayPointData.facLoca == 1 ? '上游' : overlayPointData.facLoca == 2 ? '下游' : '-' }}
+                </span>
               </div>
               <div class="item">
                 <span class="label">所在位置：</span>
-                <span class="value">{{ overlayPointData.loc }}</span>
+                <span class="value">{{ overlayPointData.loc || '-' }}</span>
               </div>
             </template>
           </PopupBox>
@@ -154,7 +165,8 @@
         <div class="scale">中型</div>
         <div class="address">苏溪镇</div>
       </div>
-      <div class="pilot_reservoir long_men_jiao" @click="enterReservoirDetail('33d473fd-1c7b-11ea-8760-6c92bf66b1485e')">
+      <div class="pilot_reservoir long_men_jiao"
+        @click="enterReservoirDetail('33d473fd-1c7b-11ea-8760-6c92bf66b1485e')">
         <div class="label">龙门脚水库</div>
         <div class="tag">矩阵试点</div>
         <div class="scale">小(1)型</div>
@@ -191,12 +203,14 @@
     </template>
     <template #right>
       <div class="section_title">全要素掌握</div>
-      <el-select class="res_select" v-model="prcd" filterable size="large" popper-class="transparent_pooper" @change="changePrcd">
+      <el-select class="res_select" v-model="prcd" filterable size="large" popper-class="transparent_pooper"
+        @change="changePrcd">
         <el-option v-for="item in resOptions" :key="item.id" :label="item.resName" :value="item.id" />
       </el-select>
       <div class="res_element">
         <div class="module_title" style="margin-bottom: 10px">库区要素</div>
-        <CategoryTitle v-model="waterLevelType" :tabs="['正常蓄水位', '设计洪水位', '校核洪水位']" style="margin-bottom: 9px" @change="setWaterLevelInfluence" />
+        <CategoryTitle v-model="waterLevelType" :tabs="['正常蓄水位', '设计洪水位', '校核洪水位']" style="margin-bottom: 9px"
+          @change="setWaterLevelInfluence" />
         <div class="fence_style" style="margin-bottom: 10px">
           <div class="row" v-for="i in 2" :key="i">
             <template v-for="(item, index) in waterLevelInfluence.slice((i - 1) * 3, i * 3)" :key="item.label">
@@ -265,9 +279,11 @@
       </div>
     </template>
     <template #cover>
-      <VideoPopup v-model="videoVisible" :name="project_name" :prcd="project_prcd" :code="camera_code" />
+      <VideoPopup v-model="videoVisible" :name="project_name" :prcd="project_prcd" :code="camera_code"
+        :state="camera_state" />
     </template>
-    <WaterLevelStation v-model="waterLevelStationVisible" :id="waterLevelStationId" :title="waterLevelStationName" :floodLimit="waterLevelStationFloodLimit" />
+    <WaterLevelStation v-model="waterLevelStationVisible" :id="waterLevelStationId" :title="waterLevelStationName"
+      :floodLimit="waterLevelStationFloodLimit" />
     <FlowStation v-model="flowStationVisible" :id="flowStationId" :title="flowStationName" />
     <RainfallStation v-model="rainfallStationVisible" :id="rainfallStationId" :title="rainfallStationName" />
     <SafetyStation v-model="safetyStationVisible" :id="safetyStationId" :title="safetyStationName" />
@@ -550,14 +566,13 @@ const enterReservoirDetail = async (prcd) => {
         map,
         '流量站',
         data
-          .filter((e) => e.sttp === 'PP')
+          .filter((e) => e.sttp === 'QQ')
           .map((e) => {
             e.id = e.stcd
-            e.longitude = Number(e.lgtd) + 0.00000001
-            e.latitude = Number(e.lttd) + 0.00000001
+            e.longitude = Number(e.lgtd) + 0.00000002
+            e.latitude = Number(e.lttd) + 0.00000002
             e.dotStyleConf = {
-              src: getPPIcon(Number(e.prtd)),
-              scale: 0.7
+              src: new URL('@/assets/images/points/flow.png', import.meta.url).href
             }
             return e
           })
@@ -803,7 +818,12 @@ onBeforeMount(() => {
       resOptions.value = []
     })
     .finally(() => {
-      prcd.value = resOptions.value.length ? resOptions.value[0].id : ''
+      if (resOptions.value.length) {
+        const index = resOptions.value.findIndex(e => e.id === '330782022000521')
+        prcd.value = index > -1 ? '330782022000521' : resOptions.value[0].id
+      } else {
+        prcd.value = ''
+      }
       if (prcd.value) changePrcd()
     })
 })
@@ -1000,33 +1020,41 @@ const getFeatureData = () => {
   top: 88px;
   left: 488px;
 }
+
 :deep(.slot-wrapper.default) {
   top: 88px;
   right: 488px;
   @include mapOperate();
 }
+
 :deep(.slot-wrapper.legend) {
   right: 488px;
   bottom: 16px;
 }
+
 :deep(.slot-wrapper.toolbox) {
   left: 488px;
   bottom: 16px;
 }
+
 .project_detail {
   :deep(.slot-wrapper.back) {
     left: 16px;
   }
+
   :deep(.slot-wrapper.default) {
     right: 16px;
   }
+
   :deep(.slot-wrapper.legend) {
     right: 16px;
   }
+
   :deep(.slot-wrapper.toolbox) {
     left: 16px;
   }
 }
+
 .pilot_reservoir {
   position: absolute;
   top: 55px;
@@ -1034,12 +1062,15 @@ const getFeatureData = () => {
   height: 88px;
   border: 1px solid rgba(65, 158, 255, 0.8);
   cursor: pointer;
+
   &.qiao_xi {
     left: 15px;
   }
+
   &.long_men_jiao {
     right: 15px;
   }
+
   &::after {
     content: '';
     position: absolute;
@@ -1049,6 +1080,7 @@ const getFeatureData = () => {
     height: 24px;
     background-image: url(@/assets/images/fivePoint.png);
   }
+
   .label {
     position: absolute;
     top: 12px;
@@ -1057,6 +1089,7 @@ const getFeatureData = () => {
     font-weight: 500;
     line-height: 32px;
   }
+
   .tag {
     position: absolute;
     top: 18px;
@@ -1070,6 +1103,7 @@ const getFeatureData = () => {
     line-height: 20px;
     text-align: center;
   }
+
   .scale,
   .address {
     position: absolute;
@@ -1079,19 +1113,23 @@ const getFeatureData = () => {
     line-height: 16px;
     color: $color-primary;
   }
+
   .scale {
     left: 16px;
   }
+
   .address {
     left: 72px;
   }
 }
+
 .type_statistic {
   position: absolute;
   top: 143px;
   right: 15px;
   left: 15px;
   height: 204px;
+
   .type_chart {
     position: absolute;
     left: 0;
@@ -1099,6 +1137,7 @@ const getFeatureData = () => {
     width: 190px;
     height: 190px;
   }
+
   .type_legend {
     position: absolute;
     top: 0;
@@ -1111,19 +1150,23 @@ const getFeatureData = () => {
     gap: 10px;
     padding-left: 30px;
     padding-right: 34px;
+
     .item {
       display: flex;
       align-items: center;
-      > i {
+
+      >i {
         display: inline-block;
         width: 16px;
         height: 16px;
         margin-right: 8px;
       }
+
       .name {
         font-size: 16px;
         line-height: 19px;
       }
+
       .value {
         flex: 1;
         font-family: PangMenZhengDao;
@@ -1131,6 +1174,7 @@ const getFeatureData = () => {
         line-height: 20px;
         text-align: right;
       }
+
       .unit {
         font-size: 16px;
         line-height: 19px;
@@ -1139,12 +1183,14 @@ const getFeatureData = () => {
     }
   }
 }
+
 .important_res_title {
   position: absolute;
   top: 347px;
   right: 15px;
   left: 15px;
 }
+
 .important_res_list {
   overflow: auto;
   position: absolute;
@@ -1152,14 +1198,17 @@ const getFeatureData = () => {
   right: 15px;
   left: 15px;
   bottom: 15px;
+
   .item {
     position: relative;
     height: 100px;
     padding-left: 152px;
     cursor: pointer;
-    + .item {
+
+    +.item {
       margin-top: 24px;
     }
+
     .thumbnail {
       position: absolute;
       left: 0;
@@ -1167,6 +1216,7 @@ const getFeatureData = () => {
       height: 100px;
       border-radius: 4px;
     }
+
     .name {
       font-size: 20px;
       font-weight: 500;
@@ -1174,6 +1224,7 @@ const getFeatureData = () => {
       padding-top: 6px;
       padding-bottom: 14px;
     }
+
     .scale {
       display: flex;
       align-items: center;
@@ -1186,25 +1237,30 @@ const getFeatureData = () => {
       line-height: 16px;
       color: $color-primary;
     }
+
     .desc {
       font-size: 16px;
       line-height: 19px;
-      + .desc {
+
+      +.desc {
         margin-top: 12px;
       }
     }
   }
 }
+
 .res_select {
   width: calc(100% - 30px);
   margin: 12px 15px 10px 15px;
 }
+
 .res_element {
   overflow: auto;
   width: 100%;
   height: calc(100% - 101px);
   padding: 0 15px 15px;
 }
+
 .reservoir_name {
   height: 26px;
   padding: 0 8px;

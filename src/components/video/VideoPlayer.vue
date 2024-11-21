@@ -19,6 +19,10 @@ const props = defineProps({
     type: String,
     default: '',
     required: true
+  },
+  state: {
+    type: String,
+    default: '1',
   }
 })
 
@@ -26,8 +30,13 @@ watch(
   () => props.code,
   (val) => {
     if (val) {
-      failure.value = false
-      getPreviewStreamUrl()
+      if (props.state == 1) {
+        failure.value = false
+        getPreviewStreamUrl()
+      } else {
+        failure.value = true
+        stopPlay()
+      }
     }
   }
 )
@@ -195,6 +204,7 @@ defineExpose({ play })
 .video_player {
   width: 100%;
   height: 100%;
+
   &.empty {
     display: flex;
     flex-direction: column;

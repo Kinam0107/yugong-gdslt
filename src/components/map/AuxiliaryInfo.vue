@@ -22,10 +22,10 @@
       <span>河道水系</span>
     </el-checkbox>
     <br />
-    <el-checkbox v-model="hsfxChecked" label="洪水风险图">
+    <!-- <el-checkbox v-model="hsfxChecked" label="洪水风险图">
       <i class="cube" style="background-image: linear-gradient(180deg, #0453de 0%, #fffe39 27%, #ff9e24 59%, #fc0106 100%)"></i>
       <span>洪水风险图</span>
-    </el-checkbox>
+    </el-checkbox> -->
     <div ref="featureOverlay">
       <template v-if="showFeatureOverlay">
         <PopupBox @close="closeFeatureOverlay">
@@ -255,7 +255,7 @@ const stbhhxCheckedChange = (val) => {
 }
 
 const hdsxChecked = ref(false)
-const hsfxChecked = ref(false)
+// const hsfxChecked = ref(false)
 </script>
 
 <style scoped lang="scss">
