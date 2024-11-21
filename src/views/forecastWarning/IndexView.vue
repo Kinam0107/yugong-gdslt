@@ -79,6 +79,13 @@
         <div class="storage_category">
           <div class="item" :class="{ active: storageCategory === '现状实况' }" @click="changeStorageCategory('现状实况')">现状实况</div>
           <div class="item" :class="{ active: storageCategory === '假定雨量' }" @click="changeStorageCategory('假定雨量')">假定雨量</div>
+          <template v-if="storageCategory === '假定雨量'">
+            <el-radio-group v-model="rain" @change="getStorage">
+              <el-radio label="50">50mm</el-radio>
+              <el-radio label="100">100mm</el-radio>
+            </el-radio-group>
+            <el-input v-model="rainCustomize" style="width: 70px" size="small" placeholder="自定义" @change="changeRainCustomize" />
+          </template>
         </div>
         <div class="storage_type">
           <div class="item" :class="{ active: storageType === '至限制水位' }" @click="changeStorageType('至限制水位')">至限制水位</div>
@@ -91,7 +98,7 @@
             <div class="data">
               <div class="label">蓄水总量</div>
               <div class="value">
-                <span class="num">{{ 1.17 }}</span>
+                <span class="num">{{ storageTotal }}</span>
                 <span class="unit">亿m³</span>
               </div>
             </div>
@@ -101,7 +108,7 @@
             <div class="data">
               <div class="label">蓄水率</div>
               <div class="value">
-                <span class="num">{{ 58.92 }}</span>
+                <span class="num">{{ storageRate }}</span>
                 <span class="unit">%</span>
               </div>
             </div>
@@ -109,25 +116,13 @@
         </div>
         <div class="storage_chart_wrap">
           <div class="storage_chart">
-            <Chart style="height: 100%" :options="chartOptions" />
+            <Chart ref="highcharts" style="height: 100%" :options="chartOptions" />
           </div>
           <div class="storage_legned">
             <div class="legend_title">可纳雨量</div>
-            <div class="legend_item">
-              <i class="cube" style="background: #58c056"></i>
-              <span>200mm以上</span>
-            </div>
-            <div class="legend_item">
-              <i class="cube" style="background: #386ddd"></i>
-              <span>100-200mm</span>
-            </div>
-            <div class="legend_item">
-              <i class="cube" style="background: #f8861c"></i>
-              <span>50-100mm</span>
-            </div>
-            <div class="legend_item">
-              <i class="cube" style="background: #cd412c"></i>
-              <span>50mm以下</span>
+            <div class="legend_item" v-for="item in storageData" :key="item.name">
+              <i class="cube" :style="{ background: item.iconColor }"></i>
+              <span>{{ item.name }}</span>
             </div>
           </div>
         </div>
@@ -160,7 +155,7 @@
           <div class="statistic_item">
             <div class="label">水情预警</div>
             <div class="data">
-              <span class="value">0</span>
+              <span class="value">{{ sqWarn }}</span>
               <span class="unit">座</span>
             </div>
             <img src="@/assets/images/warningWaterSituation.png" />
@@ -168,7 +163,7 @@
           <div class="statistic_item">
             <div class="label">工情预警</div>
             <div class="data">
-              <span class="value">0</span>
+              <span class="value">{{ gqWarn }}</span>
               <span class="unit">座</span>
             </div>
             <img src="@/assets/images/warningWorkSituation.png" />
@@ -176,7 +171,7 @@
         </div>
         <div class="warning_chart_wrap">
           <div class="warning_chart">
-            <RingChart :data="warningChartData" />
+            <RingChart ref="warnRingChart" :data="warningChartData" />
           </div>
           <div class="warning_legend">
             <div v-for="(e, i) in warningChartData" class="item" :key="i">
@@ -197,7 +192,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { nextTick, onBeforeMount, ref } from 'vue'
 import LengedBox from '@/components/map/LengedBox.vue'
 import AuxiliaryInfo from '@/components/map/AuxiliaryInfo.vue'
 import axios from '@/api/axios'
@@ -279,13 +274,118 @@ const floodForecastList = ref([
   { name: '巧溪水库', waterLevel: '89.08', rainfall: '1.4', time: '10-31 12:00' },
   { name: '巧溪水库', waterLevel: '89.08', rainfall: '1.4', time: '10-31 12:00' }
 ])
+
+/* 蓄水能力的统计数据 */
 const storageCategory = ref('现状实况')
 const changeStorageCategory = (category) => {
   storageCategory.value = category
+  getStorage()
 }
 const storageType = ref('至限制水位')
 const changeStorageType = (type) => {
   storageType.value = type
+  getStorageData()
+}
+const rain = ref('50')
+const rainCustomize = ref('')
+const changeRainCustomize = (val) => {
+  rain.value = val
+  getStorage()
+}
+const storage = ref({})
+const storageTotal = ref(0)
+const storageRate = ref(0)
+const storageData = ref([
+  { name: '200mm以上', y: 0, iconColor: '#58c056' },
+  { name: '100-200mm', y: 0, iconColor: '#386ddd' },
+  { name: '50-100mm', y: 0, iconColor: '#f8861c' },
+  { name: '50mm以下', y: 0, iconColor: '#cd412c' }
+])
+const getStorage = () => {
+  let params = {
+    adcd: '330782000000',
+    moduleType: '55'
+  }
+  if (storageCategory.value === '假定雨量') {
+    params.rain = rain.value
+  }
+  axios
+    .rscp({
+      url: '/mgt/bm/reservoirMatrix/fourPre',
+      method: 'post',
+      data: params
+    })
+    .then((res) => {
+      storage.value = res.data || {}
+    })
+    .catch(() => {
+      storage.value = {}
+    })
+    .finally(() => {
+      storageTotal.value = storage.value.currenty || 0
+      getStorageData()
+    })
+}
+onBeforeMount(() => {
+  getStorage()
+})
+const getStorageData = () => {
+  if (storageType.value === '至限制水位') {
+    storageRate.value = storage.value.limitStoragePerc || 0
+    storageData.value.forEach((e) => {
+      switch (e.name) {
+        case '200mm以上':
+          e.y = storage.value.limitRainOver200 || 0
+          break
+        case '100-200mm':
+          e.y = storage.value.limitRain200 || 0
+          break
+        case '50-100mm':
+          e.y = storage.value.limitRain100 || 0
+          break
+        case '50mm以下':
+          e.y = storage.value.limitRain50 || 0
+          break
+      }
+    })
+  } else if (storageType.value === '至正常蓄水位') {
+    storageRate.value = storage.value.zcStoragePerc || 0
+    storageData.value.forEach((e) => {
+      switch (e.name) {
+        case '200mm以上':
+          e.y = storage.value.zcRainOver200 || 0
+          break
+        case '100-200mm':
+          e.y = storage.value.zcRain200 || 0
+          break
+        case '50-100mm':
+          e.y = storage.value.zcRain100 || 0
+          break
+        case '50mm以下':
+          e.y = storage.value.zcRain50 || 0
+          break
+      }
+    })
+  } else if (storageType.value === '至设计洪水位') {
+    storageRate.value = storage.value.sjStoragePerc || 0
+    storageData.value.forEach((e) => {
+      switch (e.name) {
+        case '200mm以上':
+          e.y = storage.value.sjRainOver200 || 0
+          break
+        case '100-200mm':
+          e.y = storage.value.sjRain200 || 0
+          break
+        case '50-100mm':
+          e.y = storage.value.sjRain100 || 0
+          break
+        case '50mm以下':
+          e.y = storage.value.sjRain50 || 0
+          break
+      }
+    })
+  }
+  updateChartOptions()
 }
 const chartOptions = ref({
   chart: {
@@ -319,18 +419,21 @@ const chartOptions = ref({
   series: [
     {
       name: '蓄水量',
-      data: [
-        { name: '200mm以上', y: 1012 },
-        { name: '100-200mm', y: 661 },
-        { name: '50-100mm', y: 606 },
-        { name: '50mm以下', y: 1947 }
-      ],
+      data: storageData.value,
       colorByPoint: true,
       allowPointSelect: true,
       colors: ['rgba(91, 190, 88, 0.7)', 'rgba(56, 134, 255, 0.7)', 'rgba(247, 181, 0, 0.7)', 'rgba(250, 100, 0, 0.8)']
     }
   ]
 })
+const highcharts = ref()
+const updateChartOptions = () => {
+  chartOptions.value.series[0].data = storageData.value
+  console.log('updateChartOptions', storageData.value)
+  highcharts.value.chart.redraw()
+}
+
+/* 重要水库水情 */
 const importantReservoir = ref([
   { name: '巧溪水库', zl: '0.00', state: '基本稳定', waterLevel: '175.29' },
   { name: '八都水库', zl: '-0.01', state: '下降', waterLevel: '141.20' },
@@ -339,11 +442,59 @@ const importantReservoir = ref([
   { name: '枫坑水库', zl: '0.00', state: '基本稳定', waterLevel: '173.94' },
   { name: '柏峰水库', zl: '0.00', state: '基本稳定', waterLevel: '114.54' }
 ])
+
+/* 预警信息的统计数据 */
+const sqWarn = ref(0)
+const gqWarn = ref(0)
 const warningChartData = ref([
   { value: 0, name: '超限制水位', color: '#419EFF' },
   { value: 0, name: '超正常蓄水位', color: '#FFCB27' },
   { value: 0, name: '超设计水位', color: '#FF551F' }
 ])
+const warnRingChart = ref()
+const getWarningData = () => {
+  axios
+    .rscp({
+      url: '/mgt/resWisdom/synthesisRes',
+      method: 'post',
+      data: {
+        adcd: '330782000000',
+        moduleType: 4
+      }
+    })
+    .then((res) => {
+      sqWarn.value = res.data?.overTotal ?? '-'
+      gqWarn.value = res.data?.overLimit3Num ?? '-'
+      warningChartData.value.forEach((e) => {
+        switch (e.name) {
+          case '超限制水位':
+            e.value = res.data?.overLimitNum ?? 0
+            break
+          case '超正常蓄水位':
+            e.value = res.data?.overNwNum ?? 0
+            break
+          case '超设计水位':
+            e.value = res.data?.overDesignNum ?? 0
+            break
+        }
+      })
+    })
+    .catch(() => {
+      sqWarn.value = '-'
+      gqWarn.value = '-'
+      warningChartData.value.forEach((e) => {
+        e.value = 0
+      })
+    })
+    .finally(() => {
+      nextTick(() => {
+        warnRingChart.value.initChart()
+      })
+    })
+}
+onBeforeMount(() => {
+  getWarningData()
+})
 
 /* 打开降水预报弹窗 */
 const precipitationForecastVisible = ref(false)
@@ -486,6 +637,9 @@ const openWaterLevelDetail = (id, name) => {
       &.active {
         background-image: url(@/assets/images/tabActiveBg.png);
       }
+    }
+    .el-radio {
+      margin-right: 12px;
     }
   }
   .storage_type {
